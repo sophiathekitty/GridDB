@@ -84,6 +84,9 @@ namespace IngameScript
                 Me = me;
                 EchoAction = echo;
                 broadcastListener = IGC.RegisterBroadcastListener(ProgramName);
+                IGC.UnicastListener.SetMessageCallback("GridInfo");
+                broadcastListener.SetMessageCallback(ProgramName);
+                //Echo("GridInfo Initialized for " + ProgramName);
                 if (name != "") Me.CustomName = "Program: " + ProgramName + " @" + IGC.Me.ToString();
             }
             public static void Init(string name, Program program)
@@ -91,6 +94,11 @@ namespace IngameScript
                 GridInfo.program = program;
                 Init(name, program.GridTerminalSystem, program.IGC, program.Me, program.Echo);
                 Load(program.Storage);
+            }
+            public static void Init(string name, Program program, UpdateFrequency updateFrequency)
+            {
+                program.Runtime.UpdateFrequency = updateFrequency;
+                Init(name, program);
             }
             public static void Init(string name, Program program, string storage)
             {
@@ -107,21 +115,13 @@ namespace IngameScript
             //-------------------------------------------//
             // handle broadcast messages                 //
             //-------------------------------------------//
+            static Dictionary<string, Action<MyIGCMessage>> messageHandlers = new Dictionary<string, Action<MyIGCMessage>>();
             public static List<MyIGCMessage> CheckMessages()
             {
                 List<MyIGCMessage> messages = new List<MyIGCMessage>();
                 while (broadcastListener.HasPendingMessage)
                 {
                     MyIGCMessage message = broadcastListener.AcceptMessage();
-                    //Echo("GridInfo-" + message.Tag + ": " + message.As<string>());
-                    /*
-                    string[] data = message.As<string>().Split('║');
-                    if (data.Length == 2)
-                    {
-                        SetVar(data[0], data[1]);
-                    }
-                    else messages.Add(message);
-                    */
                     if (!checkForVar(message)) messages.Add(message);
                 }
                 while (IGC.UnicastListener.HasPendingMessage)
@@ -141,33 +141,56 @@ namespace IngameScript
                     while (listener.HasPendingMessage)
                     {
                         MyIGCMessage message = listener.AcceptMessage();
-                        //Echo(message.Tag + ": " + message.As<string>());
                         checkForVar(message);
                     }
                 }
                 return messages;
             }
+            //-------------------------------------------//
+            // check if a message is a var update        //
+            //-------------------------------------------//
             static bool checkForVar(MyIGCMessage message)
             {
                 string[] data = message.As<string>().Split('║');
                 if (data.Length == 2)
                 {
-                    //GridInfo.Echo("GridInfo-VarFound! " + data[0] + ": " + data[1]);
                     SetVar(data[0], data[1], false);
                     return true;
                 }
                 return false;
             }
+            //-------------------------------------------//
+            // add listeners and handlers                //
+            //-------------------------------------------//
             public static IMyBroadcastListener AddBroadcastListener(string name)
             {
                 IMyBroadcastListener listener = IGC.RegisterBroadcastListener(name);
                 listeners.Add(listener);
+                listener.SetMessageCallback(name);
                 return listener;
             }
+            //-------------------------------------------//
+            // add a handler for a specific message name //
+            //-------------------------------------------//
+            public static void AddMessageListener(string name, Action<MyIGCMessage> handler)
+            {
+                if (messageHandlers.ContainsKey(name))
+                {
+                    messageHandlers[name] += handler;
+                }
+                else
+                {
+                    messageHandlers[name] = handler;
+                }
+            }
+            //-------------------------------------------//
+            // add a listener for var broadcasts         //
+            //-------------------------------------------//
             public static void AddVarBroadcastListener(string name)
             {
                 IMyBroadcastListener listener = IGC.RegisterBroadcastListener(name);
                 varListeners.Add(listener);
+                listener.SetMessageCallback("var:" + name);
             }
             //-------------------------------------------//
             // Get a var as a specific type of variable  //
@@ -199,6 +222,8 @@ namespace IngameScript
             //                                           //
             // key - the id of the variable to set       //
             // value - the value (converted to a string) //
+            // send - if true send the change to any     //
+            //        remote listeners                   //
             //-------------------------------------------//
             public static void SetVar(string key, string value, bool send = true)
             {
@@ -248,11 +273,13 @@ namespace IngameScript
             {
                 VarChanged?.Invoke(key, value);
             }
+            // add a var to the list of vars to listen for changes and add a handler
             public static void AddChangeListener(string key, Action<string, string> handler)
             {
                 bound_vars += key + "║";
                 VarChanged += handler;
             }
+            // add a var to the list of vars to listen for changes
             public static void AddChangeListener(string key)
             {
                 bound_vars += key + "║";
@@ -295,18 +322,22 @@ namespace IngameScript
             }
             public static string GameTimeString { get { return GridInfo.GameTime.ToString("h:mm tt"); } }
             //----------------------------------//
+            //                                  //
             // main loop                        //
+            //                                  //
+            // command handler                  //
+            // script message handler           //
+            // message handlers                 //
             //----------------------------------//
-            public static Action<string, UpdateType> MainLoop;
+            public static Action<string> MainLoop;
             public static Action<string> Command;
+            public static Action<string> ScriptMessage;
             public static Dictionary<string, Action<MyIGCMessage>> MessageHandlers = new Dictionary<string, Action<MyIGCMessage>>();
-            public static Action<List<MyIGCMessage>> MessagesHandler;
             public static void Main(string argument, UpdateType updateSource)
             {
                 RunCount++;
                 if (updateSource == UpdateType.IGC)
                 {
-                    //GridInfo.Echo("IGC message???");
                     List<MyIGCMessage> messages = CheckMessages();
                     for (int i = 0; i < messages.Count; i++)
                     {
@@ -317,15 +348,25 @@ namespace IngameScript
                             i--;
                         }
                     }
-                    if (MessagesHandler != null) MessagesHandler(messages);
                 }
                 else if (updateSource == UpdateType.Terminal || updateSource == UpdateType.Trigger)
                 {
                     Command?.Invoke(argument);
                 }
-                else MainLoop?.Invoke(argument, updateSource);
+                else if ((updateSource & UpdateType.Script) != 0)
+                {
+                    ScriptMessage?.Invoke(argument);
+                }
+                else
+                {
+                    MainLoop?.Invoke(argument);
+                }
             }
-            public static void AddMainLoop(Action<string, UpdateType> handler)
+            //---------------------------------------------------------------//
+            // add handlers to the main loop, command, script message, or    //
+            // message handlers                                             //
+            //---------------------------------------------------------------//
+            public static void AddMainLoop(Action<string> handler)
             {
                 MainLoop += handler;
             }
@@ -333,13 +374,13 @@ namespace IngameScript
             {
                 MessageHandlers.Add(tag, handler);
             }
-            public static void AddMessagesHandler(Action<List<MyIGCMessage>> handler)
-            {
-                MessagesHandler += handler;
-            }
             public static void AddCommandHandler(Action<string> handler)
             {
                 Command += handler;
+            }
+            public static void AddScriptMessageHandler(Action<string> handler)
+            {
+                ScriptMessage += handler;
             }
             //---------------------------------------------------------------//
             // random number generator                                       //

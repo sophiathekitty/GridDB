@@ -22,15 +22,19 @@ namespace IngameScript
 {
     partial class Program : MyGridProgram
     {
-        //==========================
+        //--------------------------
         // constructor
         //--------------------------
         public Program()
         {
-            GridInfo.Init("GridDB",this);
+            GridInfo.Init("GridDB",this,UpdateFrequency.Update10);
             GridBlocks.Init();
             GridDB.Init();
-            Runtime.UpdateFrequency = UpdateFrequency.Update10;
+            ProgScreen.Init();
+            ScreenAppSeat.Init();
+            // apps
+            DataManager.Init();
+            WebBrowser.Init();
         }
         //--------------------------
         // save data
@@ -44,7 +48,7 @@ namespace IngameScript
         //--------------------------
         public void Main(string argument, UpdateType updateSource)
         {
-            // main loop...
+            GridInfo.Main(argument, updateSource);
         }
         //==========================
     }

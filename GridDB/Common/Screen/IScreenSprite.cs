@@ -23,24 +23,14 @@ namespace IngameScript
     partial class Program
     {
         //-----------------------------------------------------------------------
-        // This class is used to store references to blocks on the grid.
+        // an interface for a screen sprite
         //-----------------------------------------------------------------------
-        public class GridBlocks
+        public interface IScreenSprite
         {
-            public static List<IMyTextPanel> textPanels = new List<IMyTextPanel>();
-            public static void Init()
-            {
-                textPanels.Clear();
-                // get all the text panels on the same subgrid as the programmable block
-                GridInfo.GridTerminalSystem.GetBlocksOfType<IMyTextPanel>(textPanels, x => x.CubeGrid == GridInfo.Me.CubeGrid);
-                textPanels.Sort((a, b) => a.CustomName.CompareTo(b.CustomName));
-                int index = 1;
-                foreach (IMyTextPanel panel in textPanels)
-                {
-                    if (panel.CustomName.Contains("DB")) continue;
-                    panel.CustomName = "DB:Unused "+ index++;
-                }
-            }
+            bool Visible { get; set; }
+            Vector2 SizeOnScreen { get; }
+            Vector2 GetPosition();
+            bool Overlaps(IScreenSprite other);
         }
         //-----------------------------------------------------------------------
     }
