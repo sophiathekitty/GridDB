@@ -1,3 +1,5 @@
+# Grid DB
+
 This script is for managing a database stored in text panels in space engineers. it will grab all of the text panels on the same subgrid. so like put it on it's own rotor. it will also let you manage the data stored in the database on the subgrid and copy it between other GridDBs.
 
 copy the scripts in the Grid DB folder into your script to access the grid db with your script.
