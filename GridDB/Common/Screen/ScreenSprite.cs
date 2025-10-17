@@ -59,7 +59,9 @@ namespace IngameScript
                 {
                     if (Type == SpriteType.TEXT)
                     {
-                        return _surface.MeasureStringInPixels(new StringBuilder(Data), FontId, RotationOrScale);
+                        if(_surface == null) GridInfo.Echo("ScreenSprite SizeOnScreen: surface is null");
+                        else return _surface.MeasureStringInPixels(new StringBuilder(Data), FontId, RotationOrScale);
+                        return Size;
                     }
                     else
                     {
@@ -75,7 +77,7 @@ namespace IngameScript
             public VerticalAlignments VerticalAlignment { get; set; }
             public bool Visible { get; set; } = true;
             RectangleF _viewport;
-            IMyTextSurface _surface;
+            public IMyTextSurface _surface { get; private set; }
             public virtual void SetViewport(RectangleF viewport, IMyTextSurface surface)
             {
                 _viewport = viewport;

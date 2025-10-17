@@ -50,10 +50,16 @@
     <Compile Include="Common\Grid DB\GridDBAddress.cs" />
     <Compile Include="Common\GridInfo\GridBlocks.cs" />
     <Compile Include="Common\GridInfo\GridInfo.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Area\HorizontalLayoutArea.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Area\LayoutArea.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Area\LayoutBorder.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\LayoutItem.cs" />
     <Compile Include="Common\ScreenApp\ScreenApp.cs" />
     <Compile Include="Common\ScreenApp\ScreenAppId.cs" />
     <Compile Include="Common\ScreenApp\ScreenAppSeat.cs" />
+    <Compile Include="Common\Screen\Advanced\RasterSprite.cs" />
     <Compile Include="Common\Screen\Advanced\TextSprite.cs" />
+    <Compile Include="Common\Screen\Advanced\TextureSprite.cs" />
     <Compile Include="Common\Screen\IScreenSprite.cs" />
     <Compile Include="Common\Screen\IScreenSpriteProvider.cs" />
     <Compile Include="Common\Screen\Screen.cs" />

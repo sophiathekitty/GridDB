@@ -34,12 +34,11 @@ namespace IngameScript
             public static Dictionary<string, ScreenAppSeat> SeatsByAddress = new Dictionary<string, ScreenAppSeat>();
             public static void Init()
             {
-                GridInfo.Echo("ScreenAppSeat.Init");
+                //GridInfo.Echo("ScreenAppSeat.Init");
                 SeatsByAddress.Clear();
                 GridInfo.AddMainLoop(Main);
                 GridInfo.AddScriptMessageHandler(HandleMessage);
                 GridInfo.AddMessageHandler("FocusApp", HandleMessage);
-                GridInfo.AddMessageHandler("AvailableApps", HandleMessage);
             }
             //------------------------------------------------------
             // static Main loop (try to run one seat per call)
@@ -66,17 +65,14 @@ namespace IngameScript
             public static void HandleMessage(string msg) => HandleMessage(MessageData.ParseMessage(msg));
             public static void HandleMessage(MessageData msg)
             {
-                //GridInfo.Echo("ScreenAppSeat.HandleMessage: " + msg?.Tag);
-                if (msg.Tag == "AvailableApps")
+                if (msg.Tag == "FocusApp")
                 {
-                    GridInfo.Echo("Available Apps!" + msg.ToString());
-                }
-                else if (msg.Tag == "FocusApp")
-                {
-                    if (msg.Address != null && SeatsByAddress.ContainsKey(msg.Address) && msg.HasKey("appId"))
-                    {
-                        SeatsByAddress[msg.Address].CurrentApp = msg["appId"];
-                    }
+                    GridInfo.Echo("FocusApp! " + msg.Address + " " + msg["appId"] + " " + msg["rootApp"]);
+                    ScreenAppId appId = new ScreenAppId(msg["appId"]);
+                    if (!appId.Local) return; // local apps are handled by the seat
+                    GridInfo.Echo("FocusApp Local " + appId.Name);
+                    ScreenAppSeat seat = GetSeat(msg["Address"], msg["rootApp"]);
+                    seat.CurrentApp = appId.Id;
                 }
             }
             // get the next app to run in the main loop
@@ -125,7 +121,27 @@ namespace IngameScript
                     if (appId.Local && !LocalApps.ContainsKey(appId.Id) && ScreenApp.AvailableApps.ContainsKey(appId.Name))
                     {
                         ScreenApp.AvailableApps[appId.Name]?.Invoke(this);
-                    } else AppFocus.Push(appId.Id);
+                    }
+                    else AppFocus.Push(appId.Id);
+                }
+            }
+            public ScreenAppId CurrentAppId
+            {
+                get
+                {
+                    return new ScreenAppId(CurrentApp);
+                }
+                set
+                {
+                    CurrentApp = value.Id;
+                    if (value.Local == false)
+                    {
+                        MessageData msg = new MessageData("FocusApp", GridInfo.IGC.Me);
+                        msg["appId"] = CurrentApp;
+                        msg["rootApp"] = PreviousApp;
+                        msg["Address"] = Address;
+                        GridInfo.SendScriptMessage("GameEditor", msg.ToString());
+                    }
                 }
             }
             public string PreviousApp
@@ -193,21 +209,7 @@ namespace IngameScript
                     CurrentApp = value.AppId;
                 }
             }
-            public void FocusApp(string appId, bool launch = true)
-            {
-                string[] parts = appId.Split('@');
-                long id = 0;
-                
-                if (parts.Length == 2 && long.TryParse(parts[1], out id))
-                {
-                    string name = parts[0];
-                    if(id == GridInfo.IGC.Me && !LocalApps.ContainsKey(appId) && ScreenApp.AvailableApps.ContainsKey(name))
-                    {
-                        ScreenApp.AvailableApps[name]?.Invoke(this);
-                    }
-                }
-                CurrentApp = appId;
-            }
+
             public void CloseApp()
             {
                 if (AppFocus.Count > 0)
@@ -217,6 +219,13 @@ namespace IngameScript
                     {
                         LocalApps.Remove(app);
                     }
+                    ScreenAppId appId = new ScreenAppId(CurrentApp);
+                    MessageData msg = new MessageData("FocusApp", GridInfo.IGC.Me);
+                    msg["appId"] = CurrentApp;
+                    msg["rootApp"] = PreviousApp;
+                    msg["Address"] = Address;
+                    GridInfo.SendScriptMessage(appId.Host.ToString(), msg.ToString());
+
                 }
             }
         }

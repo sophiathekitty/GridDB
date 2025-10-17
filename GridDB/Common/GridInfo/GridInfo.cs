@@ -382,6 +382,31 @@ namespace IngameScript
             {
                 ScriptMessage += handler;
             }
+            //----------------------------------------------------------------------
+            // static method to get another programmable block where the name contains the given string
+            //----------------------------------------------------------------------
+            public static IMyProgrammableBlock GetPB(string keyword)
+            {
+                List<IMyProgrammableBlock> pbs = new List<IMyProgrammableBlock>();
+                GridTerminalSystem.GetBlocksOfType<IMyProgrammableBlock>(pbs, x => x.IsSameConstructAs(Me) && x.EntityId != Me.EntityId && x.CustomName.Contains(keyword));
+                if (pbs.Count > 0) return pbs[0];
+                return null;
+            }
+            public static long ScriptId(string scriptName)
+            {
+                IMyProgrammableBlock pb = GetPB(scriptName);
+                if (pb != null) return pb.EntityId;
+                return 0;
+            }
+            public static bool SendScriptMessage(string ScriptName, string message)
+            {
+                IMyProgrammableBlock pb = GetPB(ScriptName);
+                if (pb != null)
+                {
+                    return pb.TryRun(message);
+                }
+                return false;
+            }
             //---------------------------------------------------------------//
             // random number generator                                       //
             //---------------------------------------------------------------//

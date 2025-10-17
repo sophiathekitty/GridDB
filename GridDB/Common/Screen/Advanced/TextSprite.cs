@@ -30,9 +30,9 @@ namespace IngameScript
             //----------------------------------------------------------------------
             // fields
             //----------------------------------------------------------------------
-            int scrollOffset = 0;
-            int maxLines = 0;
-            public int ScrollOffset
+            int scrollOffset = 0;   // current scroll offset
+            int maxLines = 0;       // max lines that fit in the size
+            public int ScrollOffset // line offset for scrolling
             {
                 get { return scrollOffset; }
                 set
@@ -44,80 +44,47 @@ namespace IngameScript
                     ScrollText();
                 }
             }
-            string text; // raw text
-            string data; // text with line breaks
-            public string Text
+            string text;            // raw text
+            string data;            // text with line breaks
+            public string Text      // get/set raw text
             {
                 get { return text; }
                 set
                 {
                     if (value == text) return;
                     text = value;
-                    string[] lines = text.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
-                    data = "";
-                    foreach (string line in lines)
-                    {
-                        if (data != "") data += "\n";
-                        if (MeasureStringInPixels(new StringBuilder(line)).X > Size.X) data += WrapText(line, Size.X);
-                        else data += line;
-                    }
-                    FindMaxLines();
-                    /*
-                    StringBuilder currentLine = new StringBuilder();
-                    string currentLineText = "";
-                    string[] words = text.Split(' ');
-                    data = "";
-                    bool firstWord = true;
-                    bool firstLine = true;
-                    maxLines = 0;
-                    foreach (string word in words)
-                    {
-                        if (firstWord) firstWord = false;
-                        else currentLine.Append(" ");
-                        currentLine.Append(word.Trim());
-                        if (MeasureStringInPixels(currentLine).X > Size.X)
-                        {
-                            if (firstLine) firstLine = false;
-                            else data += "\n";
-                            data += currentLineText;
-                            currentLine.Clear();
-                            currentLine.Append(word);
-                            currentLineText = word;
-                            if(MeasureStringInPixels(new StringBuilder(data)).Y < Size.Y) maxLines++;
-                        }
-                        else if (word.EndsWith("\n"))
-                        {
-                            if (firstLine) firstLine = false;
-                            else data += "\n";
-                            data += currentLine.ToString();
-                            currentLine.Clear();
-                            currentLineText = "";
-                            if (MeasureStringInPixels(new StringBuilder(data)).Y < Size.Y) maxLines++;
-                        }
-                        else
-                        {
-                            currentLineText = currentLine.ToString();
-                        }
-                    }
-                    if(currentLine.Length > 0)
-                    {
-                        if (firstLine) firstLine = false;
-                        else data += "\n";
-                        data += currentLine.ToString();
-                        if (MeasureStringInPixels(new StringBuilder(data)).Y < Size.Y) maxLines++;
-                    }
-                    */
-                    //if(maxLines == 0 && currentLineText != "") maxLines = 1;
-                    //data += currentLineText;
-                    if (data.Split('\n').Length > maxLines && maxLines > 0)
-                    {
-                        // find the last line that fits
-                        scrollOffset = 0;
-                        ScrollText();
-                    }
-                    else Data = data;
+                    ApplyText();
                 }
             }
+            //----------------------------------------------------------------------
+            // apply text with word wrapping
+            //----------------------------------------------------------------------
+            void ApplyText()
+            {
+                if(_surface == null || text == "")
+                {
+                    return;
+                }
+                string[] lines = text.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
+                data = "";
+                foreach (string line in lines)
+                {
+                    if (data != "") data += "\n";
+                    if (MeasureStringInPixels(new StringBuilder(line)).X > Size.X) data += WrapText(line, Size.X);
+                    else data += line;
+                }
+                FindMaxLines();
+                if (data.Split('\n').Length > maxLines && maxLines > 0)
+                {
+                    // find the last line that fits
+                    scrollOffset = 0;
+                    ScrollText();
+                }
+                else Data = data;
+            }
+            //----------------------------------------------------------------------
+            // find max lines that fit in the size
+            //----------------------------------------------------------------------
             void FindMaxLines()
             {
                 string[] lines = data.Split('\n');
@@ -130,6 +97,9 @@ namespace IngameScript
                     if (MeasureStringInPixels(new StringBuilder(testData)).Y < Size.Y) maxLines++;
                 }
             }
+            //----------------------------------------------------------------------
+            // scroll text to current offset
+            //----------------------------------------------------------------------
             void ScrollText()
             {
                 string[] lines = data.Split('\n');
@@ -139,6 +109,9 @@ namespace IngameScript
                     Data += lines[i] + "\n";
                 }
             }
+            //----------------------------------------------------------------------
+            // word wrap a single line of text to fit in maxWidth
+            //----------------------------------------------------------------------
             string WrapText(string text, float maxWidth)
             {
                 string[] words = text.Split(' ');
@@ -166,7 +139,7 @@ namespace IngameScript
                 set
                 {
                     base.Size = value;
-                    Text = text;
+                    ApplyText();
                 }
             }
             //----------------------------------------------------------------------

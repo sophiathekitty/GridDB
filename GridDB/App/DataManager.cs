@@ -30,7 +30,7 @@ namespace IngameScript
         {
             public static void Init()
             {
-                GridInfo.Echo("DataManager init");
+                //GridInfo.Echo("DataManager init");
                 // static init
                 RegisterApp();
                 ScreenAppSeat.GetSeat("Test.Seat", "DataManager", "DataManager");
@@ -47,6 +47,7 @@ namespace IngameScript
             // fields
             //----------------------------------------------------------------------
             TextSprite header;
+            HorizontalLayoutArea contentArea;
             TextSprite footer;
             //----------------------------------------------------------------------
             // constructor
@@ -66,6 +67,22 @@ namespace IngameScript
                 AddSprite(header);
                 footer = new TextSprite(new Vector2(0, -30), new Vector2(512, 64), "", "White", 1.0f, alignment: TextAlignment.CENTER, anchor: ScreenSprite.ScreenSpriteAnchor.BottomCenter);
                 AddSprite(footer);
+                contentArea = new HorizontalLayoutArea(this,Vector2.One * 10, Size - Vector2.One * 20);
+                LayoutArea sideBar = new LayoutArea(this, contentArea.MarginPosition, new Vector2(150, contentArea.MarginSize.Y));
+                sideBar.FlexibleHeight = true; sideBar.FlexibleWidth = false;
+                LayoutArea contentBody = new LayoutArea(this, contentArea.MarginPosition, new Vector2(contentArea.MarginSize.X - 160, contentArea.MarginSize.Y));
+                contentBody.FlexibleHeight = true; contentBody.FlexibleWidth = true;
+                Vector2 cs = new Vector2(150, 50);
+                sideBar.AddItem(new TextSprite(contentArea.MarginPosition,cs, "content item one"), flexibleHeight: false);
+                sideBar.AddItem(new TextSprite(contentArea.MarginPosition,cs, "content item two"));
+                sideBar.AddItem(new TextSprite(contentArea.MarginPosition,cs, "content item three"));
+                cs = new Vector2(contentArea.MarginSize.X - 160, 50);
+                contentBody.AddItem(new TextSprite(contentArea.MarginPosition, cs, "main content area header"), flexibleHeight: false);
+                contentBody.AddItem(new TextSprite(contentArea.MarginPosition, cs, "main content area body"));
+                contentArea.AddItem(sideBar);
+                contentArea.AddItem(contentBody);
+                contentArea.ApplyLayout();
+                //contentArea.AddToScreen(this);
             }
             //----------------------------------------------------------------------
             // main update loop
@@ -80,25 +97,18 @@ namespace IngameScript
                         txt += " (Space Released)";
                         seat.CurrentApp = "WebBrowser";
                     }
-                    if (input.EReleased)
+                    if (input.AReleased)
                     {
-                        txt += " (E Released)";
-                        if(GridInfo.IGC.SendUnicastMessage(ScriptId("GameEditor"), "AvailableApps", "testing baby"))
-                        {
-                            txt += " (Message Sent)";
-                        }
-                        else
-                        {
-                            txt += " (Message Failed)";
-                        }
+                        contentArea.Size -= Vector2.One * 50;
                     }
                     if (input.QReleased)
                     {
                         txt += " (Q Released)";
-                        
+                        seat.CurrentAppId = new ScreenAppId("LauncherHub","GameEditor");
                     }
                     input.Reset();
                 }
+                //footer.Text = txt;
                 footer.Text = txt;
                 base.Update(argument);
             }
