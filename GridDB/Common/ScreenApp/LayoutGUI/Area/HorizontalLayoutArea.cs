@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using VRage;
 using VRage.Collections;
@@ -30,7 +31,7 @@ namespace IngameScript
             //-------------------------------------------------------------------
             // constructor
             //-------------------------------------------------------------------
-            public HorizontalLayoutArea(Screen screen, Vector2 position, Vector2 size, ScreenSprite item = null) : base(screen, position, size, item)
+            public HorizontalLayoutArea(ScreenApp screen, Vector2 position, Vector2 size, ScreenSprite item = null, float borderWidth = 0) : base(screen, position, size, item,borderWidth)
             {
             }
             //-------------------------------------------------------------------
@@ -38,6 +39,16 @@ namespace IngameScript
             //-------------------------------------------------------------------
             public override void ApplyLayout()
             {
+                if (border != null)
+                {
+                    border.Position = Position;
+                    border.Size = Size;
+                }
+                if (Item != null)
+                {
+                    Item.Position = Position;
+                    Item.Size = Size;
+                }
                 //GridInfo.Echo("LayoutArea ApplyLayout: applying layout to " + Items.Count + " items");
                 if (Items.Count == 0) return;
                 float remainingWidth = MarginSize.X;

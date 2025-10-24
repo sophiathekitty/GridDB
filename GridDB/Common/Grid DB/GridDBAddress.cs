@@ -27,6 +27,13 @@ namespace IngameScript
         //-----------------------------------------------------------------------
         public class GridDBAddress
         {
+            public static string GetAddressString(string domain, string sub, int index = 0, bool custom_data = true)
+            {
+                return domain + "." + sub + "." + index + "." + (custom_data ? "customdata" : "text");
+            }
+            //-------------------------------------------------------
+            // fields
+            //-------------------------------------------------------
             public string domain;
             public string sub;
             public int index;
@@ -34,7 +41,9 @@ namespace IngameScript
             public int x;
             public int y;
             public int length;
+            //-------------------------------------------------------
             // constructor
+            //-------------------------------------------------------
             public GridDBAddress(string address)
             {
                 if (address.StartsWith("DB:")) address = address.Substring(3);
@@ -85,7 +94,9 @@ namespace IngameScript
                     this.custom_data = false;
                 }
             }
+            //-------------------------------------------------------
             // to string
+            //-------------------------------------------------------
             public override string ToString()
             {
                 if (index >= 0) return domain + "." + sub + "." + index + "." + (custom_data ? "customdata" : "text");

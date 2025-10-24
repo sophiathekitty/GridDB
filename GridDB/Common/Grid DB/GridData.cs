@@ -37,10 +37,10 @@ namespace IngameScript
             //------------------------------------------------------
             // constructor
             //------------------------------------------------------
-            public GridData(string address)
+            public GridData(string address, bool headerOnly = false)
             {
                 this.address = new GridDBAddress(address);
-                ParseData(GridDB.Get(address));
+                ParseData(GridDB.Get(address),headerOnly);
             }
             public GridData(string address, string data)
             {
@@ -50,7 +50,7 @@ namespace IngameScript
             //------------------------------------------------------
             // methods
             //------------------------------------------------------
-            public void ParseData(string data)
+            public void ParseData(string data, bool headerOnly = false)
             {
                 BlocksByName.Clear();
                 blocks.Clear();
@@ -62,7 +62,7 @@ namespace IngameScript
                     // parse header
                     foreach (string h in parts[0].Split(new char[] { '╬' }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        string[] kv = h.Split(new char[] { '=' }, 2);
+                        string[] kv = h.Split(new char[] { '═' }, 2);
                         if (kv.Length == 2)
                         {
                             header[kv[0]] = kv[1];
@@ -72,7 +72,7 @@ namespace IngameScript
                     data = parts[1];
                 }
                 else data = parts[0];
-
+                if(headerOnly) return;
                 foreach (string b in data.Split(new char[] { '║' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     blocks.Add(new GridDataBlock(b));
@@ -123,7 +123,7 @@ namespace IngameScript
                     if (first) first = false;
                     else sb.Append('╬');
                     sb.Append(kv.Key);
-                    sb.Append('=');
+                    sb.Append('═');
                     sb.Append(kv.Value);
                 }
                 if (!first) sb.Append('╣');

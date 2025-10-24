@@ -38,7 +38,10 @@
   <Import Project="MDK/MDK.options.props" />
   <Import Project="MDK/MDK.paths.props" Condition="exists('MDK/MDK.paths.props')" />
   <ItemGroup>
-    <Compile Include="App\DataManager.cs" />
+    <Compile Include="App\DataManager\DataManager.cs" />
+    <Compile Include="App\DataManager\DomainListLayout.cs" />
+    <Compile Include="App\DataManager\GridDBDomainItemLayout.cs" />
+    <Compile Include="App\DataManager\GridDBInfo.cs" />
     <Compile Include="App\WebBrowser\WebBrowser.cs" />
     <Compile Include="App\WebBrowser\WebData\WebPage.cs" />
     <Compile Include="App\WebBrowser\WebData\WebPageBlock.cs" />
@@ -50,10 +53,18 @@
     <Compile Include="Common\Grid DB\GridDBAddress.cs" />
     <Compile Include="Common\GridInfo\GridBlocks.cs" />
     <Compile Include="Common\GridInfo\GridInfo.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\AppFooter.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\AppHeader.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\AppLayout.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Area\HorizontalLayoutArea.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Area\LayoutArea.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Area\LayoutBorder.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\IInteractable.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\InteractableGroup.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\LayoutButton.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\LayoutMenu.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\LayoutItem.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\LayoutStyle.cs" />
     <Compile Include="Common\ScreenApp\ScreenApp.cs" />
     <Compile Include="Common\ScreenApp\ScreenAppId.cs" />
     <Compile Include="Common\ScreenApp\ScreenAppSeat.cs" />

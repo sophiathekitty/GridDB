@@ -118,6 +118,7 @@ namespace IngameScript
                 {
                     _sprites.Add(new List<ScreenSprite>());
                 }
+                if (_sprites[layer].Contains(sprite)) return;
                 _sprites[layer].Add(sprite);
                 sprite.SetViewport(_viewport, _drawingSurface);
             }

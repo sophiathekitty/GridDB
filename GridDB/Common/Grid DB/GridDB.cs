@@ -105,6 +105,26 @@ namespace IngameScript
                     return "Used: " + UsedCount + "/" + TotalCount + " (" + UsedPercent.ToString("0.0") + "%)\nShows:" + showsCount + "\nGames:" + gamesCount + "\nOther:" + otherCount;
                 }
             }
+            public static int DomainSize(string domain)
+            {
+                int size = 0;
+                if (Database.ContainsKey(domain))
+                {
+                    foreach (string sub in Database[domain].Keys)
+                    {
+                        size += Database[domain][sub].Count;
+                    }
+                }
+                return size;
+            }
+            public static int DomainSubCount(string domain)
+            {
+                if (Database.ContainsKey(domain))
+                {
+                    return Database[domain].Keys.Count;
+                }
+                return 0;
+            }
             //-----------------------------------------------------------------------
             // Init
             //-----------------------------------------------------------------------
@@ -165,6 +185,34 @@ namespace IngameScript
                 if (Database.ContainsKey(domain) && Database[domain].ContainsKey(sub) && Database[domain][sub].Count > 0) return random.Next(100) > 50 ? Database[domain][sub][random.Next(Database[domain][sub].Count)].CustomData : Database[domain][sub][random.Next(Database[domain][sub].Count)].GetText();
                 return "";
             }
+            public static string GetDomainMainDataAddress(string domain)
+            {
+                if (!Database.ContainsKey(domain)) return "";
+                // Main is main for TV shows
+                if (Database[domain].ContainsKey("Main") && Database[domain]["Main"].Count > 0) return GridDBAddress.GetAddressString(domain, "Main", 0, true);
+                // GameData is main for games
+                if (Database[domain].ContainsKey("GameData") && Database[domain]["GameData"].Count > 0) return GridDBAddress.GetAddressString(domain, "GameData", 0, true);
+                // otherwise we gotta check all of the sets first blocks and see if any are taged as main
+                foreach (string sub in Database[domain].Keys)
+                {
+                    if (Database[domain][sub].Count > 0 && Database[domain][sub][0].CustomData.Contains("Main═True"))
+                    {
+                        return GridDBAddress.GetAddressString(domain, sub, 0, true);
+                    }
+                }
+                return GridDBAddress.GetAddressString(domain, Database[domain].Keys.First(), 0, true);
+
+            }
+            // return the Database keys so it can be iterated
+            public static List<string> GetDomains()
+            {
+                List<string> domains = new List<string>();
+                foreach (string domain in Database.Keys)
+                {
+                    domains.Add(domain);
+                }
+                return domains;
+            }
             //-----------------------------------------------------------------------
             // Set
             //-----------------------------------------------------------------------
@@ -207,6 +255,24 @@ namespace IngameScript
                 // DB:ShowName.SceneName.00
                 panel.CustomName = "DB:" + domain + "." + sub + "." + index.ToString("00");
                 Database[domain][sub].Add(panel);
+            }
+            //-----------------------------------------------------------------------
+            // Delete
+            //-----------------------------------------------------------------------
+            public static void Delete(string domain)
+            {
+                if(!Database.ContainsKey(domain)) return;
+                foreach (string sub in Database[domain].Keys)
+                {
+                    foreach (IMyTextPanel panel in Database[domain][sub])
+                    {
+                        panel.CustomName = "DB: Unused";
+                        panel.CustomData = "";
+                        panel.WriteText("");
+                        Unused.Add(panel);
+                    }
+                }
+                Database.Remove(domain);
             }
             //-----------------------------------------------------------------------
             // GetUnused

@@ -28,10 +28,37 @@ namespace IngameScript
         public class LayoutArea : LayoutItem
         {
             //-------------------------------------------------------------------
+            // static methods
+            //-------------------------------------------------------------------
+            public static LayoutArea DOM(LayoutArea parent, string path)    // get a sub-area by path 0.0.0
+            {
+                string[] parts = path.Split('.');
+                LayoutArea current = parent;
+                foreach (var part in parts)
+                {
+                    bool found = false;
+                    int index = -1;
+                    if (int.TryParse(part, out index))
+                    {
+                        if (index >= 0 && index < current.Items.Count)
+                        {
+                            if (current.Items[index] is LayoutArea)
+                            {
+                                current = current.Items[index] as LayoutArea;
+                                found = true;
+                            }
+                        }
+                    }
+                    if (!found) return null;
+                }
+                return current;
+            }
+            //-------------------------------------------------------------------
             // fields
             //-------------------------------------------------------------------
-            Screen screen;                                          // screen to draw to
+            public ScreenApp screen { get; private set; }           // screen to draw to
             public List<LayoutItem> Items = new List<LayoutItem>(); // contained items
+            public LayoutBorder border;
             public override bool Visible                            // override visibility to affect contained items
             {
                 get
@@ -71,13 +98,38 @@ namespace IngameScript
                     ApplyLayout();
                 }
             }
+            public override Color TextColor                         // override text color to affect contained items
+            {
+                get
+                {
+                    foreach (var item in Items)
+                    {
+                        if (item.Item is TextSprite) return (item.Item as TextSprite).Color;
+                    }
+                    return base.TextColor;
+                }
+
+                set
+                {
+                    base.TextColor = value;
+                    foreach (var item in Items)
+                    {
+                        item.TextColor = value;
+                    }
+                }
+            }
             //-------------------------------------------------------------------
             // constructors
             //-------------------------------------------------------------------
-            public LayoutArea(Screen screen, Vector2 position, Vector2 size, ScreenSprite item = null) : base(position, size, item)
+            public LayoutArea(ScreenApp screen, Vector2 position, Vector2 size, ScreenSprite item = null, float borderWidth = 0) : base(position, size, item)
             {
                 this.screen = screen;
                 screen.AddSprite(this);
+                if (borderWidth > 0)
+                {
+                    border = new LayoutBorder(position, size, borderWidth);
+                    screen.AddSprite(border);
+                }
             }
             //-------------------------------------------------------------------
             // methods
@@ -86,6 +138,16 @@ namespace IngameScript
             //---------------------------------------------------
             public virtual void ApplyLayout()   // default to a virtical list layout
             {
+                if(border != null)
+                {
+                    border.Position = Position;
+                    border.Size = Size;
+                }
+                if(Item != null)
+                {
+                    Item.Position = Position;
+                    Item.Size = Size;
+                }
                 //GridInfo.Echo("LayoutArea ApplyLayout: applying layout to " + Items.Count + " items");
                 if (Items.Count == 0) return;
                 float remainingHeight = MarginSize.Y;
@@ -110,6 +172,10 @@ namespace IngameScript
                 }
             }
             //---------------------------------------------------
+            // [] for contained items
+            //---------------------------------------------------
+            public LayoutItem this[int index] => Items[index];
+            //---------------------------------------------------
             // add an item to the area
             //---------------------------------------------------
             public void AddItem(ScreenSprite item, bool flexibleWidth = true, bool flexibleHeight = true, Rectangle? margin = null)
@@ -125,6 +191,40 @@ namespace IngameScript
             {
                 Items.Add(item);
                 screen.AddSprite(item);
+            }
+            public void AddItem(LayoutArea item, int index)
+            {
+                Items.Insert(index, item);
+                screen.AddSprite(item);
+            }
+            public void AddItem(ScreenSprite item, ref Action<string> UpdateVar, bool flexibleWidth = true, bool flexibleHeight = true, Rectangle? margin = null)
+            {
+                LayoutItem layoutVariable = new LayoutItem(item.Position, item.Size, item, ref UpdateVar);
+                layoutVariable.FlexibleHeight = flexibleHeight;
+                layoutVariable.FlexibleWidth = flexibleWidth;
+                if (margin.HasValue) layoutVariable.Margin = margin.Value;
+                else layoutVariable.Margin = screen.AppStyle.Padding;
+                Items.Add(layoutVariable);
+                screen.AddSprite(layoutVariable);
+            }
+            //---------------------------------------------------
+            // remove an item from the area
+            //---------------------------------------------------
+            public void RemoveItem(LayoutItem item)
+            {
+                Items.Remove(item);
+                screen.RemoveSprite(item);
+                if (item is LayoutArea)
+                {
+                    LayoutArea area = item as LayoutArea;
+                    if(area.border != null) screen.RemoveSprite(area.border);
+                    while (area.Items.Count > 0) area.RemoveItem(area.Items[0]);
+                }
+            }
+            public void RemoveLastItem()
+            {
+                if (Items.Count == 0) return;
+                RemoveItem(Items[Items.Count - 1]);
             }
             //---------------------------------------------------
         }

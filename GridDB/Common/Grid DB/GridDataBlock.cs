@@ -74,7 +74,7 @@ namespace IngameScript
                     var header_lines = parts[0].Split(new char[] { '┼' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var line in header_lines)
                     {
-                        var kv = line.Split(new char[] { '=' }, 2);
+                        var kv = line.Split(new char[] { '─' }, 2);
                         if (kv.Length == 2)
                         {
                             header[kv[0]] = kv[1];
@@ -100,7 +100,7 @@ namespace IngameScript
                 {
                     if (!first) sb.Append('┼');
                     sb.Append(kv.Key);
-                    sb.Append('=');
+                    sb.Append('─');
                     sb.Append(kv.Value);
                     first = false;
                 }

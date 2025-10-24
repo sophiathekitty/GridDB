@@ -177,6 +177,19 @@ namespace IngameScript
                         _position = Position + new Vector2(_viewport.Right, _viewport.Bottom);
                         break;
                 }
+                // apply text alignment adjustments
+                if (Type == SpriteType.TEXT)
+                {
+                    switch (Alignment)
+                    {
+                        case TextAlignment.CENTER:
+                            _position.X += Size.X / 2;
+                            break;
+                        case TextAlignment.RIGHT:
+                            _position.X += Size.X;
+                            break;
+                    }
+                }
                 // apply vertical alignment based on sprite type and size
                 if (VerticalAlignment == VerticalAlignments.None) return _position;
                 if (Type == SpriteType.TEXT)

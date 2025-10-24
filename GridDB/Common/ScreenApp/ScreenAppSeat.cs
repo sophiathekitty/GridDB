@@ -100,14 +100,13 @@ namespace IngameScript
             //------------------------------------------------------
             // fields
             //------------------------------------------------------
-            public string Address { get; private set; }
-            public string RootApp { get; private set; }
-            public GameInput input { get; private set; }
-            public List<IMySoundBlock> soundBlocks { get; private set; }
-
-            Stack<string> AppFocus = new Stack<string>();
-            Dictionary<string, ScreenApp> LocalApps = new Dictionary<string, ScreenApp>();
-            public string CurrentApp
+            public string Address { get; private set; }                                     // seat address (a custom string. desktop:artist_desk, tv:artist_desk, sfx:artist_desk use "artist_desk" as address)
+            public string RootApp { get; private set; }                                     // root app for the seat
+            public GameInput input { get; private set; }                                    // input handler for the screen grid
+            public List<IMySoundBlock> soundBlocks { get; private set; }                    // sound blocks on the screen grid
+            Stack<string> AppFocus = new Stack<string>();                                   // stack of focused apps
+            Dictionary<string, ScreenApp> LocalApps = new Dictionary<string, ScreenApp>();  // local apps only
+            public string CurrentApp                                                        // the currently focused app (id string)
             {
                 get
                 {
@@ -125,7 +124,7 @@ namespace IngameScript
                     else AppFocus.Push(appId.Id);
                 }
             }
-            public ScreenAppId CurrentAppId
+            public ScreenAppId CurrentAppId                                                 // the currently focused app (ScreenAppId)
             {
                 get
                 {
@@ -144,7 +143,7 @@ namespace IngameScript
                     }
                 }
             }
-            public string PreviousApp
+            public string PreviousApp                                                       // the previously focused app (id string)
             {
                 get
                 {
@@ -155,15 +154,14 @@ namespace IngameScript
                     return previous;
                 }
             }
-            public ScreenApp App
+            public ScreenApp App                                                            // the currently focused app (ScreenApp)
             {
                 get
                 {
                     return this[CurrentApp];
                 }
             }
-            // return true if the rootApp is local
-            public bool LocalSeat
+            public bool LocalSeat                                                           // is the seat local (root app is local)
             {
                 get
                 {
