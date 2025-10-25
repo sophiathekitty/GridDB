@@ -81,7 +81,7 @@ namespace IngameScript
                 }
             }
             public string KeyPrompt { get; set; } = "WASD Navigate | E Select"; // prompt to show when requesting keyboard input
-            LayoutArea IInteractable.Area                                       // area the item is contained in
+            public LayoutArea Area                                       // area the item is contained in
             {
                 get
                 {
@@ -104,12 +104,12 @@ namespace IngameScript
                 //GridInfo.Echo("InteractableGroup.RunInput: processing input for group " + Id);
                 if (focusedItem != null && focusedItem.RunInput(input)) return true; // let focused item handle input first
                 if (input.WReleased || input.SReleased || input.AReleased || input.DReleased) delayMove = 0;
+                if (input.EPressed) { Click(); return true; }   // click on E press
                 if (delayMove > 0) 
                 {
                     delayMove--;
                     return false;
                 }
-                if (input.EPressed) { Click(); return true; }   // click on E press
                 // move focus up
                 if (input.W)
                 {
@@ -213,6 +213,18 @@ namespace IngameScript
                 }
                 return closest;
             }
+            public bool FocusUp()
+            {
+                IInteractable upItem = MoveUp();
+                if (upItem != null)
+                {
+                    focusedItem.IsFocused = false;
+                    focusedItem = upItem;
+                    focusedItem.IsFocused = true;
+                    return true;
+                }
+                return false;
+            }
             //-------------------------------------------------------------------
             // move down
             //-------------------------------------------------------------------
@@ -243,6 +255,18 @@ namespace IngameScript
                 //throw new Exception("InteractableGroup.MoveDown: closest item is " + (closest != null ? closest.Id : "null"));
                 return closest;
             }
+            public bool FocusDown()
+            {
+                IInteractable downItem = MoveDown();
+                if (downItem != null)
+                {
+                    focusedItem.IsFocused = false;
+                    focusedItem = downItem;
+                    focusedItem.IsFocused = true;
+                    return true;
+                }
+                return false;
+            }
             //-------------------------------------------------------------------
             // move left
             //-------------------------------------------------------------------
@@ -271,6 +295,18 @@ namespace IngameScript
                     }
                 }
                 return closest;
+            }
+            public bool FocusLeft()
+            {
+                IInteractable leftItem = MoveLeft();
+                if (leftItem != null)
+                {
+                    focusedItem.IsFocused = false;
+                    focusedItem = leftItem;
+                    focusedItem.IsFocused = true;
+                    return true;
+                }
+                return false;
             }
             //-------------------------------------------------------------------
             // move right
@@ -301,8 +337,22 @@ namespace IngameScript
                 }
                 return closest;
             }
+            public bool FocusRight()
+            {
+                IInteractable rightItem = MoveRight();
+                if (rightItem != null)
+                {
+                    focusedItem.IsFocused = false;
+                    focusedItem = rightItem;
+                    focusedItem.IsFocused = true;
+                    return true;
+                }
+                return false;
+            }
             //-------------------------------------------------------------------
             // methods
+            //-------------------------------------------------------------------
+            // add an interactable to the group
             //-------------------------------------------------------------------
             public void AddInteractable(IInteractable item, bool addItem = true)    // add an interactable to the group
             {
@@ -326,11 +376,39 @@ namespace IngameScript
                     } else throw new Exception("InteractableGroup.AddInteractable: could not find area for DOM: " + DOM);
                 }
             }
+            public void AddInteractableAt(IInteractable item, int index)            // add an interactable to the group at specified index
+            {
+                if (!interactables.Contains(item))
+                {
+                    interactables.Insert(index, item);
+                    item.LayoutChanged += () => { LayoutChanged?.Invoke(); };
+                    Area.AddItemAt(item.Area, index);
+                }
+            }
+            //-------------------------------------------------------------------
+            // remove an interactable from the group
+            //-------------------------------------------------------------------
             public void RemoveInteractable(IInteractable item) // remove an interactable from the group
             {
                 if (interactables.Contains(item))
                 {
                     interactables.Remove(item);
+                    RemoveItem(item.Area);
+                    if (focusedItem == item)
+                    {
+                        focusedItem.IsFocused = false;
+                        focusedItem = MoveUp();
+                        if (focusedItem == null) focusedItem = interactables.FirstOrDefault();
+                        if (focusedItem != null) focusedItem.IsFocused = true;
+                    }
+                }
+            }
+            public void RemoveInteractableAt(int index)            // remove an interactable from the group at specified index
+            {
+                if (index >= 0 && index < interactables.Count)
+                {
+                    IInteractable item = interactables[index];
+                    interactables.RemoveAt(index);
                     RemoveItem(item.Area);
                     if (focusedItem == item)
                     {

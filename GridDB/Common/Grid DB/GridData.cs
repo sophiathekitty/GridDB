@@ -55,7 +55,8 @@ namespace IngameScript
                 BlocksByName.Clear();
                 blocks.Clear();
                 header.Clear();
-                if (data == null) return;
+                if (string.IsNullOrEmpty(data)) return;
+                GridInfo.Echo("Parsing GridData at " + address.domain + "." + address.sub);
                 string[] parts = data.Split(new char[] { '╣' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 2)
                 {

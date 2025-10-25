@@ -207,6 +207,11 @@ namespace IngameScript
                 Items.Add(layoutVariable);
                 screen.AddSprite(layoutVariable);
             }
+            public void AddItemAt(LayoutArea item, int index)
+            {
+                Items.Insert(index, item);
+                screen.AddSprite(item);
+            }
             //---------------------------------------------------
             // remove an item from the area
             //---------------------------------------------------
