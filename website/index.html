@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Null Systems - Redefining Absence as a Service™</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/null-systems-logo.png" alt="Null Systems" class="logo-spin">
+                <span class="logo-text">NULL SYSTEMS</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">HOME</a></li>
+                <li><a href="products.html" class="nav-link">PRODUCTS</a></li>
+                <li><a href="about.html" class="nav-link">ABOUT</a></li>
+                <li><a href="news.html" class="nav-link">NEWS</a></li>
+                <li><a href="contact.html" class="nav-link">CONTACT</a></li>
+                <li><button id="music-toggle" class="music-btn">♪ SYNTHWAVE</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="glitch-container">
+                    <h1 class="hero-title glitch" data-text="NULL SYSTEMS">NULL SYSTEMS</h1>
+                </div>
+                <p class="hero-tagline">Redefining Absence as a Service™</p>
+                <p class="hero-subtitle">Where innovation meets the void. Where data goes to transcend existence.</p>
+                <button class="cta-button" onclick="goNowhere()">
+                    <span class="button-text">EXPERIENCE THE FUTURE</span>
+                    <span class="button-glow"></span>
+                </button>
+            </div>
+            <div class="hero-background">
+                <div class="grid-overlay"></div>
+                <div class="floating-cubes"></div>
+            </div>
+        </section>
+
+        <!-- Products Showcase -->
+        <section class="products-showcase">
+            <div class="container">
+                <h2 class="section-title">REVOLUTIONARY SOLUTIONS</h2>
+                <div class="products-grid">
+                    <div class="product-card" data-product="griddb">
+                        <div class="product-icon">🧊</div>
+                        <h3>GridDB</h3>
+                        <p class="product-tagline">"Where your data goes to disappear efficiently."</p>
+                        <p class="product-description">
+                            A modular, domain-based storage system for grid-connected blocks. 
+                            Organize and abstract data across multiple grids using advanced domain naming conventions.
+                        </p>
+                        <ul class="product-features">
+                            <li>Domain-based organization</li>
+                            <li>Auto-layout management</li>
+                            <li>Scroll-aware interface</li>
+                            <li>Efficient block usage tracking</li>
+                        </ul>
+                        <button class="product-button">LEARN MORE</button>
+                    </div>
+
+                    <div class="product-card" data-product="screenapp">
+                        <div class="product-icon">🖥️</div>
+                        <h3>ScreenApp Framework</h3>
+                        <p class="product-tagline">"Because every interface deserves an interface."</p>
+                        <p class="product-description">
+                            A lightweight UI system that allows modular app-style interfaces 
+                            with layout groups, focus handling, and custom skins.
+                        </p>
+                        <ul class="product-features">
+                            <li>Nested layout groups</li>
+                            <li>Automatic listener propagation</li>
+                            <li>Focus management system</li>
+                            <li>Custom styling per app</li>
+                        </ul>
+                        <button class="product-button">COMING SOON</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="9999">0</div>
+                        <div class="stat-label">Data Points Nullified</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="42">0</div>
+                        <div class="stat-label">Grids Connected</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="100">0</div>
+                        <div class="stat-label">Efficiency Rating</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="0">1</div>
+                        <div class="stat-label">Bugs Found</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Corporate Message -->
+        <section class="corporate-message">
+            <div class="container">
+                <div class="message-content">
+                    <h2>A MESSAGE FROM OUR CHIEF VISIONARY OFFICER</h2>
+                    <blockquote>
+                        "At Null Systems, we don't just think outside the box. We eliminate the box entirely, 
+                        then optimize the absence left behind. GridDB isn't just storage—it's a philosophy. 
+                        A way of approaching data that transcends traditional concepts of 'existence' and 'usefulness'."
+                        <cite>— The Presenter, CVO</cite>
+                    </blockquote>
+                </div>
+                <div class="message-image">
+                    <img src="assets/images/presenter-portrait.jpg" alt="The Presenter" class="presenter-image">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/null-systems-logo.png" alt="Null Systems">
+                    <span>NULL SYSTEMS</span>
+                </div>
+                <div class="footer-links">
+                    <a href="products.html">Products</a>
+                    <a href="about.html">About</a>
+                    <a href="news.html">News</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-tagline">
+                    © Null Systems — All Rights Reserved. Some Rights Forgotten.
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p>Not responsible for existential crises, data transcendence, or the sudden urge to reorganize your storage systems.</p>
+            </div>
+        </div>
+    </footer>
+
+    <audio id="background-music" loop>
+        <source src="assets/audio/synthwave.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

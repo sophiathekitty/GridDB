@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Null Systems</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/null-systems-logo.png" alt="Null Systems" class="logo-spin">
+                <span class="logo-text">NULL SYSTEMS</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">HOME</a></li>
+                <li><a href="products.html" class="nav-link active">PRODUCTS</a></li>
+                <li><a href="about.html" class="nav-link">ABOUT</a></li>
+                <li><a href="news.html" class="nav-link">NEWS</a></li>
+                <li><a href="contact.html" class="nav-link">CONTACT</a></li>
+                <li><button id="music-toggle" class="music-btn">♪ SYNTHWAVE</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title glitch" data-text="PRODUCTS">PRODUCTS</h1>
+                <p class="page-subtitle">Revolutionary solutions for the modern void</p>
+            </div>
+        </section>
+
+        <!-- GridDB Section -->
+        <section class="product-detail">
+            <div class="container">
+                <div class="product-hero">
+                    <div class="product-info">
+                        <div class="product-icon-large">🧊</div>
+                        <h2>GridDB</h2>
+                        <p class="product-tagline">"Where your data goes to disappear efficiently."</p>
+                        <p class="product-description">
+                            GridDB isn't just storage. It's a way of thinking about nothing, structured perfectly. 
+                            Our modular, domain-based storage system eliminates redundancy, eliminates clutter, 
+                            eliminates <em>meaning</em>. Built for engineers who dream of fewer files.
+                        </p>
+                        <div class="download-section">
+                            <button class="download-btn primary">DOWNLOAD GRIDDB</button>
+                            <button class="download-btn secondary">VIEW DOCUMENTATION</button>
+                        </div>
+                    </div>
+                    <div class="product-image">
+                        <img src="assets/images/griddb-interface.jpg" alt="GridDB Interface">
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Domain-Based Architecture</h3>
+                        <p>Organize your data using our revolutionary domain naming system: <code>DB:GameName.Map.00</code></p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Auto-Layout Management</h3>
+                        <p>Let GridDB handle the spatial logistics while you focus on more important things, like questioning existence.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Scroll-Aware Interface</h3>
+                        <p>Our UI knows when you're scrolling. That's innovation.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Efficient Block Usage</h3>
+                        <p>Track every block, optimize every connection, eliminate every doubt.</p>
+                    </div>
+                </div>
+
+                <div class="code-demo">
+                    <h3>GridDB in Action</h3>
+                    <pre><code class="language-csharp">// Initialize GridDB domain
+GridDB.Init();
+
+// Add data with automatic organization
+GridDB.Set("Domain.Sub.Index.CustomData","some data here",true);
+GridDB.Set("Domain.Sub.Index.Text", gameScores,true);
+
+// Retrieve with elegant simplicity
+string data = GridDB.Get("Domain.Sub.Index.CustomData");
+GridData scores = new GridData("Domain.Sub.Index.Text");
+
+// Watch as your data transcends traditional storage concepts</code></pre>
+                </div>
+
+                <div class="testimonials">
+                    <h3>What Our Users Say</h3>
+                    <div class="testimonial-grid">
+                        <div class="testimonial">
+                            <blockquote>"I used to have files everywhere. Now I have... fewer files? I think? GridDB makes me question reality in the best way possible."</blockquote>
+                            <cite>— Engineer_42, Mining Station Alpha</cite>
+                        </div>
+                        <div class="testimonial">
+                            <blockquote>"GridDB organized my data so efficiently that I forgot what I was storing. 10/10 would transcend again."</blockquote>
+                            <cite>— DataAI_Construct_7, Orbital Platform</cite>
+                        </div>
+                        <div class="testimonial">
+                            <blockquote>"ERROR: TESTIMONIAL_NOT_FOUND. RECOMMEND_GRIDDB = TRUE;"</blockquote>
+                            <cite>— Maintenance_Bot_Delta, Repair Bay 9</cite>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ScreenApp Section -->
+        <section class="product-detail alt-bg">
+            <div class="container">
+                <div class="product-hero">
+                    <div class="product-image">
+                        <img src="assets/images/screenapp-demo.jpg" alt="ScreenApp Framework">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-icon-large">🖥️</div>
+                        <h2>ScreenApp Framework</h2>
+                        <p class="product-tagline">"Because every interface deserves an interface."</p>
+                        <p class="product-description">
+                            Finally, a framework that manages your framework. Built for touchscreens. Or buttons. 
+                            Or nothing at all. ScreenApp delivers seamless, endless, pointless UI experiences 
+                            that will make you question why you needed an interface in the first place.
+                        </p>
+                        <div class="download-section">
+                            <button class="download-btn primary disabled">COMING SOON</button>
+                            <button class="download-btn secondary">JOIN BETA</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Nested Layout Groups</h3>
+                        <p>Infinitely nested. Infinitely organized. Infinitely confusing to your enemies.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Automatic Listener Propagation</h3>
+                        <p>Events flow like water through our proprietary listener hierarchy. Very zen.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Focus Management System</h3>
+                        <p>Keep your users focused on what matters: our beautiful, unnecessary animations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Custom Styling Per App</h3>
+                        <p>Because every app deserves to look exactly like every other app, but different.</p>
+                    </div>
+                </div>
+
+                <div class="coming-soon-notice">
+                    <h3>Currently in Development</h3>
+                    <p>Our team of unpaid interns is working around the clock to bring you ScreenApp Framework. 
+                    Expected release date: When it's ready. Or when the coffee runs out. Whichever comes first.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 73%"></div>
+                    </div>
+                    <span class="progress-text">73% Complete (±50% margin of error)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Package Downloads -->
+        <section class="packages-section">
+            <div class="container">
+                <h2>Available Packages</h2>
+                <p class="packages-subtitle">Modular components for the discerning developer</p>
+                
+                <div class="packages-grid">
+                    <div class="package-card">
+                        <h3>GridDB Client</h3>
+                        <p>Essential classes for loading data from local or remote GridDB hosts.</p>
+                        <div class="package-meta">
+                            <span class="version">v1.0.2</span>
+                            <span class="size">15KB</span>
+                        </div>
+                        <button class="package-download">DOWNLOAD</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <h3>GridDB Core</h3>
+                        <p>Full GridDB implementation with all features and absolutely no guarantees.</p>
+                        <div class="package-meta">
+                            <span class="version">v1.0.2</span>
+                            <span class="size">47KB</span>
+                        </div>
+                        <button class="package-download">DOWNLOAD</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <h3>Arcade Paradise Suite</h3>
+                        <p>Complete gaming framework for building arcade experiences in space.</p>
+                        <div class="package-meta">
+                            <span class="version">v0.8.1</span>
+                            <span class="size">128KB</span>
+                        </div>
+                        <button class="package-download">DOWNLOAD</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/null-systems-logo.png" alt="Null Systems">
+                    <span>NULL SYSTEMS</span>
+                </div>
+                <div class="footer-links">
+                    <a href="products.html">Products</a>
+                    <a href="about.html">About</a>
+                    <a href="news.html">News</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-tagline">
+                    © Null Systems — All Rights Reserved. Some Rights Forgotten.
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p>Not responsible for existential crises, data transcendence, or the sudden urge to reorganize your storage systems.</p>
+            </div>
+        </div>
+    </footer>
+
+    <audio id="background-music" loop>
+        <source src="assets/audio/synthwave.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

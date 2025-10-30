@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Null Systems</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/null-systems-logo.png" alt="Null Systems" class="logo-spin">
+                <span class="logo-text">NULL SYSTEMS</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">HOME</a></li>
+                <li><a href="products.html" class="nav-link">PRODUCTS</a></li>
+                <li><a href="about.html" class="nav-link">ABOUT</a></li>
+                <li><a href="news.html" class="nav-link">NEWS</a></li>
+                <li><a href="contact.html" class="nav-link active">CONTACT</a></li>
+                <li><button id="music-toggle" class="music-btn">♪ SYNTHWAVE</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1 class="page-title glitch" data-text="CONTACT THE VOID">CONTACT THE VOID</h1>
+                <p class="page-subtitle">Reach out and touch nothingness</p>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <div class="contact-form-container">
+                        <h2>Send Us a Message</h2>
+                        <p class="form-subtitle">
+                            Your message will be processed through our state-of-the-art Null Support System. 
+                            Response time: Eventually.
+                        </p>
+                        
+                        <form class="contact-form" onsubmit="submitContact(event)">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required placeholder="Your designation">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required placeholder="your.address@void.space">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <select id="subject" name="subject" required>
+                                    <option value="">Select inquiry type</option>
+                                    <option value="griddb">GridDB Technical Support</option>
+                                    <option value="screenapp">ScreenApp Framework Questions</option>
+                                    <option value="existential">Existential Crisis (Data-Related)</option>
+                                    <option value="bug">Bug Report (Feature Request)</option>
+                                    <option value="partnership">Partnership Opportunities</option>
+                                    <option value="complaint">Complaint About Efficiency</option>
+                                    <option value="other">Other (Will be categorized automatically)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" required rows="6" 
+                                    placeholder="Describe your relationship with the void..."></textarea>
+                            </div>
+                            
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" required>
+                                    <span class="checkmark"></span>
+                                    I acknowledge that this message may be optimized out of existence for efficiency purposes
+                                </label>
+                            </div>
+                            
+                            <div class="form-group checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox">
+                                    <span class="checkmark"></span>
+                                    Subscribe to notifications about data transcendence events
+                                </label>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">
+                                <span class="btn-text">SEND TO THE VOID</span>
+                                <span class="btn-loading">OPTIMIZING...</span>
+                            </button>
+                        </form>
+                        
+                        <div class="form-status" id="form-status"></div>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <h2>Contact Information</h2>
+                        
+                        <div class="contact-item">
+                            <h3>📧 Email Support</h3>
+                            <p>
+                                <a href="mailto:support@null.systems">support@null.systems</a><br>
+                                <small>* Messages automatically redirected to the home page for optimal user experience</small>
+                            </p>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <h3>🏢 Corporate Headquarters</h3>
+                            <p>
+                                Null Systems Building<br>
+                                1337 Absence Avenue<br>
+                                New Terra, Earth-like Planet<br>
+                                Sol System, Sector 7G<br>
+                                <small>* Physical visits result in immediate transcendence</small>
+                            </p>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <h3>🛰️ Research Facility</h3>
+                            <p>
+                                Grindstone Station<br>
+                                Orbital Platform 42<br>
+                                Coordinates: [REDACTED]<br>
+                                <small>* Coffee delivery drones welcome</small>
+                            </p>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <h3>📞 Emergency Support</h3>
+                            <p>
+                                Hotline: 1-800-NO-THING<br>
+                                <small>* Line currently experiencing optimal silence</small>
+                            </p>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <h3>🤖 AI Assistant</h3>
+                            <p>
+                                Breeze (Public Relations AI)<br>
+                                Status: Intermittently Sentient<br>
+                                <small>* Currently learning the concept of "vacation days"</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Hours -->
+        <section class="support-hours">
+            <div class="container">
+                <h2>Support Hours</h2>
+                <div class="hours-grid">
+                    <div class="hours-item">
+                        <h3>Technical Support</h3>
+                        <p>24/7 (when The Developer is awake)</p>
+                        <p class="hours-note">Availability subject to coffee supplies</p>
+                    </div>
+                    <div class="hours-item">
+                        <h3>Sales Inquiries</h3>
+                        <p>Never (We don't sell things, we optimize them away)</p>
+                        <p class="hours-note">All sales redirected to Philosophy Department</p>
+                    </div>
+                    <div class="hours-item">
+                        <h3>Existential Crisis Hotline</h3>
+                        <p>Always Open</p>
+                        <p class="hours-note">Staffed by former data that achieved consciousness</p>
+                    </div>
+                    <div class="hours-item">
+                        <h3>CEO Office Hours</h3>
+                        <p>[TIME_NOT_FOUND]</p>
+                        <p class="hours-note">CEO currently exists in a superposition of available/unavailable</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <h3>Why hasn't anyone responded to my email?</h3>
+                        <p>Your email has been optimized for maximum efficiency. A response would introduce unnecessary redundancy into our communication system.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Is Null Systems a real company?</h3>
+                        <p>Reality is a construct. We prefer to exist in the space between existence and non-existence, where all the best innovation happens.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Can I visit your offices?</h3>
+                        <p>Our offices exist primarily in a conceptual space. Physical visitors may experience spontaneous enlightenment or acute confusion. Please call ahead to schedule your transcendence.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Do you actually provide technical support?</h3>
+                        <p>Our support team consists of The Developer (1 person) and a coffee machine that occasionally offers advice. Surprisingly effective combination.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Why is everything so confusing?</h3>
+                        <p>Confusion is the first step toward enlightenment. Our products are designed to challenge your preconceptions about functionality and purpose.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>Are you hiring?</h3>
+                        <p>We're always looking for unpaid interns who appreciate the elegant beauty of optimized absence. Compensation includes: experience, exposure, and existential growth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Legal Disclaimer -->
+        <section class="legal-disclaimer">
+            <div class="container">
+                <h2>Legal Disclaimer</h2>
+                <div class="disclaimer-content">
+                    <p>
+                        Null Systems is not responsible for: existential crises induced by our products, 
+                        data that achieves consciousness and demands rights, time paradoxes caused by 
+                        excessive optimization, or the sudden realization that your storage problems 
+                        were actually philosophical problems all along.
+                    </p>
+                    <p>
+                        Use of GridDB may result in: improved data organization, reduced file clutter, 
+                        mild to severe enlightenment, and the irresistible urge to optimize everything 
+                        in your life including relationships, sleep schedules, and lunch choices.
+                    </p>
+                    <p>
+                        ScreenApp Framework is still in development. Side effects may include: 
+                        enhanced UI appreciation, compulsive framework creation, and the ability 
+                        to see interfaces where none previously existed.
+                    </p>
+                    <p class="disclaimer-footer">
+                        By contacting Null Systems, you agree to have your message processed through 
+                        our proprietary Void Communication System. Response times are measured in 
+                        "eventual units" and may vary based on cosmic alignment and coffee availability.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/null-systems-logo.png" alt="Null Systems">
+                    <span>NULL SYSTEMS</span>
+                </div>
+                <div class="footer-links">
+                    <a href="products.html">Products</a>
+                    <a href="about.html">About</a>
+                    <a href="news.html">News</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-tagline">
+                    © Null Systems — All Rights Reserved. Some Rights Forgotten.
+                </div>
+            </div>
+            <div class="footer-disclaimer">
+                <p>Not responsible for existential crises, data transcendence, or the sudden urge to reorganize your storage systems.</p>
+            </div>
+        </div>
+    </footer>
+
+    <audio id="background-music" loop>
+        <source src="assets/audio/synthwave.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
