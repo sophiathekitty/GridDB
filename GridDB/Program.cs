@@ -22,14 +22,20 @@ namespace IngameScript
 {
     partial class Program : MyGridProgram
     {
+        //==========================
         //--------------------------
         // constructor
         //--------------------------
         public Program()
         {
+            // systems
             GridInfo.Init("GridDB",this,UpdateFrequency.Update10);
             GridBlocks.Init();
+            // grid db
             GridDB.Init();
+            GridDBServer.Init();
+            GridDBClient.Init();
+            // screens
             ProgScreen.Init();
             ScreenAppSeat.Init();
             // apps

@@ -28,8 +28,19 @@ namespace IngameScript
         //-----------------------------------------------------------------------
         public class InteractableGroup : LayoutArea, IInteractable
         {
-            List<IInteractable> interactables = new List<IInteractable>();
-            IInteractable focusedItem = null;
+            //-------------------------------------------------------------------
+            // fields
+            //-------------------------------------------------------------------
+            protected List<IInteractable> interactables = new List<IInteractable>();
+            protected IInteractable focusedItem = null;
+            protected bool HasTopEdgeInteractable = false;
+            protected bool HasBottomEdgeInteractable = false;
+            protected bool HasLeftEdgeInteractable = false;
+            protected bool HasRightEdgeInteractable = false;
+            protected virtual void OnTopEdgeInteractableFocused() { }
+            protected virtual void OnBottomEdgeInteractableFocused() { }
+            protected virtual void OnLeftEdgeInteractableFocused() { }
+            protected virtual void OnRightEdgeInteractableFocused() { }
             //-------------------------------------------------------------------
             // constructor
             //-------------------------------------------------------------------
@@ -39,8 +50,8 @@ namespace IngameScript
             //-------------------------------------------------------------------
             // IInteractable implementation
             //-------------------------------------------------------------------
-            public string Id { get; set; }                                      // unique identifier for this Interactable
-            public string Value                                                 // value associated with the focused item
+            public string Id { get; set; }                                                  // unique identifier for this Interactable
+            public string Value                                                             // value associated with the focused item
             {
                 get
                 {
@@ -53,15 +64,15 @@ namespace IngameScript
                     if (focusedItem != null) focusedItem.Value = value;
                 }
             }
-            public Vector2 Center                                               // center point of the item
+            public Vector2 Center                                                           // center point of the item
             {
                 get
                 {
                     return Position + (Size / 2);
                 }
             }
-            bool focused = false;                                               // is the item currently focused
-            public bool IsFocused                                               // is the item currently focused (setting will trigger OnFocus/OnBlur)
+            bool focused = false;                                                           // is the item currently focused
+            public bool IsFocused                                                           // is the item currently focused (setting will trigger OnFocus/OnBlur)
             {
                 get
                 {
@@ -80,29 +91,34 @@ namespace IngameScript
                     if(border != null) border.Visible = focused;
                 }
             }
-            public string KeyPrompt { get; set; } = "WASD Navigate | E Select"; // prompt to show when requesting keyboard input
-            public LayoutArea Area                                       // area the item is contained in
+            public string KeyPrompt { get; set; } = "WASD Navigation | E Select | Q Back";  // prompt to show when requesting keyboard input
+            public LayoutArea Area                                                          // area the item is contained in
             {
                 get
                 {
                     return this;
                 }
             }
-            public Action<IInteractable> OnFocus { get; set; }                  // when the item receives focus (hovered)
-            public Action<IInteractable> OnBlur { get; set; }                   // when the item loses focus (unhovered)
-            public Action<IInteractable> OnClick { get; set; }                  // when the item is clicked
-            public Action LayoutChanged { get; set; }                           // when the layout of the item changes
-            public void Click()                                                 // perform click action
+            public Action<IInteractable> OnFocus { get; set; }                              // when the item receives focus (hovered)
+            public Action<IInteractable> OnBlur { get; set; }                               // when the item loses focus (unhovered)
+            public Action<IInteractable> OnClick { get; set; }                              // when the item is clicked
+            public Action<IInteractable> OnBack { get; set; }                               // when the item requests a back action
+            public Action LayoutChanged { get; set; }                                       // when the layout of the item changes
+            public void Click()                                                             // perform click action
             {
                 if (focusedItem != null) focusedItem.Click();
                 else OnClick?.Invoke(this);
             }
-            int delayMove = 0;                                                  // delay between focus moves
-            const int MOVE_DELAY = 8;                                           // delay between focus moves
-            public virtual bool RunInput(GameInput input)                       // process input for the item
+            int delayMove = 0;                                                              // delay between focus moves
+            const int MOVE_DELAY = 8;                                                       // delay between focus moves
+            public virtual bool RunInput(GameInput input)                                   // process input for the item
             {
-                //GridInfo.Echo("InteractableGroup.RunInput: processing input for group " + Id);
                 if (focusedItem != null && focusedItem.RunInput(input)) return true; // let focused item handle input first
+                if (input.QPressed)
+                {
+                    OnBack?.Invoke(this);
+                    return true;
+                }
                 if (input.WReleased || input.SReleased || input.AReleased || input.DReleased) delayMove = 0;
                 if (input.EPressed) { Click(); return true; }   // click on E press
                 if (delayMove > 0) 
@@ -120,6 +136,10 @@ namespace IngameScript
                         focusedItem = upItem;
                         focusedItem.IsFocused = true;
                         return true;
+                    }
+                    else if(HasTopEdgeInteractable && focusedItem != null)
+                    {
+                        OnTopEdgeInteractableFocused();
                     }
                     else if(interactables.Count > 0 && focusedItem == null)
                     {
@@ -139,6 +159,10 @@ namespace IngameScript
                         focusedItem.IsFocused = true;
                         return true;
                     }
+                    else if (HasBottomEdgeInteractable && focusedItem != null)
+                    {
+                        OnBottomEdgeInteractableFocused();
+                    }
                     else if (interactables.Count > 0 && focusedItem == null)
                     {
                         focusedItem = interactables[0];
@@ -157,6 +181,10 @@ namespace IngameScript
                         focusedItem.IsFocused = true;
                         return true;
                     }
+                    else if (HasLeftEdgeInteractable && focusedItem != null)
+                    {
+                        OnLeftEdgeInteractableFocused();
+                    }
                     else if (interactables.Count > 0 && focusedItem == null)
                     {
                         focusedItem = interactables[0];
@@ -174,6 +202,10 @@ namespace IngameScript
                         focusedItem = rightItem;
                         focusedItem.IsFocused = true;
                         return true;
+                    }
+                    else if (HasRightEdgeInteractable && focusedItem != null)
+                    {
+                        OnRightEdgeInteractableFocused();
                     }
                     else if (interactables.Count > 0 && focusedItem == null)
                     {

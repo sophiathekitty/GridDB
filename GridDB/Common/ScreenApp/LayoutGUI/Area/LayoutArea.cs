@@ -98,6 +98,27 @@ namespace IngameScript
                     ApplyLayout();
                 }
             }
+            public override Vector2 ContentSize
+            {
+                get
+                {
+                    if(Item != null) return base.ContentSize;
+                    if(border != null) return border.SizeOnScreen;
+                    float minX = Position.X;
+                    float minY = Position.Y;
+                    float maxX = Position.X;
+                    float maxY = Position.X;
+                    foreach (var item in Items)
+                    {
+                        Vector2 itemCSize = item.ContentSize;
+                        if (item.Position.X < minX) minX = item.Position.X;
+                        if (item.Position.Y < minY) minY = item.Position.Y;
+                        if (item.Position.X + itemCSize.X > maxX) maxX = item.Position.X + itemCSize.X;
+                        if (item.Position.Y + itemCSize.Y > maxY) maxY = item.Position.Y + itemCSize.Y;
+                    }
+                    return new Vector2(maxX - minX, maxY - minY);
+                }
+            }
             public override Color TextColor                         // override text color to affect contained items
             {
                 get

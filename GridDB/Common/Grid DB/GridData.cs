@@ -27,6 +27,10 @@ namespace IngameScript
         //----------------------------------------------------------------------
         public class GridData
         {
+            public static char BlockSeparator = '║'; // separates blocks
+            public static char HeaderSeparator = '╣'; // separates header from data
+            public static char HeaderKVSeparator = '╬'; // separates header key-value pairs ,
+            public static char HeaderKVPairSeparator = '═'; // separates header key from value =
             //------------------------------------------------------
             // fields
             //------------------------------------------------------
@@ -56,14 +60,14 @@ namespace IngameScript
                 blocks.Clear();
                 header.Clear();
                 if (string.IsNullOrEmpty(data)) return;
-                GridInfo.Echo("Parsing GridData at " + address.domain + "." + address.sub);
-                string[] parts = data.Split(new char[] { '╣' }, StringSplitOptions.RemoveEmptyEntries);
+                //GridInfo.Echo("Parsing GridData at " + address.domain + "." + address.sub);
+                string[] parts = data.Split(new char[] { HeaderSeparator }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length == 2)
                 {
                     // parse header
-                    foreach (string h in parts[0].Split(new char[] { '╬' }, StringSplitOptions.RemoveEmptyEntries))
+                    foreach (string h in parts[0].Split(new char[] { HeaderKVSeparator }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        string[] kv = h.Split(new char[] { '═' }, 2);
+                        string[] kv = h.Split(new char[] { HeaderKVPairSeparator }, 2);
                         if (kv.Length == 2)
                         {
                             header[kv[0]] = kv[1];
@@ -74,7 +78,7 @@ namespace IngameScript
                 }
                 else data = parts[0];
                 if(headerOnly) return;
-                foreach (string b in data.Split(new char[] { '║' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string b in data.Split(new char[] { BlockSeparator }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     blocks.Add(new GridDataBlock(b));
                 }
@@ -82,7 +86,7 @@ namespace IngameScript
                 {
                     if (BlocksByName.ContainsKey(b.Name))
                     {
-                        GridInfo.Echo("Warning: Duplicate block name in GridData: " + address.domain + "." + address.sub + "." + address.index + " - " + b.Name);
+                        //GridInfo.Echo("Warning: Duplicate block name in GridData: " + address.domain + "." + address.sub + "." + address.index + " - " + b.Name);
                         header["Warning"] = "Duplicate block name: " + b.Name;
                         continue;
                     }
@@ -122,18 +126,18 @@ namespace IngameScript
                 foreach (var kv in header)
                 {
                     if (first) first = false;
-                    else sb.Append('╬');
+                    else sb.Append(HeaderKVSeparator);
                     sb.Append(kv.Key);
-                    sb.Append('═');
+                    sb.Append(HeaderKVPairSeparator);
                     sb.Append(kv.Value);
                 }
-                if (!first) sb.Append('╣');
+                if (!first) sb.Append(HeaderSeparator);
                 // blocks
                 first = true;
                 foreach (var b in blocks)
                 {
                     if (first) first = false;
-                    else sb.Append('║');
+                    else sb.Append(BlockSeparator);
                     sb.Append(b.ToString());
                 }
                 return sb.ToString();

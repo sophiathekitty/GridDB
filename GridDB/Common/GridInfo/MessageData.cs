@@ -27,6 +27,8 @@ namespace IngameScript
         //----------------------------------------------------------------------
         public class MessageData
         {
+            public static char KVPairSeparator = '╪'; // =
+            public static char DataSeparator = '╫'; // ,
             //------------------------------------------------------
             // static methods
             //------------------------------------------------------
@@ -49,6 +51,14 @@ namespace IngameScript
             // fields
             //------------------------------------------------------
             Dictionary<string, string> data = new Dictionary<string, string>();
+            public string Client // who is the client (if applicable)
+            {
+                get
+                {
+                    if (this["Client"] == null) return "";
+                    return this["Client"];
+                }
+            }
             public long Sender // who sent the message
             {
                 get

@@ -27,12 +27,16 @@ namespace IngameScript
         //----------------------------------------------------------------------
         public class GridDataBlock
         {
+            public static char HeaderSeparator = '┤'; // separates header from data
+            public static char HeaderKVSeparator = '┼'; // separates header key-value pairs
+            public static char HeaderKVPairSeparator = '─'; // separates header key from value
+            public static char ListSeparator = '┐'; // separates list items
             //------------------------------------------------------
             // fields
             //------------------------------------------------------
-            public Dictionary<string, string> header = new Dictionary<string, string>();
-            public string data = "";
-            public string Name
+            public Dictionary<string, string> header = new Dictionary<string, string>();    // header key-value pairs
+            public string data = "";                                                        // data content
+            public string Name                                                              // block name
             {
                 get
                 {
@@ -44,7 +48,7 @@ namespace IngameScript
                     header["Name"] = value;
                 }
             }
-            public string Type
+            public string Type                                                              // block type
             {
                 get
                 {
@@ -67,14 +71,14 @@ namespace IngameScript
             public GridDataBlock(string data)
             {
                 // split header and data
-                var parts = data.Split(new char[] { '┤' }, 2);
+                var parts = data.Split(new char[] { HeaderSeparator }, 2);
                 if (parts.Length == 2)
                 {
                     // parse header
-                    var header_lines = parts[0].Split(new char[] { '┼' }, StringSplitOptions.RemoveEmptyEntries);
+                    var header_lines = parts[0].Split(new char[] { HeaderKVSeparator }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var line in header_lines)
                     {
-                        var kv = line.Split(new char[] { '─' }, 2);
+                        var kv = line.Split(new char[] { HeaderKVPairSeparator }, 2);
                         if (kv.Length == 2)
                         {
                             header[kv[0]] = kv[1];
@@ -98,13 +102,13 @@ namespace IngameScript
                 bool first = true;
                 foreach (var kv in header)
                 {
-                    if (!first) sb.Append('┼');
+                    if (!first) sb.Append(HeaderKVSeparator);
                     sb.Append(kv.Key);
-                    sb.Append('─');
+                    sb.Append(HeaderKVPairSeparator);
                     sb.Append(kv.Value);
                     first = false;
                 }
-                if (sb.Length > 0) sb.Append('┤');
+                if (sb.Length > 0) sb.Append(HeaderSeparator);
                 sb.Append(data);
                 return sb.ToString();
             }

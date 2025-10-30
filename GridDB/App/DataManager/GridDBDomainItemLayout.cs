@@ -27,6 +27,10 @@ namespace IngameScript
         //-----------------------------------------------------------------------
         public class GridDBDomainItemLayout : HorizontalLayoutArea, IInteractable
         {
+            public static void Create(ScreenApp screen, Vector2 position, Vector2 size, string domain, Action<IInteractable> AddItem)
+            {
+                AddItem(new GridDBDomainItemLayout(screen, position, size, domain));
+            }
             //-------------------------------------------------------------------
             // fields
             //-------------------------------------------------------------------
@@ -107,15 +111,17 @@ namespace IngameScript
             public Action<IInteractable> OnFocus { get; set; }
             public Action<IInteractable> OnBlur { get; set; }
             public Action<IInteractable> OnClick { get; set; }
+            public Action<IInteractable> OnBack { get; set; }
             public Action LayoutChanged { get; set; }
             public Action<GridDBDomainItemLayout> OnDelete;
             public void Click()
             {
+                if(FileActions != null) return; // already open
                 FileActions = new LayoutMenu(screen, Position, new Vector2(MarginSize.X, 50));
                 FileActions.FlexibleHeight = false; FileActions.FlexibleWidth = true;
                 FileActions.AddItem(new HorizontalLayoutArea(screen, FileActions.MarginPosition, new Vector2(FileActions.MarginSize.X, 40))); // make it horizontal. will need to add menu items using DOM
                 FileActions.AddMenuItem(new Vector2(90, 30), "Cancel", "Cancel",DOM:"0");
-                FileActions.AddMenuItem(new Vector2(90, 30), "Delete", "Delete", DOM: "0");
+                FileActions.AddMenuItem(new Vector2(90, 30), "Delete", "Delete", DOM: "0",button_value:Domain);
                 FileActions.OnClick += FileActionClick;
                 textArea.AddItem(FileActions);
                 Size += new Vector2(0, FileActions.Size.Y);
@@ -138,6 +144,7 @@ namespace IngameScript
                     // delete the domain
                     GridDB.Delete(Domain);
                     OnDelete?.Invoke(this);
+                    OnClick?.Invoke(source); // pass button on up the chain
                 }
                 else if(source.Id == "Cancel")
                 {

@@ -45,8 +45,12 @@
     <Compile Include="App\WebBrowser\WebBrowser.cs" />
     <Compile Include="App\WebBrowser\WebData\WebPage.cs" />
     <Compile Include="App\WebBrowser\WebData\WebPageBlock.cs" />
+    <Compile Include="Common\Grid DB\Remote\DomainInfo.cs" />
     <Compile Include="Common\Grid DB\GridData.cs" />
     <Compile Include="Common\Grid DB\GridDataBlock.cs" />
+    <Compile Include="Common\Grid DB\Remote\GridDBClient.cs" />
+    <Compile Include="Common\Grid DB\Remote\GridDBHostInfo.cs" />
+    <Compile Include="Common\Grid DB\Remote\GridDBServer.cs" />
     <Compile Include="Common\GridInfo\MessageData.cs" />
     <Compile Include="Common\ScreenApp\GameInput.cs" />
     <Compile Include="Common\Grid DB\GridDB.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\InteractableGroup.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\LayoutButton.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\LayoutMenu.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\Interactables\LayoutVerticalScrollArea.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\LayoutItem.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\LayoutStyle.cs" />
     <Compile Include="Common\ScreenApp\ScreenApp.cs" />

@@ -35,6 +35,7 @@ namespace IngameScript
             Action<IInteractable> OnFocus { get; set; } // when the item receives focus (hovered)
             Action<IInteractable> OnBlur { get; set; }  // when the item loses focus (unhovered)
             Action<IInteractable> OnClick { get; set; } // when the item is clicked
+            Action<IInteractable> OnBack { get; set; }  // when the item requests a back action
             Action LayoutChanged { get; set; }          // when the layout of the item changes
             void Click();                               // perform click action
             bool RunInput(GameInput input);             // process input for the item

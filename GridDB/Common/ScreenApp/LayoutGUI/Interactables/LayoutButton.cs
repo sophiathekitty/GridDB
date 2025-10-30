@@ -55,7 +55,7 @@ namespace IngameScript
                 label = new TextSprite(position, size, button_text);
                 AddItem(label, true, false);
             }
-            public string Text                                      // get or set button text
+            public string Text      // get or set button text
             {
                 get
                 {
@@ -66,7 +66,7 @@ namespace IngameScript
                     label.Text = value;
                 }
             }
-            public float TestSize                                // get or set button text size
+            public float TestSize   // get or set button text size
             {
                 get
                 {
@@ -77,7 +77,7 @@ namespace IngameScript
                     label.RotationOrScale = value;
                 }
             }
-            public string Icon                                     // get or set button icon
+            public string Icon      // get or set button icon
             {
                 get
                 {
@@ -92,17 +92,17 @@ namespace IngameScript
             //-------------------------------------------------------------------
             // IInteractable implementation
             //-------------------------------------------------------------------
-            public string Id { get; set; }                              // unique identifier for the item
-            public string Value { get; set; }                           // value associated with the item
-            public Vector2 Center                                       // center point of the item
+            public string Id { get; set; }                      // unique identifier for the item
+            public string Value { get; set; }                   // value associated with the item
+            public Vector2 Center                               // center point of the item
             {
                 get
                 {
                     return Position + (Size / 2);
                 }
             }
-            bool focused = false;                                       // is the item currently focused
-            public bool IsFocused                                       // is the item currently focused
+            bool focused = false;                               // is the item currently focused
+            public bool IsFocused                               // is the item currently focused
             {
                 get
                 {
@@ -128,19 +128,20 @@ namespace IngameScript
                     }
                 }
             }
-            public string KeyPrompt { get; set; }                       // prompt to show when requesting keyboard input
-            LayoutArea IInteractable.Area                               // the area the item is contained in
+            public string KeyPrompt { get; set; }               // prompt to show when requesting keyboard input
+            LayoutArea IInteractable.Area                       // the area the item is contained in
             {
                 get
                 {
                     return this;
                 }
             }
-            public Action<IInteractable> OnFocus { get; set; }   // when the item receives focus (hovered)
-            public Action<IInteractable> OnBlur { get; set; }    // when the item loses focus (unhovered)
-            public Action<IInteractable> OnClick { get; set; }   // when the item is clicked
-            public Action LayoutChanged { get; set; }            // when the layout of the item changes
-            public void Click()                                         // perform click action
+            public Action<IInteractable> OnFocus { get; set; }  // when the item receives focus (hovered)
+            public Action<IInteractable> OnBlur { get; set; }   // when the item loses focus (unhovered)
+            public Action<IInteractable> OnClick { get; set; }  // when the item is clicked
+            public Action<IInteractable> OnBack { get; set; }   // when the back action is performed on the item
+            public Action LayoutChanged { get; set; }           // when the layout of the item changes
+            public void Click()                                 // perform click action
             {
                 OnClick?.Invoke(this);
             }

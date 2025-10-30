@@ -30,11 +30,11 @@ namespace IngameScript
             //-------------------------------------------------------------------
             // fields
             //-------------------------------------------------------------------
-            //TextureSprite CellBack;                                     // position and size of the cell the item can occupy...
-            //TextureSprite MarginBack;                                   // position and size of the cell with margin applied...
-            public ScreenSprite Item;                                   // the actual item to display
-            Vector2 position = new Vector2(0, 0);                       // relative to screen
-            Vector2 size = new Vector2(1, 1);                           // overall size of the item including margin and padding
+            //TextureSprite CellBack;                                   // position and size of the cell the item can occupy...
+            //TextureSprite MarginBack;                                 // position and size of the cell with margin applied...
+            public ScreenSprite Item;                                // the actual item to display
+            Vector2 position = Vector2.Zero;                            // relative to screen
+            Vector2 size = Vector2.One;                                 // overall size of the item including margin and padding
             public virtual Vector2 Position                             // relative to screen
             {
                 get
@@ -73,6 +73,14 @@ namespace IngameScript
                     //if (MarginBack != null) MarginBack.Size = MarginSize;
                 }
             }
+            public virtual Vector2 ContentSize                          // size available for the item inside any padding (not implemented)
+            {
+                get
+                {
+                    if(Item == null) return Size;
+                    return Item.SizeOnScreen + new Vector2(Margin.Right, Margin.Bottom);
+                }
+            }
             public Vector2 MarginSize                                   // size available for the item inside the margin
             {
                 get
@@ -80,9 +88,11 @@ namespace IngameScript
                     return Size - new Vector2(Margin.Right, Margin.Bottom);
                 }
             }
-            public Rectangle Margin = new Rectangle(5,5,5,5);        // space between item border and other items
+            public Rectangle Margin = new Rectangle(5,5,5,5);           // space between item border and other items
             public bool FlexibleWidth = true;                           // can the item expand in width
             public bool FlexibleHeight = false;                         //  can the item expand in height
+            public bool UseContentHeight = false;                       // use the content height of the item (if supported)
+            public bool UseContentWidth = false;                        // use the content width of the item (if supported)
             Vector2 minSize = new Vector2(16, 16);                      // minimum size of the item
             public float MinWidth                                       // minimum width of the item
             {

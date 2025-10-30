@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
+using System.Web;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
@@ -202,6 +203,25 @@ namespace IngameScript
                 }
                 return GridDBAddress.GetAddressString(domain, Database[domain].Keys.First(), 0, true);
 
+            }
+            //-------------------------------------------------------
+            // GetDomainAddresses - all addresses for a domain
+            //-------------------------------------------------------
+            public static List<string> GetDomainAddresses(string domain)
+            {
+                List<string> addresses = new List<string>();
+                if (!Database.ContainsKey(domain)) return addresses;
+                foreach (string sub in Database[domain].Keys)
+                {
+                    for (int i = 0; i < Database[domain][sub].Count; i++)
+                    {
+                        string addr = GridDBAddress.GetAddressString(domain, sub, i, true);
+                        if(Get(addr) != "") addresses.Add(addr);
+                        addr = GridDBAddress.GetAddressString(domain, sub, i, false);
+                        if (Get(addr) != "") addresses.Add(addr);
+                    }
+                }
+                return addresses;
             }
             // return the Database keys so it can be iterated
             public static List<string> GetDomains()

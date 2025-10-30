@@ -51,6 +51,8 @@ namespace IngameScript
             LayoutArea filler;
             IInteractable selectedItem;
             Action<string> updateInfo;
+            GridDBClient dBClient = null;
+            string focusedMenuId = "";
             //----------------------------------------------------------------------
             // constructor
             //----------------------------------------------------------------------
@@ -77,7 +79,7 @@ namespace IngameScript
                 contentArea.AddContent("Filler", filler);
                 contentArea.AddContent("InfoArea", infoArea);
                 contentArea.ApplyLayout();
-                //contentArea.AddToScreen(this);
+                dBClient = new GridDBClient("DatManCli");
             }
             //----------------------------------------------------------------------
             // main update loop
@@ -154,21 +156,25 @@ namespace IngameScript
                     selectedItem.IsFocused = true;
                     domainList.OnClick += MenuItemClicked;
                     domainList.LayoutChanged += () => { contentArea.ApplyLayout(); };
+                    domainList.OnBack += OnBack;
+                    focusedMenuId = "LocalMenu";
                 }
                 else if (item.Id == "remote")
                 {
                     // uh... load remove data?
                 }
-                else if (item.Id == "back")
-                {
-                    DomainListLayout layoutMenu = contentArea["LocalMenu"] as DomainListLayout;
-                    layoutMenu.OnClick -= MenuItemClicked;
-                    contentArea.RemoveContent("LocalMenu");
-                    contentArea.AddContent("Filler", filler, "SideMenu");
-                    contentArea.ApplyLayout();
-                    selectedItem = contentArea["SideMenu"] as LayoutMenu;
-                    selectedItem.IsFocused = true;
-                }
+            }
+            void OnBack(IInteractable source)
+            {
+                // go back to main menu
+                IInteractable layoutMenu = contentArea[focusedMenuId] as IInteractable;
+                layoutMenu.OnClick -= MenuItemClicked;
+                contentArea.RemoveContent(focusedMenuId);
+                contentArea.AddContent("Filler", filler, "SideMenu");
+                contentArea.ApplyLayout();
+                selectedItem = contentArea["SideMenu"] as LayoutMenu;
+                selectedItem.IsFocused = true;
+                focusedMenuId = "";
             }
         }
         //----------------------------------------------------------------------
