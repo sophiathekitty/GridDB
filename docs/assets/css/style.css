@@ -816,6 +816,27 @@ cite {
   align-items: start;
 }
 
+.history-image {
+  width: 100%;
+}
+
+.history-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 2px solid var(--primary-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.history-image caption {
+  display: block;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
 .history-intro {
   font-size: 1.3rem;
   color: var(--primary-cyan);

@@ -43,11 +43,12 @@
                     <div class="product-info">
                         <div class="product-icon-large">🧊</div>
                         <h2>GridDB</h2>
-                        <p class="product-tagline">"Where your data goes to disappear efficiently."</p>
+                        <p class="product-tagline">"TextPanel storage that transcends traditional data limits."</p>
                         <p class="product-description">
-                            GridDB isn't just storage. It's a way of thinking about nothing, structured perfectly. 
-                            Our modular, domain-based storage system eliminates redundancy, eliminates clutter, 
-                            eliminates <em>meaning</em>. Built for engineers who dream of fewer files.
+                            GridDB transforms humble TextPanels into a sophisticated address-based database system. 
+                            Using both CustomData and PublicText fields, GridDB creates structured storage that 
+                            scales across subgrids while maintaining elegant simplicity. Built for engineers who 
+                            need <em>real</em> data persistence in Space Engineers.
                         </p>
                         <div class="download-section">
                             <button class="download-btn primary">DOWNLOAD GRIDDB</button>
@@ -61,20 +62,20 @@
 
                 <div class="feature-grid">
                     <div class="feature-card">
-                        <h3>Domain-Based Architecture</h3>
-                        <p>Organize your data using our revolutionary domain naming system: <code>DB:GameName.Map.00</code></p>
+                        <h3>TextPanel-Based Storage</h3>
+                        <p>Utilizes both CustomData and PublicText fields of TextPanels for dual-channel data storage with named block addressing.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Auto-Layout Management</h3>
-                        <p>Let GridDB handle the spatial logistics while you focus on more important things, like questioning existence.</p>
+                        <h3>Address-Based Access</h3>
+                        <p>Access data using structured addresses: <code>DB:Domain.Sub.Index.CustomData</code> for precise data location and retrieval.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Scroll-Aware Interface</h3>
-                        <p>Our UI knows when you're scrolling. That's innovation.</p>
+                        <h3>Subgrid Architecture</h3>
+                        <p>Deploy as a dedicated storage subgrid with rotor-mounted TextPanel arrays for scalable database expansion.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Efficient Block Usage</h3>
-                        <p>Track every block, optimize every connection, eliminate every doubt.</p>
+                        <h3>Remote Access via IGC</h3>
+                        <p>GridDBServer enables cross-grid communication for distributed data access using Inter-Grid Communication.</p>
                     </div>
                 </div>
 
@@ -98,15 +99,15 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
                     <h3>What Our Users Say</h3>
                     <div class="testimonial-grid">
                         <div class="testimonial">
-                            <blockquote>"I used to have files everywhere. Now I have... fewer files? I think? GridDB makes me question reality in the best way possible."</blockquote>
+                            <blockquote>"Finally, persistent data storage that survives ship crashes! My sprite sheets are safely stored in TextPanels across multiple subgrids."</blockquote>
                             <cite>— Engineer_42, Mining Station Alpha</cite>
                         </div>
                         <div class="testimonial">
-                            <blockquote>"GridDB organized my data so efficiently that I forgot what I was storing. 10/10 would transcend again."</blockquote>
+                            <blockquote>"The address system makes perfect sense. GameName.Sprites.00.CustomData gets me exactly what I need, every time."</blockquote>
                             <cite>— DataAI_Construct_7, Orbital Platform</cite>
                         </div>
                         <div class="testimonial">
-                            <blockquote>"ERROR: TESTIMONIAL_NOT_FOUND. RECOMMEND_GRIDDB = TRUE;"</blockquote>
+                            <blockquote>"GridDBServer + IGC = game changer. I can now share databases across my entire base network seamlessly."</blockquote>
                             <cite>— Maintenance_Bot_Delta, Repair Bay 9</cite>
                         </div>
                     </div>
@@ -143,8 +144,8 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
                         <p>Infinitely nested. Infinitely organized. Infinitely confusing to your enemies.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Automatic Listener Propagation</h3>
-                        <p>Events flow like water through our proprietary listener hierarchy. Very zen.</p>
+                        <h3>Modular App Architecture</h3>
+                        <p>Build custom applications using nested layout groups with automatic event propagation and focus handling.</p>
                     </div>
                     <div class="feature-card">
                         <h3>Focus Management System</h3>
@@ -157,9 +158,9 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
                 </div>
 
                 <div class="coming-soon-notice">
-                    <h3>Currently in Development</h3>
-                    <p>Our team of unpaid interns is working around the clock to bring you ScreenApp Framework. 
-                    Expected release date: When it's ready. Or when the coffee runs out. Whichever comes first.</p>
+                    <h3>Available with GridDB Script</h3>
+                    <p>ScreenApp Framework ships integrated with the complete GridDB script, providing the DataManager 
+                    interface out of the box. Additional framework features for custom app development coming soon.</p>
                     <div class="progress-bar">
                         <div class="progress-fill" style="width: 73%"></div>
                     </div>
@@ -176,34 +177,56 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
                 
                 <div class="packages-grid">
                     <div class="package-card">
-                        <h3>GridDB Client</h3>
-                        <p>Essential classes for loading data from local or remote GridDB hosts.</p>
+                        <h3>GridDB Core Classes</h3>
+                        <p>Essential classes: GridDB, GridDBAddress, GridData, and GridDataBlock for local data access and storage.</p>
                         <div class="package-meta">
                             <span class="version">v1.0.2</span>
-                            <span class="size">15KB</span>
+                            <span class="size">12KB</span>
                         </div>
                         <button class="package-download">DOWNLOAD</button>
                     </div>
                     
                     <div class="package-card">
-                        <h3>GridDB Core</h3>
-                        <p>Full GridDB implementation with all features and absolutely no guarantees.</p>
+                        <h3>GridDB Client Package</h3>
+                        <p>Includes GridDBClient script and required classes for accessing remote GridDB hosts via IGC messaging.</p>
                         <div class="package-meta">
                             <span class="version">v1.0.2</span>
-                            <span class="size">47KB</span>
+                            <span class="size">18KB</span>
                         </div>
                         <button class="package-download">DOWNLOAD</button>
                     </div>
                     
                     <div class="package-card">
-                        <h3>Arcade Paradise Suite</h3>
-                        <p>Complete gaming framework for building arcade experiences in space.</p>
+                        <h3>GridDB Complete Script</h3>
+                        <p>Full in-game script with ScreenApp DataManager UI and GridDBServer for complete database management.</p>
                         <div class="package-meta">
-                            <span class="version">v0.8.1</span>
-                            <span class="size">128KB</span>
+                            <span class="version">v1.0.2</span>
+                            <span class="size">45KB</span>
                         </div>
                         <button class="package-download">DOWNLOAD</button>
                     </div>
+                    
+                    <div class="package-card">
+                        <h3>GridDB Storage Blueprint</h3>
+                        <p>Ready-to-deploy subgrid blueprint: rotor with small head containing expandable TextPanel storage array.</p>
+                        <div class="package-meta">
+                            <span class="version">v1.0</span>
+                            <span class="size">Blueprint</span>
+                        </div>
+                        <button class="package-download">DOWNLOAD</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <h3>Storage Expansion Pack</h3>
+                        <p>Additional TextPanel blueprints for extending existing GridDB storage capacity as your data grows.</p>
+                        <div class="package-meta">
+                            <span class="version">v1.0</span>
+                            <span class="size">Blueprint</span>
+                        </div>
+                        <button class="package-download">DOWNLOAD</button>
+                    </div>
+                    
+                    
                 </div>
             </div>
         </section>
@@ -234,7 +257,7 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
 
     <audio id="background-music" loop>
         <source src="assets/audio/synthwave.mp3" type="audio/mpeg">
-    </audio>
+    </audio><!-- 80's synthwave by lofidreams https://pixabay.com/music/synthwave-80x27s-synthwave-400850/ -->
 
     <script src="assets/js/main.js"></script>
 </body>
