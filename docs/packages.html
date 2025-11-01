@@ -198,15 +198,81 @@
                 </ol>
             </div>
 
+            <div class="instructions">
+                <h3>Usage Example</h3>
+                <p>Here's how to integrate these packages in your Space Engineers script:</p>
+                <div class="code-container">
+                    <pre><code class="language-csharp">namespace IngameScript
+{
+    partial class Program : MyGridProgram
+    {
+        public Program()
+        {
+            // Initialize GridInfo framework with program name and update frequency
+            GridInfo.Init("MyScript", this, UpdateFrequency.Update10);
+            
+            // Initialize GridDB for local storage
+            GridDB.Init();
+            
+            // Initialize GridDB client for remote access (optional)
+            GridDBClient.Init();
+            
+            // Your other initialization code here...
+        }
+        
+        public void Save()
+        {
+            // GridInfo handles all persistent storage automatically
+            Storage = GridInfo.Save();
+        }
+        
+        public void Main(string argument, UpdateType updateSource)
+        {
+            // GridInfo routes all events (IGC, commands, timers, etc.)
+            GridInfo.Main(argument, updateSource);
+        }
+        
+        // Example: Using persistent variables
+        void ExamplePersistentVars()
+        {
+            // Set and get persistent variables
+            GridInfo.SetVar("LaunchCount", GridInfo.GetVarAs<int>("LaunchCount") + 1);
+            string lastUser = GridInfo.GetVarAs<string>("LastUser", "Unknown");
+        }
+        
+        // Example: Using GridDB storage
+        void ExampleGridDBUsage()
+        {
+            // Store data in TextPanel CustomData
+            GridDB.Set("GameData.Scores.Player1.CustomData", "1000", true);
+            
+            // Retrieve data
+            string score = GridDB.Get("GameData.Scores.Player1.CustomData");
+        }
+        
+        // Example: Remote GridDB access
+        void ExampleRemoteAccess()
+        {
+            // Find and connect to GridDB hosts
+            GridDBClient.FindHosts();
+            var client = new GridDBClient("MyRemoteClient");
+            client.DataReceived += (data) => Echo($"Received: {data.Data}");
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+
             <div class="warning">
                 <div class="warning-title">⚠ IMPORTANT NOTICE</div>
                 <p>These packages are designed for use within the <strong>IngameScript namespace</strong> and <strong>partial Program class</strong>. They must be placed inside your existing Space Engineers script structure.</p>
             </div>
 
             <!-- GridDB Package -->
-            <div class="package-container">
+            <a id="griddb-package"></a>
+            <div class="package-container" id="griddb-package-container">
                 <div class="package-header">
-                    <h2 class="package-title">GridDB Core Package</h2>
+                    <h2 class="package-title" id="griddb-package-title">GridDB Core Package</h2>
                     <button class="copy-button" onclick="copyPackage('griddb-package')">
                         <span class="copy-text">COPY PACKAGE</span>
                     </button>
@@ -225,9 +291,10 @@
             </div>
 
             <!-- GridInfo Package -->
-            <div class="package-container">
+            <a id="gridinfo-package"></a>
+            <div class="package-container" id="gridinfo-package-container">
                 <div class="package-header">
-                    <h2 class="package-title">GridInfo Framework Package</h2>
+                    <h2 class="package-title" id="gridinfo-package-title">GridInfo Framework Package</h2>
                     <button class="copy-button" onclick="copyPackage('gridinfo-package')">
                         <span class="copy-text">COPY PACKAGE</span>
                     </button>
@@ -246,9 +313,10 @@
             </div>
 
             <!-- GridDBClient Package -->
-            <div class="package-container">
+            <a id="griddbclient-package"></a>
+            <div class="package-container" id="griddbclient-package-container">
                 <div class="package-header">
-                    <h2 class="package-title">GridDBClient Remote Access Package</h2>
+                    <h2 class="package-title" id="griddbclient-package-title">GridDBClient Remote Access Package</h2>
                     <button class="copy-button" onclick="copyPackage('griddbclient-package')">
                         <span class="copy-text">COPY PACKAGE</span>
                     </button>

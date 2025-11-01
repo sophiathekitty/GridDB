@@ -73,10 +73,53 @@ function initializeAnimatedCounters() {
 }
 
 function animateCounter(element) {
-    const target = parseInt(element.getAttribute('data-target'));
+    const targetText = element.getAttribute('data-target');
+    const currentText = element.textContent;
     const duration = 2000; // 2 seconds
     const startTime = performance.now();
-    const startValue = 0;
+    
+    // Parse the target value to determine type and extract number
+    let targetNumber, suffix, decimals, isSpecial, startValue;
+    
+    if (targetText === 'UNLIMITED') {
+        // Special case for UNLIMITED
+        isSpecial = true;
+        const letters = 'UNLIMITED'.split('');
+        let currentIndex = 0;
+        
+        function animateUnlimited() {
+            if (currentIndex < letters.length) {
+                element.textContent = letters.slice(0, currentIndex + 1).join('');
+                currentIndex++;
+                setTimeout(animateUnlimited, 100);
+            }
+        }
+        
+        element.textContent = '';
+        animateUnlimited();
+        console.log('📊 Counter optimized: UNLIMITED');
+        return;
+    }
+    
+    // Extract number and suffix for other formats
+    const targetMatch = targetText.match(/^(\d+(?:\.\d+)?)(.*)$/);
+    const currentMatch = currentText.match(/^(\d+(?:\.\d+)?)(.*)$/);
+    
+    if (targetMatch) {
+        targetNumber = parseFloat(targetMatch[1]);
+        suffix = targetMatch[2];
+        decimals = (targetMatch[1].includes('.')) ? targetMatch[1].split('.')[1].length : 0;
+        
+        // Determine start value - if current text has a number, use it, otherwise start from 0
+        if (currentMatch) {
+            startValue = parseFloat(currentMatch[1]);
+        } else {
+            startValue = 0;
+        }
+    } else {
+        console.error('Invalid target format:', targetText);
+        return;
+    }
     
     function updateCounter(currentTime) {
         const elapsed = currentTime - startTime;
@@ -85,20 +128,23 @@ function animateCounter(element) {
         // Add some quantum uncertainty to our numbers
         const randomFactor = Math.random() * 0.02 - 0.01; // ±1%
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        let currentValue = Math.floor(startValue + (target - startValue) * easeOutQuart);
+        let currentValue = startValue + (targetNumber - startValue) * easeOutQuart;
         
-        // Special handling for the "Bugs Found" counter (should go from 1 to 0)
-        if (element.textContent === '1' && target === 0) {
-            currentValue = Math.ceil(1 * (1 - progress));
+        // Format the number based on original format
+        let displayValue;
+        if (decimals > 0) {
+            displayValue = currentValue.toFixed(decimals);
+        } else {
+            displayValue = Math.floor(currentValue).toString();
         }
         
-        element.textContent = currentValue;
+        element.textContent = displayValue + suffix;
         
         if (progress < 1) {
             requestAnimationFrame(updateCounter);
         } else {
-            element.textContent = target;
-            console.log(`📊 Counter optimized: ${target}`);
+            element.textContent = targetText;
+            console.log(`📊 Counter optimized: ${targetText}`);
         }
     }
     

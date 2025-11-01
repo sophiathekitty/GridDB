@@ -169,6 +169,86 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
             </div>
         </section>
 
+        <!-- GridInfo Section -->
+        <section class="product-detail">
+            <div class="container">
+                <div class="product-hero">
+                    <div class="product-image">
+                        <img src="assets/images/gridinfo-demo.jpg" alt="GridInfo Framework">
+                    </div>
+                    <div class="product-content">
+                        <h2>GridInfo Framework</h2>
+                        <p class="product-subtitle">The foundation of reliable Space Engineers automation</p>
+                        <p>
+                            GridInfo provides the essential infrastructure every serious Space Engineers script needs. 
+                            Handle persistent variables, manage inter-grid communication, route IGC messages, and maintain 
+                            global system access with enterprise-grade reliability.
+                        </p>
+                        <div class="product-stats">
+                            <div class="stat">
+                                <span class="stat-number" data-target="100%">0%</span>
+                                <span class="stat-label">Data Persistence</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" data-target="UNLIMITED">0</span>
+                                <span class="stat-label">Message Routing</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" data-target="2.5x">0.0x</span>
+                                <span class="stat-label">Dev Speed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>Persistent Variables</h3>
+                        <p>Automatic Storage field management with type-safe variable persistence across script recompiles and server restarts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>IGC Message Routing</h3>
+                        <p>Register handlers for specific message types and let GridInfo route incoming IGC messages to your code automatically.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Global System Access</h3>
+                        <p>Provides static access to GridTerminalSystem, IGC, Me, and Echo from anywhere in your script architecture.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Event Management</h3>
+                        <p>Main loop handlers, command processing, script message routing, and variable change events with broadcasting support.</p>
+                    </div>
+                </div>
+
+                <div class="code-demo">
+                    <h3>GridInfo Implementation</h3>
+                    <pre><code class="language-csharp">public Program()
+{
+    // Initialize with program name and update frequency
+    GridInfo.Init("GridDB", this, UpdateFrequency.Update10);
+}
+
+public void Save()
+{
+    // Automatic persistence to Storage field
+    Storage = GridInfo.Save();
+}
+
+public void Main(string argument, UpdateType updateSource)
+{
+    // Route all events through GridInfo
+    GridInfo.Main(argument, updateSource);
+}
+
+// Use persistent variables
+GridInfo.SetVar("LaunchCount", GridInfo.GetVarAs<int>("LaunchCount") + 1);
+
+// Register message handlers
+GridInfo.AddMessageHandler("Status", HandleStatusMessage);</code></pre>
+                </div>
+            </div>
+        </section>
+
         <!-- Package Downloads -->
         <section class="packages-section">
             <div class="container">
@@ -177,23 +257,33 @@ GridData scores = new GridData("Domain.Sub.Index.Text");
                 
                 <div class="packages-grid">
                     <div class="package-card">
-                        <h3>GridDB Core Classes</h3>
-                        <p>Essential classes: GridDB, GridDBAddress, GridData, and GridDataBlock for local data access and storage.</p>
+                        <h3>GridInfo Framework</h3>
+                        <p>Essential framework providing global grid access, persistent variable storage, IGC messaging, event handling, and utility functions including game time remapping and random number generation.</p>
                         <div class="package-meta">
                             <span class="version">v1.0.2</span>
-                            <span class="size">12KB</span>
+                            <span class="size">33KB</span>
                         </div>
-                        <button class="package-download">DOWNLOAD</button>
+                        <button class="package-download" onclick="window.location.href='packages.html#gridinfo-package'">GET PACKAGE</button>
+                    </div>
+                    
+                    <div class="package-card">
+                        <h3>GridDB Core Package</h3>
+                        <p>Complete TextPanel storage system including GridDB, GridDBAddress, GridData, GridDataBlock, and GridDBServer classes for local and remote data operations.</p>
+                        <div class="package-meta">
+                            <span class="version">v1.0.2</span>
+                            <span class="size">21KB</span>
+                        </div>
+                        <button class="package-download" onclick="window.location.href='packages.html#griddb-package'">GET PACKAGE</button>
                     </div>
                     
                     <div class="package-card">
                         <h3>GridDB Client Package</h3>
-                        <p>Includes GridDBClient script and required classes for accessing remote GridDB hosts via IGC messaging.</p>
+                        <p>Remote access client for distributed GridDB systems via IGC messaging. Includes GridDBClient, GridDBHostInfo, DomainInfo, and data structures for cross-grid operations.</p>
                         <div class="package-meta">
                             <span class="version">v1.0.2</span>
-                            <span class="size">18KB</span>
+                            <span class="size">25KB</span>
                         </div>
-                        <button class="package-download">DOWNLOAD</button>
+                        <button class="package-download" onclick="window.location.href='packages.html#griddbclient-package'">GET PACKAGE</button>
                     </div>
                     
                     <div class="package-card">

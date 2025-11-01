@@ -189,7 +189,7 @@ body {
 
 .music-btn:hover {
   background: var(--primary-pink);
-  color: var(--primary-bg);
+  color: var(--primary-bg) !important;
   box-shadow: var(--glow-pink);
 }
 
