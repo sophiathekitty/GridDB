@@ -215,7 +215,7 @@ function initializeFakeLogin() {
 function createFakeLoginPrompt() {
     const loginDiv = document.createElement('div');
     loginDiv.innerHTML = `
-        <div style="
+        <div class="fake-login-prompt" style="
             position: fixed;
             top: 20px;
             right: 20px;
@@ -228,7 +228,9 @@ function createFakeLoginPrompt() {
             font-family: var(--font-primary);
             font-size: 0.9rem;
             box-shadow: var(--glow-cyan);
-            animation: fadeInOut 4s ease-in-out;
+            animation: fadeInOut 8s ease-in-out;
+            cursor: pointer;
+            transition: all 0.3s ease;
         ">
             <div style="margin-bottom: 0.5rem; color: var(--primary-cyan);">
                 🔐 SECURE LOGIN DETECTED
@@ -240,15 +242,139 @@ function createFakeLoginPrompt() {
         </div>
     `;
     
+    const promptElement = loginDiv.querySelector('.fake-login-prompt');
+    
+    // Add hover effect
+    promptElement.addEventListener('mouseenter', () => {
+        promptElement.style.transform = 'scale(1.05)';
+        promptElement.style.boxShadow = '0 0 30px var(--primary-cyan)';
+    });
+    
+    promptElement.addEventListener('mouseleave', () => {
+        promptElement.style.transform = 'scale(1)';
+        promptElement.style.boxShadow = 'var(--glow-cyan)';
+    });
+    
+    // Add click handler for special effects
+    promptElement.addEventListener('click', () => {
+        triggerSecureLoginEffects(promptElement);
+    });
+    
     document.body.appendChild(loginDiv);
     
     setTimeout(() => {
         if (loginDiv.parentNode) {
             loginDiv.parentNode.removeChild(loginDiv);
         }
-    }, 4000);
+    }, 8000); // Extended to 8 seconds for more interaction time
     
     console.log('🔐 Secure login event simulated');
+}
+
+// ========== SECURE LOGIN SPECIAL EFFECTS ==========
+let loginClickCount = 0;
+
+function triggerSecureLoginEffects(promptElement) {
+    loginClickCount++;
+    console.log(`🔐 Secure login clicked! Count: ${loginClickCount}`);
+    
+    // Immediate visual feedback
+    promptElement.style.animation = 'none';
+    promptElement.style.transform = 'scale(0.95)';
+    promptElement.style.borderColor = 'var(--primary-pink)';
+    promptElement.style.boxShadow = '0 0 20px var(--primary-pink)';
+    
+    setTimeout(() => {
+        promptElement.style.transform = 'scale(1)';
+    }, 150);
+    
+    if (loginClickCount === 1) {
+        triggerFirstLoginEffect(promptElement);
+    } else if (loginClickCount >= 2 && loginClickCount <= 4) {
+        triggerSecondLoginEffect(promptElement);
+    } else if (loginClickCount >= 5 && loginClickCount <= 8) {
+        triggerThirdLoginEffect(promptElement);
+    } else {
+        triggerUltimateLoginEffect(promptElement);
+    }
+}
+
+function triggerFirstLoginEffect(promptElement) {
+    promptElement.innerHTML = `
+        <div style="margin-bottom: 0.5rem; color: var(--primary-pink);">
+            🚨 UNAUTHORIZED ACCESS ATTEMPT
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.8rem;">
+            Security breach detected<br>
+            Initiating countermeasures...
+        </div>
+    `;
+    
+    // Create security alert particles
+    createSecurityParticles('#ff0080');
+    showTrippyMessage("SECURITY PROTOCOL ACTIVATED", '#ff0080');
+    console.log('� First login hack attempt detected!');
+}
+
+function triggerSecondLoginEffect(promptElement) {
+    const messages = [
+        { title: "⚡ SYSTEM OVERRIDE DETECTED", status: "Bypassing firewall...<br>Access level: ELEVATED" },
+        { title: "🔓 ENCRYPTION BYPASSED", status: "Quantum keys compromised<br>Status: INFILTRATING" },
+        { title: "💀 MAINFRAME BREACH", status: "Core systems exposed<br>Alert: MAXIMUM THREAT" }
+    ];
+    
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    
+    promptElement.innerHTML = `
+        <div style="margin-bottom: 0.5rem; color: var(--primary-yellow);">
+            ${msg.title}
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.8rem;">
+            ${msg.status}
+        </div>
+    `;
+    
+    createHackerMatrix();
+    showTrippyMessage("FIREWALL COMPROMISED", '#ffff00');
+    console.log('⚡ Advanced security breach in progress!');
+}
+
+function triggerThirdLoginEffect(promptElement) {
+    promptElement.innerHTML = `
+        <div style="margin-bottom: 0.5rem; color: var(--primary-cyan);">
+            🌐 ROOT ACCESS ACHIEVED
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.8rem;">
+            Welcome, Admin<br>
+            System: FULLY COMPROMISED
+        </div>
+    `;
+    
+    createRootAccessGlitch();
+    createFloatingBinaryCode();
+    showTrippyMessage("WELCOME TO THE MAINFRAME", '#00ffff');
+    console.log('🌐 Root access granted! System compromised!');
+}
+
+function triggerUltimateLoginEffect(promptElement) {
+    promptElement.innerHTML = `
+        <div style="margin-bottom: 0.5rem; color: var(--primary-green);">
+            👑 GOD MODE ACTIVATED
+        </div>
+        <div style="color: var(--text-secondary); font-size: 0.8rem;">
+            Status: REALITY ADMIN<br>
+            Permissions: UNLIMITED
+        </div>
+    `;
+    
+    // All effects at once
+    createSecurityParticles('#00ff88');
+    createHackerMatrix();
+    createRootAccessGlitch();
+    createFloatingBinaryCode();
+    createRealityGlitch();
+    showTrippyMessage("YOU ARE NOW THE SYSTEM", '#00ff88');
+    console.log('👑 ULTIMATE HACKER STATUS ACHIEVED!');
 }
 
 // ========== MATRIX RAIN BACKGROUND ==========
@@ -811,6 +937,124 @@ function showTrippyMessage(message, color) {
     setTimeout(() => {
         if (messageDiv.parentNode) messageDiv.parentNode.removeChild(messageDiv);
     }, 4000);
+}
+
+// ========== LOGIN-SPECIFIC VISUAL EFFECTS ==========
+function createSecurityParticles(color) {
+    for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.textContent = '🔐';
+        particle.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 100px;
+            font-size: 16px;
+            color: ${color};
+            pointer-events: none;
+            z-index: 1002;
+            animation: security-scatter-${i} 3s ease-out forwards;
+        `;
+        
+        // Create unique scatter animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes security-scatter-${i} {
+                0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+                100% { 
+                    transform: translate(
+                        ${(Math.random() - 0.5) * 300}px,
+                        ${(Math.random() - 0.5) * 300}px
+                    ) rotate(${Math.random() * 360}deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) particle.parentNode.removeChild(particle);
+            if (style.parentNode) style.parentNode.removeChild(style);
+        }, 3000);
+    }
+}
+
+function createHackerMatrix() {
+    for (let i = 0; i < 20; i++) {
+        const code = document.createElement('div');
+        const binaryString = Math.random().toString(2).substr(2, 8);
+        code.textContent = binaryString;
+        code.style.cssText = `
+            position: fixed;
+            top: ${Math.random() * 100}%;
+            left: ${Math.random() * 100}%;
+            font-size: 12px;
+            color: #00ff00;
+            font-family: monospace;
+            pointer-events: none;
+            z-index: 1001;
+            animation: matrix-fall 4s linear forwards;
+            opacity: 0.7;
+        `;
+        
+        document.body.appendChild(code);
+        
+        setTimeout(() => {
+            if (code.parentNode) code.parentNode.removeChild(code);
+        }, 4000);
+    }
+}
+
+function createRootAccessGlitch() {
+    const glitch = document.createElement('div');
+    glitch.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(0, 255, 255, 0.1) 25%, 
+            transparent 50%,
+            rgba(0, 255, 255, 0.1) 75%,
+            transparent 100%);
+        pointer-events: none;
+        z-index: 999;
+        animation: root-access-scan 2s ease-in-out;
+    `;
+    
+    document.body.appendChild(glitch);
+    
+    setTimeout(() => {
+        if (glitch.parentNode) glitch.parentNode.removeChild(glitch);
+    }, 2000);
+}
+
+function createFloatingBinaryCode() {
+    const codes = ['01001000', '01000001', '01000011', '01001011', '01000101', '01010010'];
+    for (let i = 0; i < codes.length; i++) {
+        const binary = document.createElement('div');
+        binary.textContent = codes[i];
+        binary.style.cssText = `
+            position: fixed;
+            top: ${20 + i * 10}%;
+            right: ${10 + Math.random() * 20}%;
+            font-size: 14px;
+            color: #00ffff;
+            font-family: monospace;
+            pointer-events: none;
+            z-index: 1001;
+            animation: float-binary 6s ease-in-out forwards;
+            text-shadow: 0 0 10px #00ffff;
+        `;
+        
+        document.body.appendChild(binary);
+        
+        setTimeout(() => {
+            if (binary.parentNode) binary.parentNode.removeChild(binary);
+        }, 6000);
+    }
 }
 
 function subscribeNewsletter(event) {

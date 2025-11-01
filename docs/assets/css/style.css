@@ -1513,3 +1513,52 @@ cite {
   background: rgba(0, 255, 136, 0.1) !important;
   box-shadow: 0 0 10px #00ff88 !important;
 }
+
+/* ========== LOGIN HACK EFFECT ANIMATIONS ========== */
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+}
+
+@keyframes root-access-scan {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes float-binary {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(15deg);
+    opacity: 0;
+  }
+}
