@@ -1406,3 +1406,110 @@ cite {
   margin-top: 1rem;
   font-style: italic;
 }
+
+/* ========== ENHANCED SPECIAL EFFECTS ANIMATIONS ========== */
+@keyframes cube-unlock {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes cosmic-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(50);
+    opacity: 0;
+  }
+}
+
+@keyframes float-symbol {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes reality-glitch {
+  0%, 100% {
+    opacity: 0;
+    transform: skewX(0deg);
+  }
+  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+    opacity: 0.3;
+    transform: skewX(2deg);
+  }
+  10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% {
+    opacity: 0.1;
+    transform: skewX(-2deg);
+  }
+}
+
+@keyframes trippy-message {
+  0% {
+    transform: translateX(-50%) scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  20% {
+    transform: translateX(-50%) scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(0.8) rotate(5deg);
+    opacity: 0;
+  }
+}
+
+/* Progress cube styling */
+.progress-cube {
+  pointer-events: none;
+}
+
+.progress-cube-1 {
+  border-color: #00ffff !important;
+  background: rgba(0, 255, 255, 0.1) !important;
+  box-shadow: 0 0 10px #00ffff !important;
+}
+
+.progress-cube-2 {
+  border-color: #ff00ff !important;
+  background: rgba(255, 0, 255, 0.1) !important;
+  box-shadow: 0 0 10px #ff00ff !important;
+}
+
+.progress-cube-3 {
+  border-color: #ffff00 !important;
+  background: rgba(255, 255, 0, 0.1) !important;
+  box-shadow: 0 0 10px #ffff00 !important;
+}
+
+.progress-cube-4 {
+  border-color: #00ff88 !important;
+  background: rgba(0, 255, 136, 0.1) !important;
+  box-shadow: 0 0 10px #00ff88 !important;
+}

@@ -448,9 +448,13 @@ function handleNewsletterSubmit(event) {
     }, 1500);
 }
 
-// ========== GENERAL INTERACTIVE ELEMENTS ==========
+// ========== ENHANCED EXPERIENCE THE FUTURE SYSTEM ==========
+let experienceCount = 0;
+let unlockedEffects = new Set();
+
 function goNowhere() {
     console.log('🚀 Initiating journey to nowhere...');
+    experienceCount++;
     
     const button = event.target;
     const originalText = button.textContent;
@@ -458,15 +462,355 @@ function goNowhere() {
     button.textContent = 'TRANSCENDING...';
     button.disabled = true;
     
-    // Fake loading animation
+    // Determine which effect to trigger based on click count
+    if (experienceCount === 1) {
+        triggerFirstTimeEffect(button, originalText);
+    } else if (experienceCount >= 3 && experienceCount <= 7 && !unlockedEffects.has('level2')) {
+        if (Math.random() < 0.4 || experienceCount >= 6) { // 40% chance, forced at 6 clicks
+            triggerSecondLevelEffect(button, originalText);
+            unlockedEffects.add('level2');
+        } else {
+            triggerNormalEffect(button, originalText);
+        }
+    } else if (experienceCount >= 8 && experienceCount <= 15 && !unlockedEffects.has('level3')) {
+        if (Math.random() < 0.3 || experienceCount >= 12) { // 30% chance, forced at 12 clicks
+            triggerThirdLevelEffect(button, originalText);
+            unlockedEffects.add('level3');
+        } else {
+            triggerRandomSpecialEffect(button, originalText);
+        }
+    } else if (experienceCount >= 16) {
+        triggerUltimateEffect(button, originalText);
+    } else {
+        triggerRandomSpecialEffect(button, originalText);
+    }
+}
+
+function triggerFirstTimeEffect(button, originalText) {
+    console.log('✨ FIRST TRANSCENDENCE DETECTED - UNLOCKING REALITY MATRIX');
+    
+    // Create the first progress cube
+    createProgressCube(1, '#00ffff');
+    
+    const messages = [
+        "REALITY MATRIX UNLOCKED",
+        "WELCOME TO THE VOID DIMENSION",
+        "YOUR CONSCIOUSNESS HAS BEEN UPGRADED"
+    ];
+    
+    showTrippyMessage(messages[Math.floor(Math.random() * messages.length)], '#00ffff');
+    
     setTimeout(() => {
-        button.textContent = 'DESTINATION REACHED';
+        button.textContent = 'REALITY ENHANCED';
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+            console.log('🌟 Welcome to enhanced reality. The cube watches over you now.');
+        }, 2000);
+    }, 3000);
+}
+
+function triggerSecondLevelEffect(button, originalText) {
+    console.log('🔥 SECOND LEVEL TRANSCENDENCE - QUANTUM EXPLOSION ACTIVATED');
+    
+    // Create explosion effect and second progress cube
+    createExplosionEffect();
+    createProgressCube(2, '#ff00ff');
+    
+    const messages = [
+        "QUANTUM BARRIERS SHATTERED",
+        "CONSCIOUSNESS OVERFLOW DETECTED",
+        "YOU HAVE ACHIEVED DIMENSIONAL PHASE-SHIFT",
+        "THE VOID RECOGNIZES YOUR DEDICATION",
+        "REALITY.EXE HAS STOPPED RESPONDING"
+    ];
+    
+    showTrippyMessage(messages[Math.floor(Math.random() * messages.length)], '#ff00ff');
+    
+    setTimeout(() => {
+        button.textContent = 'QUANTUM ACHIEVED';
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+            console.log('💥 Quantum explosion successful. Reality has been optimized.');
+        }, 2500);
+    }, 4000);
+}
+
+function triggerThirdLevelEffect(button, originalText) {
+    console.log('🌌 THIRD LEVEL TRANSCENDENCE - COSMIC ENLIGHTENMENT INITIATED');
+    
+    // Create multiple effects and third progress cube
+    createCosmicRippleEffect();
+    createProgressCube(3, '#ffff00');
+    createFloatingSymbols();
+    
+    const messages = [
+        "COSMIC ENLIGHTENMENT ACHIEVED",
+        "YOU HAVE TRANSCENDED THE NEED FOR EXISTENCE",
+        "THE UNIVERSE IS NOW YOUR SCREENSAVER",
+        "CONGRATULATIONS: YOU NO LONGER EXIST (THIS IS OPTIMAL)",
+        "VOID STATUS: MAXIMUM EFFICIENCY REACHED",
+        "THE CEO OF REALITY WANTS TO HIRE YOU"
+    ];
+    
+    showTrippyMessage(messages[Math.floor(Math.random() * messages.length)], '#ffff00');
+    
+    setTimeout(() => {
+        button.textContent = 'ENLIGHTENMENT REACHED';
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+            console.log('🌌 Cosmic enlightenment complete. You are now one with the void.');
+        }, 3000);
+    }, 5000);
+}
+
+function triggerUltimateEffect(button, originalText) {
+    console.log('🚀 ULTIMATE TRANSCENDENCE - REALITY OVERFLOW ERROR');
+    
+    // All effects at once and fourth progress cube
+    createExplosionEffect();
+    createCosmicRippleEffect();
+    createProgressCube(4, '#00ff88');
+    createFloatingSymbols();
+    createRealityGlitch();
+    
+    const messages = [
+        "ERROR: TRANSCENDENCE LIMIT EXCEEDED",
+        "REALITY HAS BEEN SUCCESSFULLY DELETED",
+        "YOU ARE NOW THE CEO OF EXISTENCE",
+        "CONGRATULATIONS: YOU HAVE WON THE UNIVERSE",
+        "SYSTEM OVERRIDE: MAXIMUM VOID ACHIEVED",
+        "THE FABRIC OF SPACE-TIME ACKNOWLEDGES YOUR SUPERIORITY"
+    ];
+    
+    showTrippyMessage(messages[Math.floor(Math.random() * messages.length)], '#00ff88');
+    
+    setTimeout(() => {
+        button.textContent = 'REALITY OVERFLOW';
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+            console.log('🌟 Ultimate transcendence achieved. Reality.dll has been corrupted successfully.');
+        }, 4000);
+    }, 6000);
+}
+
+function triggerNormalEffect(button, originalText) {
+    const destinations = [
+        "DESTINATION REACHED",
+        "NOWHERE ACHIEVED",
+        "VOID OPTIMIZED",
+        "ABSENCE CONFIRMED",
+        "NULLIFICATION COMPLETE",
+        "REALITY ADJUSTED"
+    ];
+    
+    setTimeout(() => {
+        button.textContent = destinations[Math.floor(Math.random() * destinations.length)];
         setTimeout(() => {
             button.textContent = originalText;
             button.disabled = false;
             console.log('✅ Successfully arrived at nowhere. Welcome!');
         }, 2000);
     }, 3000);
+}
+
+function triggerRandomSpecialEffect(button, originalText) {
+    const effects = [triggerNormalEffect, triggerSecondLevelEffect, triggerThirdLevelEffect];
+    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+    randomEffect(button, originalText);
+}
+
+// ========== VISUAL EFFECTS FUNCTIONS ==========
+function createProgressCube(level, color) {
+    // Check if this cube already exists
+    if (document.querySelector(`.progress-cube-${level}`)) {
+        return; // Already unlocked
+    }
+    
+    const progressCube = document.createElement('div');
+    progressCube.className = `progress-cube progress-cube-${level}`;
+    
+    // Position cubes vertically in the right margin
+    const positions = [
+        { top: '20%', right: '5%' }, // Level 1
+        { top: '35%', right: '5%' }, // Level 2  
+        { top: '50%', right: '5%' }, // Level 3
+        { top: '65%', right: '5%' }  // Level 4
+    ];
+    
+    const position = positions[level - 1];
+    
+    progressCube.style.cssText = `
+        position: fixed;
+        top: ${position.top};
+        right: ${position.right};
+        width: 20px;
+        height: 20px;
+        border: 2px solid ${color};
+        background: rgba(${hexToRgb(color)}, 0.1);
+        z-index: 1000;
+        animation: float-cube 15s ease-in-out infinite, cube-unlock 2s ease-out;
+        animation-delay: ${(level - 1) * 2}s, 0s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+        box-shadow: 0 0 10px ${color};
+    `;
+    
+    document.body.appendChild(progressCube);
+    console.log(`🔓 Progress cube ${level} unlocked with color ${color}`);
+}
+
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (result) {
+        return `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`;
+    }
+    // Fallback for 3-char hex or named colors
+    if (hex === '#00ffff') return '0, 255, 255';
+    if (hex === '#ff00ff') return '255, 0, 255';
+    if (hex === '#ffff00') return '255, 255, 0';
+    if (hex === '#00ff88') return '0, 255, 136';
+    return '0, 255, 255'; // Default cyan
+}
+
+function createExplosionEffect() {
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            background: ${i % 2 ? '#ff00ff' : '#00ffff'};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1001;
+            animation: explode-${i} 2s ease-out forwards;
+        `;
+        
+        // Create unique explosion animation for each particle
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes explode-${i} {
+                0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                100% { 
+                    transform: translate(
+                        ${(Math.random() - 0.5) * 400}px,
+                        ${(Math.random() - 0.5) * 400}px
+                    ) scale(0);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) particle.parentNode.removeChild(particle);
+            if (style.parentNode) style.parentNode.removeChild(style);
+        }, 2000);
+    }
+}
+
+function createCosmicRippleEffect() {
+    for (let i = 0; i < 5; i++) {
+        const ripple = document.createElement('div');
+        ripple.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 10px;
+            height: 10px;
+            border: 2px solid #ffff00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 999;
+            animation: cosmic-ripple ${2 + i * 0.5}s ease-out forwards;
+            animation-delay: ${i * 0.3}s;
+        `;
+        
+        document.body.appendChild(ripple);
+        
+        setTimeout(() => {
+            if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+        }, 5000);
+    }
+}
+
+function createFloatingSymbols() {
+    const symbols = ['∅', '⚡', '🧊', '∞', '◊', '△', '▽', '◈'];
+    for (let i = 0; i < 8; i++) {
+        const symbol = document.createElement('div');
+        symbol.textContent = symbols[i];
+        symbol.style.cssText = `
+            position: fixed;
+            top: ${Math.random() * 80 + 10}%;
+            left: ${Math.random() * 80 + 10}%;
+            font-size: 24px;
+            color: #00ff88;
+            pointer-events: none;
+            z-index: 1000;
+            animation: float-symbol 4s ease-in-out forwards;
+            text-shadow: 0 0 10px #00ff88;
+        `;
+        
+        document.body.appendChild(symbol);
+        
+        setTimeout(() => {
+            if (symbol.parentNode) symbol.parentNode.removeChild(symbol);
+        }, 4000);
+    }
+}
+
+function createRealityGlitch() {
+    const glitchOverlay = document.createElement('div');
+    glitchOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255,0,255,0.1), transparent);
+        pointer-events: none;
+        z-index: 1002;
+        animation: reality-glitch 3s ease-in-out;
+    `;
+    
+    document.body.appendChild(glitchOverlay);
+    
+    setTimeout(() => {
+        if (glitchOverlay.parentNode) glitchOverlay.parentNode.removeChild(glitchOverlay);
+    }, 3000);
+}
+
+function showTrippyMessage(message, color) {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px;
+        font-weight: bold;
+        color: ${color};
+        text-shadow: 0 0 20px ${color};
+        text-align: center;
+        pointer-events: none;
+        z-index: 1003;
+        animation: trippy-message 4s ease-in-out forwards;
+        font-family: var(--font-primary);
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    setTimeout(() => {
+        if (messageDiv.parentNode) messageDiv.parentNode.removeChild(messageDiv);
+    }, 4000);
 }
 
 function subscribeNewsletter(event) {
