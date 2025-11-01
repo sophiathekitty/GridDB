@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GridDB Packages - Null Systems</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        .package-container {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 20px;
+        }
+        
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--primary-color);
+        }
+        
+        .package-title {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+        
+        .copy-button {
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .copy-button:hover {
+            background: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .copy-button:active {
+            transform: translateY(0);
+        }
+        
+        .copy-button.copied {
+            background: rgba(0, 255, 0, 0.2);
+            color: #ffffff;
+        }
+        
+        .package-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+        
+        .code-container {
+            position: relative;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 4px;
+            background: #1a1a1a;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #1a1a1a;
+        }
+        
+        .code-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .code-container::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        .code-container::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        .code-container::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
+        }
+        
+        pre[class*="language-"] {
+            margin: 0;
+            padding: 20px;
+            background: transparent !important;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 0, 0.1);
+            border: 1px solid #ffff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 30px 0;
+            color: #ffff99;
+        }
+        
+        .instructions h3 {
+            color: #ffff00;
+            margin-top: 0;
+            text-shadow: 0 0 10px #ffff00;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+        
+        .warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffa500;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #ffcc99;
+        }
+        
+        .warning-title {
+            color: #ffa500;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px #ffa500;
+        }
+        
+        .dependency-note {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #ccffff;
+        }
+        
+        .dependency-title {
+            color: #00ffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="crt-overlay"></div>
+    
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">NULL SYSTEMS</span>
+                <div class="logo-subtitle">CORPORATE DIVISION</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="news.html">NEWS</a></li>
+                <li><a href="packages.html" class="active">PACKAGES</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="glitch-text" data-text="SOFTWARE PACKAGES">SOFTWARE PACKAGES</h1>
+                <p class="hero-subtitle">Ready-to-deploy script components for Space Engineers</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="instructions">
+                <h3>Installation Instructions</h3>
+                <ol>
+                    <li><strong>Create a new C# script file</strong> in your Space Engineers project or script editor</li>
+                    <li><strong>Copy the package contents</strong> using the COPY button below each package</li>
+                    <li><strong>Paste the code</strong> into your script file, replacing any existing content</li>
+                    <li><strong>Add required dependencies</strong> (see dependency notes for each package)</li>
+                    <li><strong>Compile and deploy</strong> your script as normal</li>
+                </ol>
+            </div>
+
+            <div class="warning">
+                <div class="warning-title">⚠ IMPORTANT NOTICE</div>
+                <p>These packages are designed for use within the <strong>IngameScript namespace</strong> and <strong>partial Program class</strong>. They must be placed inside your existing Space Engineers script structure.</p>
+            </div>
+
+            <!-- GridDB Package -->
+            <div class="package-container">
+                <div class="package-header">
+                    <h2 class="package-title">GridDB Core Package</h2>
+                    <button class="copy-button" onclick="copyPackage('griddb-package')">
+                        <span class="copy-text">COPY PACKAGE</span>
+                    </button>
+                </div>
+                <div class="package-description">
+                    <p>The core GridDB system for TextPanel-based data storage. Provides address-based access to structured data using the CustomData and PublicText fields of TextPanels.</p>
+                    <p><strong>Features:</strong> Data persistence, address parsing, CRUD operations, block management</p>
+                </div>
+                <div class="dependency-note">
+                    <div class="dependency-title">📦 Dependencies</div>
+                    <p>This package is <strong>self-contained</strong> and has no external dependencies.</p>
+                </div>
+                <div class="code-container">
+                    <pre><code class="language-csharp" id="griddb-package">// Loading GridDB package...</code></pre>
+                </div>
+            </div>
+
+            <!-- GridInfo Package -->
+            <div class="package-container">
+                <div class="package-header">
+                    <h2 class="package-title">GridInfo Framework Package</h2>
+                    <button class="copy-button" onclick="copyPackage('gridinfo-package')">
+                        <span class="copy-text">COPY PACKAGE</span>
+                    </button>
+                </div>
+                <div class="package-description">
+                    <p>Essential framework for Space Engineers scripts providing global access to grid systems, IGC messaging, variable storage, and block management utilities.</p>
+                    <p><strong>Features:</strong> Global system access, inter-grid communication, persistent variables, event handling, block caching</p>
+                </div>
+                <div class="dependency-note">
+                    <div class="dependency-title">📦 Dependencies</div>
+                    <p>This package is <strong>self-contained</strong> and provides base functionality for other packages.</p>
+                </div>
+                <div class="code-container">
+                    <pre><code class="language-csharp" id="gridinfo-package">// Loading GridInfo package...</code></pre>
+                </div>
+            </div>
+
+            <!-- GridDBClient Package -->
+            <div class="package-container">
+                <div class="package-header">
+                    <h2 class="package-title">GridDBClient Remote Access Package</h2>
+                    <button class="copy-button" onclick="copyPackage('griddbclient-package')">
+                        <span class="copy-text">COPY PACKAGE</span>
+                    </button>
+                </div>
+                <div class="package-description">
+                    <p>Remote access client for GridDB systems via IGC messaging. Enables cross-grid data access and distributed storage management.</p>
+                    <p><strong>Features:</strong> Host discovery, remote data access, domain browsing, asynchronous operations</p>
+                </div>
+                <div class="dependency-note">
+                    <div class="dependency-title">📦 Dependencies</div>
+                    <p><strong>Required:</strong> GridInfo Framework Package (provides GridInfo and MessageData classes)</p>
+                </div>
+                <div class="code-container">
+                    <pre><code class="language-csharp" id="griddbclient-package">// Loading GridDBClient package...</code></pre>
+                </div>
+            </div>
+
+            <div class="warning">
+                <div class="warning-title">🔧 Integration Notes</div>
+                <p><strong>Multiple Packages:</strong> When using multiple packages, combine them into a single script file. The packages are designed to work together seamlessly.</p>
+                <p><strong>Initialization:</strong> Follow the initialization comments in each package for proper setup.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Null Systems Corp</h3>
+                    <p>Pioneering the void since 2495</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Technologies</h3>
+                    <ul>
+                        <li>GridDB Storage</li>
+                        <li>Quantum Networks</li>
+                        <li>Void Computing</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Transmission Hub: Gamma-7</p>
+                    <p>Quantum Relay: NULL.VOID</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2525 Null Systems Corp. All rights reserved. | Void compliance certified.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script>
+        // Load package contents
+        async function loadPackages() {
+            try {
+                // Load GridDB package
+                const griddbResponse = await fetch('assets/packages/GridDB.cs');
+                const griddbContent = await griddbResponse.text();
+                document.getElementById('griddb-package').textContent = griddbContent;
+                
+                // Load GridInfo package
+                const gridinfoResponse = await fetch('assets/packages/GridInfo.cs');
+                const gridinfoContent = await gridinfoResponse.text();
+                document.getElementById('gridinfo-package').textContent = gridinfoContent;
+                
+                // Load GridDBClient package
+                const griddbclientResponse = await fetch('assets/packages/GridDBClient.cs');
+                const griddbclientContent = await griddbclientResponse.text();
+                document.getElementById('griddbclient-package').textContent = griddbclientContent;
+                
+                // Re-highlight syntax
+                Prism.highlightAll();
+            } catch (error) {
+                console.error('Failed to load packages:', error);
+                // Fallback for failed loads
+                document.getElementById('griddb-package').textContent = '// Failed to load GridDB package';
+                document.getElementById('gridinfo-package').textContent = '// Failed to load GridInfo package';
+                document.getElementById('griddbclient-package').textContent = '// Failed to load GridDBClient package';
+            }
+        }
+        
+        // Copy package to clipboard
+        async function copyPackage(packageId) {
+            const codeElement = document.getElementById(packageId);
+            const text = codeElement.textContent;
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                
+                // Visual feedback
+                const button = event.target.closest('.copy-button');
+                const originalText = button.querySelector('.copy-text').textContent;
+                button.classList.add('copied');
+                button.querySelector('.copy-text').textContent = 'COPIED!';
+                
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.querySelector('.copy-text').textContent = originalText;
+                }, 2000);
+                
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                // Visual feedback
+                const button = event.target.closest('.copy-button');
+                const originalText = button.querySelector('.copy-text').textContent;
+                button.classList.add('copied');
+                button.querySelector('.copy-text').textContent = 'COPIED!';
+                
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.querySelector('.copy-text').textContent = originalText;
+                }, 2000);
+            }
+        }
+        
+        // Load packages when page loads
+        document.addEventListener('DOMContentLoaded', loadPackages);
+        
+        // CRT flicker effect
+        function addCRTFlicker() {
+            const overlay = document.querySelector('.crt-overlay');
+            setInterval(() => {
+                overlay.style.opacity = Math.random() > 0.99 ? '0.1' : '0.03';
+            }, 100);
+        }
+        
+        addCRTFlicker();
+    </script>
+</body>
+</html>
