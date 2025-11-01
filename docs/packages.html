@@ -159,23 +159,24 @@
 </head>
 <body>
     <div class="crt-overlay"></div>
+    <div class="scanlines"></div>
     
-    <header>
-        <nav>
-            <div class="logo">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="assets/images/null-systems-logo.png" alt="Null Systems" class="logo-spin">
                 <span class="logo-text">NULL SYSTEMS</span>
-                <div class="logo-subtitle">CORPORATE DIVISION</div>
             </div>
-            <ul class="nav-links">
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="products.html">PRODUCTS</a></li>
-                <li><a href="about.html">ABOUT</a></li>
-                <li><a href="news.html">NEWS</a></li>
-                <li><a href="packages.html" class="active">PACKAGES</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">HOME</a></li>
+                <li><a href="products.html" class="nav-link">PRODUCTS</a></li>
+                <li><a href="about.html" class="nav-link">ABOUT</a></li>
+                <li><a href="news.html" class="nav-link">NEWS</a></li>
+                <li><a href="contact.html" class="nav-link">CONTACT</a></li>
+                <li><button id="music-toggle" class="music-btn">♪ SYNTHWAVE</button></li>
             </ul>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
     <main>
         <section class="hero">
@@ -289,6 +290,14 @@
                     </ul>
                 </div>
                 <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="packages.html" style="color: var(--primary-color);">Software Packages</a></li>
+                        <li>Documentation</li>
+                        <li>Support Portal</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
                     <h3>Contact</h3>
                     <p>Transmission Hub: Gamma-7</p>
                     <p>Quantum Relay: NULL.VOID</p>
@@ -305,31 +314,50 @@
     <script>
         // Load package contents
         async function loadPackages() {
+            // Load GridDB package
             try {
-                // Load GridDB package
                 const griddbResponse = await fetch('assets/packages/GridDB.cs');
-                const griddbContent = await griddbResponse.text();
-                document.getElementById('griddb-package').textContent = griddbContent;
-                
-                // Load GridInfo package
-                const gridinfoResponse = await fetch('assets/packages/GridInfo.cs');
-                const gridinfoContent = await gridinfoResponse.text();
-                document.getElementById('gridinfo-package').textContent = gridinfoContent;
-                
-                // Load GridDBClient package
-                const griddbclientResponse = await fetch('assets/packages/GridDBClient.cs');
-                const griddbclientContent = await griddbclientResponse.text();
-                document.getElementById('griddbclient-package').textContent = griddbclientContent;
-                
-                // Re-highlight syntax
-                Prism.highlightAll();
+                if (griddbResponse.ok) {
+                    const griddbContent = await griddbResponse.text();
+                    document.getElementById('griddb-package').textContent = griddbContent;
+                } else {
+                    document.getElementById('griddb-package').textContent = '// Failed to load GridDB package - HTTP ' + griddbResponse.status;
+                }
             } catch (error) {
-                console.error('Failed to load packages:', error);
-                // Fallback for failed loads
-                document.getElementById('griddb-package').textContent = '// Failed to load GridDB package';
-                document.getElementById('gridinfo-package').textContent = '// Failed to load GridInfo package';
-                document.getElementById('griddbclient-package').textContent = '// Failed to load GridDBClient package';
+                console.error('Failed to load GridDB package:', error);
+                document.getElementById('griddb-package').textContent = '// Failed to load GridDB package - ' + error.message;
             }
+            
+            // Load GridInfo package
+            try {
+                const gridinfoResponse = await fetch('assets/packages/GridInfo.cs');
+                if (gridinfoResponse.ok) {
+                    const gridinfoContent = await gridinfoResponse.text();
+                    document.getElementById('gridinfo-package').textContent = gridinfoContent;
+                } else {
+                    document.getElementById('gridinfo-package').textContent = '// Failed to load GridInfo package - HTTP ' + gridinfoResponse.status;
+                }
+            } catch (error) {
+                console.error('Failed to load GridInfo package:', error);
+                document.getElementById('gridinfo-package').textContent = '// Failed to load GridInfo package - ' + error.message;
+            }
+            
+            // Load GridDBClient package
+            try {
+                const griddbclientResponse = await fetch('assets/packages/GridDBClient.cs');
+                if (griddbclientResponse.ok) {
+                    const griddbclientContent = await griddbclientResponse.text();
+                    document.getElementById('griddbclient-package').textContent = griddbclientContent;
+                } else {
+                    document.getElementById('griddbclient-package').textContent = '// Failed to load GridDBClient package - HTTP ' + griddbclientResponse.status;
+                }
+            } catch (error) {
+                console.error('Failed to load GridDBClient package:', error);
+                document.getElementById('griddbclient-package').textContent = '// Failed to load GridDBClient package - ' + error.message;
+            }
+            
+            // Re-highlight syntax
+            Prism.highlightAll();
         }
         
         // Copy package to clipboard
