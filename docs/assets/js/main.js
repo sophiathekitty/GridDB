@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function initializeNullSystems() {
-    console.log('🧊 Initializing Null Systems interface...');
+    console.log('🧊 Initializing Null Systems interface... [2074.10.29.15:42]');
     console.log('📡 GridDB Framework loading...');
     console.log('✨ Redefining absence as a service...');
     
@@ -433,10 +433,11 @@ function initializeMatrixRain() {
 
 // ========== CONSOLE EASTER EGGS ==========
 function initializeConsoleMessages() {
-    // Welcome message
+    // Welcome message with futuristic timestamp
     setTimeout(() => {
-        console.log('%c🧊 GRIDDB FRAMEWORK LOADED', 'color: #00ffff; font-size: 16px; font-weight: bold;');
+        console.log('%c🧊 GRIDDB FRAMEWORK LOADED [2074.10.29]', 'color: #00ffff; font-size: 16px; font-weight: bold;');
         console.log('%cWelcome to the void. Your data is safe here (probably).', 'color: #ff00ff;');
+        console.log('%cSystem initialized: Grindstone Station, Sector 7', 'color: #888;');
         console.log('%cType "null.help()" for hidden commands', 'color: #888;');
     }, 1000);
     
