@@ -438,17 +438,17 @@ function initializeConsoleMessages() {
         console.log('%c🧊 GRIDDB FRAMEWORK LOADED [2074.10.29]', 'color: #00ffff; font-size: 16px; font-weight: bold;');
         console.log('%cWelcome to the void. Your data is safe here (probably).', 'color: #ff00ff;');
         console.log('%cSystem initialized: Grindstone Station, Sector 7', 'color: #888;');
-        console.log('%cType "null.help()" for hidden commands', 'color: #888;');
+        console.log('%cType "Null.help()" for hidden commands', 'color: #888;');
     }, 1000);
-    
-    // Make null object available globally for easter eggs
-    window.null = {
+
+    // Make Null object available globally for easter eggs
+    window.Null = {
         help: function() {
             console.log('%cNULL SYSTEMS HIDDEN COMMANDS:', 'color: #00ffff; font-weight: bold;');
-            console.log('%cnull.transcend() - Achieve data enlightenment', 'color: #ff00ff;');
-            console.log('%cnull.optimize() - Optimize current page for maximum void', 'color: #ff00ff;');
-            console.log('%cnull.status() - Check system status', 'color: #ff00ff;');
-            console.log('%cnull.coffee() - Emergency caffeine protocol', 'color: #ff00ff;');
+            console.log('%cNull.transcend() - Achieve data enlightenment', 'color: #ff00ff;');
+            console.log('%cNull.optimize() - Optimize current page for maximum void', 'color: #ff00ff;');
+            console.log('%cNull.status() - Check system status', 'color: #ff00ff;');
+            console.log('%cNull.coffee() - Emergency caffeine protocol', 'color: #ff00ff;');
         },
         transcend: function() {
             console.log('%c✨ TRANSCENDENCE INITIATED...', 'color: #ff8800; font-size: 18px;');
