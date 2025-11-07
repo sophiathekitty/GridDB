@@ -37,13 +37,14 @@ namespace IngameScript
                 {
                     if (_me == null)
                     {
+                        string hostName = "DefaultHost" + GridInfo.IGC.Me.ToString().Substring(0, 4);
+
                         if (!GridInfo.Me.CustomData.Contains("HostName"))
                         {
                             // host info not setup
-                            GridInfo.Me.CustomData = "HostName=DefaultHost\n" + GridInfo.Me.CustomData;
+                            GridInfo.Me.CustomData = $"HostName={hostName}\n" + GridInfo.Me.CustomData;
                         }
                         string[] lines = GridInfo.Me.CustomData.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                        string hostName = "DefaultHost";
                         foreach (string line in lines)
                         {
                             if (line.StartsWith("HostName="))

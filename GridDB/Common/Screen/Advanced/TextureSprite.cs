@@ -27,6 +27,7 @@ namespace IngameScript
         //----------------------------------------------------------------------
         public class TextureSprite : ScreenSprite
         {
+            public static string SQUARE_SIMPLE = "SquareSimple";
             public TextureSprite(Vector2 position, Vector2 size, string texture, Color color, float rotation = 0, TextAlignment alignment = TextAlignment.LEFT, VerticalAlignments verticalAlignment = VerticalAlignments.Top, ScreenSpriteAnchor anchor = ScreenSpriteAnchor.TopLeft, bool visible = true)
             {
                 Anchor = anchor;

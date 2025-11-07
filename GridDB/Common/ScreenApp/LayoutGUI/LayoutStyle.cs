@@ -72,6 +72,8 @@ namespace IngameScript
             public Color TextColor = DEFAULT_TEXT_COLOR;
             public Color HighlightTextColor = DEFAULT_HIGHLIGHT_TEXT_COLOR;
             public Color BorderColor = Color.Gray * 0.5f;
+            public Color HeaderColor = Color.DarkGray * 0.75f;
+            public Color FooterColor = Color.Gray * 0.75f;
             public Rectangle Padding;
             public LayoutStyle(Screen screen, int padding = 5)
             {

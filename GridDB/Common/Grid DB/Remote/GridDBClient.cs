@@ -31,6 +31,14 @@ namespace IngameScript
             //------------------------------------------------
             // static properties
             //------------------------------------------------
+            public static string GRIDDBHOST = "GridDBHost";
+            public static string DOMAINLIST = "DomainList";
+            public static string DOMAINBLOCKS = "DomainBlocks";
+            public static string GRIDDATA = "GridData";
+            public static string GETGRIDDBHOSTS = "GetGridDBHosts";
+            public static string GETDOMAINLIST = "GetDomainList";
+            public static string GETDOMAINBLOCKS = "GetDomainBlocks";
+            public static string GETGRIDDATA = "GetData";
             public static List<GridDBHostInfo> GridDBHosts = new List<GridDBHostInfo>();
             static DateTime lastHostFindTime = DateTime.MinValue;
             //------------------------------------------------
@@ -38,8 +46,9 @@ namespace IngameScript
             //------------------------------------------------
             public static void Init()
             {
-                GridInfo.AddMessageHandler("GridDBHost", GridDBHostReceived);
-                //FindHosts();
+                GridInfo.AddBroadcastListener(GRIDDBHOST);
+                GridInfo.AddMessageHandler(GRIDDBHOST, GridDBHostReceived);
+                FindHosts();
             }
             //------------------------------------------------
             // Find Hosts
@@ -47,17 +56,21 @@ namespace IngameScript
             public static void FindHosts()
             {
                 if ((DateTime.Now - lastHostFindTime).TotalMinutes < 1) return; // limit to once every minute
-                GridDBHosts.Clear();
-                GridInfo.IGC.SendBroadcastMessage("GetGridDBHosts", "");
+                GridInfo.IGC.SendBroadcastMessage(GETGRIDDBHOSTS, GETGRIDDBHOSTS);
                 lastHostFindTime = DateTime.Now;
             }
             static void GridDBHostReceived(MyIGCMessage msg) => GridDBHostReceived(MessageData.ParseMessage(msg));
             static void GridDBHostReceived(MessageData msg)
             {
                 // handle received host list
-                if (msg["Type"] != "GridDBHost") return;
                 GridDBHostInfo host = new GridDBHostInfo(msg["Host"]);
-                if(!GridDBHosts.Any(h => h.HostId==host.HostId)) GridDBHosts.Add(host);
+                if (!GridDBHosts.Any(h => h.HostId==host.HostId)) GridDBHosts.Add(host);
+                else
+                {
+                    // update existing host info
+                    GridDBHostInfo existingHost = GridDBHosts.First(h => h.HostId == host.HostId);
+                    existingHost.HostName = host.HostName;
+                } 
             }
             //------------------------------------------------
             // fields
@@ -67,15 +80,19 @@ namespace IngameScript
             public Action<List<DomainInfo>> DomainInfoReceived;
             public Action<DomainInfo, List<GridDBAddress>> DomainAddressReceived;
             public Action<GridData> DataReceived;
+            public bool Connected => Host != null;
+            public bool HasDomains => Connected && Host.Domains != null && Host.Domains.Count > 0;
+            public bool LoadingDomains => Connected && Host.Domains == null;
+            public string DownloadingAddress { get; private set; } = "";
             //------------------------------------------------
             // constructor
             //------------------------------------------------
             public GridDBClient(string clientName)
             {
                 ClientName = $"{clientName}_{DateTime.Now.Ticks}";
-                GridInfo.AddMessageHandler("DomainList", DomainListRecieved);
-                GridInfo.AddMessageHandler("DomainBlocks", DomainBlocksReceived);
-                GridInfo.AddMessageHandler("GridData", GridDataReceived);
+                GridInfo.AddMessageHandler(DOMAINLIST, DomainListRecieved);
+                GridInfo.AddMessageHandler(DOMAINBLOCKS, DomainBlocksReceived);
+                GridInfo.AddMessageHandler(GRIDDATA, GridDataReceived);
             }
             //------------------------------------------------
             // Connect to Host
@@ -85,6 +102,22 @@ namespace IngameScript
                 Host = host;
                 if (getDomainList) RequestDomainList();
             }
+            public void ConnectToHost(string hostName, bool getDomainList = true)
+            {
+                GridDBHostInfo host = GridDBHosts.FirstOrDefault(h => h.HostName == hostName);
+                if (host != null)
+                {
+                    ConnectToHost(host, getDomainList);
+                }
+            }
+            public void ConnectToHost(long hostId, bool getDomainList = true)
+            {
+                GridDBHostInfo host = GridDBHosts.FirstOrDefault(h => h.HostId == hostId);
+                if (host != null)
+                {
+                    ConnectToHost(host, getDomainList);
+                }
+            }
             //------------------------------------------------
             // Request Domain List
             //------------------------------------------------
@@ -92,7 +125,7 @@ namespace IngameScript
             { 
                 MessageData msg = new MessageData();
                 msg["Client"] = ClientName;
-                GridInfo.IGC.SendUnicastMessage(Host.HostId, "GetDomainList", msg.ToString());
+                GridInfo.IGC.SendUnicastMessage(Host.HostId, GETDOMAINLIST, msg.ToString());
             }
             void DomainListRecieved(MyIGCMessage msg) => DomainListRecieved(MessageData.ParseMessage(msg));
             void DomainListRecieved(MessageData msg)
@@ -114,7 +147,7 @@ namespace IngameScript
                 MessageData msg = new MessageData();
                 msg["Domain"] = domain;
                 msg["Client"] = ClientName;
-                GridInfo.IGC.SendUnicastMessage(Host.HostId, "GetDomainBlocks", msg.ToString());
+                GridInfo.IGC.SendUnicastMessage(Host.HostId, GETDOMAINBLOCKS, msg.ToString());
             }
             void DomainBlocksReceived(MyIGCMessage msg) => DomainBlocksReceived(MessageData.ParseMessage(msg));
             void DomainBlocksReceived(MessageData msg)
@@ -128,6 +161,8 @@ namespace IngameScript
                 {
                     domain.Blocks.Add(new GridDBAddress(addr));
                 }
+                // sort domain blocks by address block name
+                domain.Blocks.Sort((a, b) => a.ToBlockName().CompareTo(b.ToBlockName()));
                 DomainAddressReceived?.Invoke(domain, domain.Blocks);
             }
             //------------------------------------------------
@@ -135,15 +170,18 @@ namespace IngameScript
             //------------------------------------------------
             public void RequestData(GridDBAddress address)
             {
+                if(DownloadingAddress!="") return; // already downloading
+                DownloadingAddress = address.ToString();
                 MessageData msg = new MessageData();
                 msg["Address"] = address.ToString();
                 msg["Client"] = ClientName;
-                GridInfo.IGC.SendUnicastMessage(Host.HostId, "GetData", msg.ToString());
+                GridInfo.IGC.SendUnicastMessage(Host.HostId, GETGRIDDATA, msg.ToString());
             }
             void GridDataReceived(MyIGCMessage msg) => GridDataReceived(MessageData.ParseMessage(msg));
             void GridDataReceived(MessageData msg)
             {
                 if (msg["Client"] != ClientName) return;
+                DownloadingAddress = "";
                 GridData data = new GridData(msg.Address, msg.Data);
                 DataReceived?.Invoke(data);
             }

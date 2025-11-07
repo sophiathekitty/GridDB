@@ -34,9 +34,15 @@ namespace IngameScript
             const int _padding = 2;
             TextSprite titleText;
             TextSprite fileText;
+            public string FileText
+            {
+                get { return fileText.Text; }
+                set { fileText.Text = value; }
+            }
             //-------------------------------------------------------------------
             // constructor
             //-------------------------------------------------------------------
+            // screen app header
             public AppHeader(ScreenApp app, Vector2 position, float width, Color backgroundColor) : base(app, position, new Vector2(width,_height+_padding+_padding), new TextureSprite(position, new Vector2(width,_height+_padding+_padding), "SquareSimple", backgroundColor),2)
             {
                 app.AddSprite(Item);
@@ -46,6 +52,17 @@ namespace IngameScript
                 fileText = new TextSprite(MarginPosition, new Vector2(150, _height), app.fileName, Scale: 1.25f);
                 AddItem(fileText, ref app.FileNameChanged, true, true, padding);
                 FlexibleHeight = false;
+            }
+            // window header (gets name from string not app)
+            public AppHeader(ScreenApp app, Vector2 position, float width, Color backgroundColor, string title) : base(app, position, new Vector2(width, _height + _padding + _padding), new TextureSprite(position, new Vector2(width, _height + _padding + _padding), "SquareSimple", backgroundColor), 2)
+            {
+                app.AddSprite(Item);
+                Rectangle padding = new Rectangle(_padding, _padding, _padding, _padding);
+                titleText = new TextSprite(MarginPosition, new Vector2(250, _height), title, Scale: 1.35f);
+                AddItem(titleText, false, true, padding);
+                FlexibleHeight = false;
+                fileText = new TextSprite(MarginPosition, new Vector2(150, _height), "", Scale: 1.25f);
+                AddItem(fileText, ref app.FileNameChanged, true, true, padding);
             }
         }
         //-------------------------------------------------------------------

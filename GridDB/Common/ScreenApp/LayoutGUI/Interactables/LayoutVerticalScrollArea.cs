@@ -111,12 +111,13 @@ namespace IngameScript
                 interactables[lastIndex].OnClick -= OnItemClicked;
                 RemoveInteractableAt(lastIndex);
             }
-            public void RemoveInteractableListItem(IInteractable item, string data)
+            public void RemoveInteractableListItem(IInteractable item, string identifyer)
             {
                 item.OnClick -= OnItemClicked;
                 RemoveInteractable(item);
-                list.Remove((T)Convert.ChangeType(data, typeof(T)));
+                list.RemoveAll(x => GetItemIdentifyer(x) == identifyer);
             }
+            protected abstract string GetItemIdentifyer(T data);
             //-------------------------------------------------------
             // Events
             //-------------------------------------------------------

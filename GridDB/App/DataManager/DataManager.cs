@@ -48,18 +48,23 @@ namespace IngameScript
             //----------------------------------------------------------------------
             //TextSprite header;
             AppLayout contentArea;
+            DownloadWindow downloadWindow;
             LayoutArea filler;
             IInteractable selectedItem;
             Action<string> updateInfo;
             GridDBClient dBClient = null;
             string focusedMenuId = "";
+            const string mainMenuId = "SideMenu";
+            const string fillerId = "Filler";
             //----------------------------------------------------------------------
             // constructor
             //----------------------------------------------------------------------
             public DataManager(ScreenAppSeat seat) : base(seat, "Data Manager")
             {
                 // layout
-                KeyPrompt = "Q: Launcher Hub  |  Space: Change Domain  |  A: Shrink Window";
+                //KeyPrompt = "Q: Launcher Hub  |  Space: Change Domain  |  A: Shrink Window";
+                AppStyle.HeaderColor = Color.DarkSeaGreen * 0.85f;
+                AppStyle.FooterColor = Color.DarkSlateGray * 0.75f;
                 contentArea = new AppLayout(this,Vector2.Zero, Size, Color.DarkSeaGreen * 0.65f, Color.DarkSlateGray * 0.5f);
                 // quick side menu test
                 LayoutMenu sideMenu = new LayoutMenu(this, contentArea.MarginPosition, new Vector2(200, contentArea.MarginSize.Y), "GridDB", new TextureSprite(contentArea.MarginPosition, new Vector2(200, contentArea.MarginSize.Y), "SquareSimple", Color.DimGray * 0.4f), 1);
@@ -80,51 +85,14 @@ namespace IngameScript
                 contentArea.AddContent("InfoArea", infoArea);
                 contentArea.ApplyLayout();
                 dBClient = new GridDBClient("DatManCli");
+                dBClient.DomainInfoReceived += RemoteDomainListReceived;
+                dBClient.DomainAddressReceived += DomainBlocksRecieved;
             }
             //----------------------------------------------------------------------
             // main update loop
             //----------------------------------------------------------------------
             public override void Update(string argument)
             {
-                /*
-                string txt = "";
-                if (input.IsValid)
-                {
-                    if (input.SpaceReleased)
-                    {
-                        txt += " (Space Released)";
-                        //seat.CurrentApp = "WebBrowser";
-                        Domain = "Space Bar";
-                        LayoutArea localSubMenu = new LayoutArea(this, contentArea.MarginPosition, new Vector2(200, contentArea.MarginSize.Y), new TextureSprite(contentArea.MarginPosition, new Vector2(190, contentArea.MarginSize.Y), "SquareSimple", Color.DimGray * 0.4f), 1);
-                        localSubMenu.FlexibleHeight = true;
-                        localSubMenu.FlexibleWidth = false;
-                        contentArea.AddContent("LocalSubMenu", localSubMenu, "SideMenu");
-                        localSubMenu.AddItem(new TextSprite(localSubMenu.MarginPosition, new Vector2(170, 40), "Local Data", Scale: 1.115f), flexibleHeight: false);
-                        localSubMenu.AddItem(new TextSprite(localSubMenu.MarginPosition, new Vector2(170, 30), "Saves", Scale: 0.95f), flexibleHeight: false);
-                        localSubMenu.AddItem(new TextSprite(localSubMenu.MarginPosition, new Vector2(170, 30), "Games", Scale: 0.95f), flexibleHeight: false);
-                        localSubMenu.AddItem(new TextSprite(localSubMenu.MarginPosition, new Vector2(170, 30), "Delete", Scale: 0.95f), flexibleHeight: false);
-                        localSubMenu.AddItem(new TextSprite(localSubMenu.MarginPosition, new Vector2(170, 30), "Back", Scale: 0.95f), flexibleHeight: false);
-                        contentArea.ApplyLayout();
-                    }
-                    if(input.CReleased)
-                    {
-                        txt += " (C Released)";
-                        contentArea.RemoveContent("LocalSubMenu");
-                        contentArea.ApplyLayout();
-                    }
-                    if (input.AReleased)
-                    {
-                        contentArea.Size -= Vector2.One * 50;
-                        FileIndex++;
-                    }
-                    if (input.QReleased)
-                    {
-                        txt += " (Q Released)";
-                        seat.CurrentAppId = new ScreenAppId("LauncherHub","GameEditor");
-                    }
-                    input.Reset();
-                }
-                */
                 if (selectedItem != null)
                 {
                     //GridInfo.Echo("DataManager Update: selected item " + selectedItem.Id);
@@ -133,14 +101,21 @@ namespace IngameScript
                 }
                 base.Update(argument);
                 updateInfo?.Invoke(GridDB.Info);
-                Status = $"Used: {GridDB.UsedCount}/{GridDB.TotalCount} ( {GridDB.UsedPercent.ToString("0.0")}% )";
+                if(dBClient.LoadingDomains) Status = $"Connecting... {dBClient.Host.HostName}...";
+                else if(dBClient.DownloadingAddress != "") Status = $"Downloading {dBClient.DownloadingAddress}...";
+                else if(dBClient.Connected)
+                {
+                    if (dBClient.HasDomains) Status = $"{dBClient.Host.HostName} | Domains: {dBClient.Host.Domains.Count}";
+                    else Status = $"{dBClient.Host.HostName} | None";
+                }
+                else Status = $"Used: {GridDB.UsedPercent.ToString("0.0")}% | Hosts: {GridDBClient.GridDBHosts.Count}";
             }
             //----------------------------------------------------------------------
             // handle menu click events
             //----------------------------------------------------------------------
             void MenuItemClicked(IInteractable item)
             {
-                GridInfo.Echo("DataManager MenuItemClicked: " + item.Id);
+                //GridInfo.Echo("DataManager MenuItemClicked: " + item.Id);
                 if (item.Id == "close")
                 {
                     seat.CurrentAppId = new ScreenAppId("LauncherHub", "GameEditor");
@@ -148,21 +123,63 @@ namespace IngameScript
                 else if (item.Id == "local")
                 {
                     // add local menu
-                    contentArea.RemoveContent("Filler");
+                    focusedMenuId = "LocalMenu";
+                    contentArea.RemoveContent(fillerId);
                     DomainListLayout domainList = new DomainListLayout(this, contentArea.MarginPosition, new Vector2(contentArea.MarginSize.X - 220, contentArea.MarginSize.Y));
-                    contentArea.AddContent("LocalMenu", domainList, "SideMenu");
+                    contentArea.AddContent(focusedMenuId, domainList, mainMenuId);
                     contentArea.ApplyLayout();
                     selectedItem = domainList;
                     selectedItem.IsFocused = true;
-                    domainList.OnClick += MenuItemClicked;
+                    //domainList.OnClick += MenuItemClicked;
                     domainList.LayoutChanged += () => { contentArea.ApplyLayout(); };
                     domainList.OnBack += OnBack;
-                    focusedMenuId = "LocalMenu";
                 }
                 else if (item.Id == "remote")
                 {
-                    // uh... load remove data?
+                    // add host list menu... is regular menu like main side menu (no flex width)
+                    focusedMenuId = "RemoteMenu";
+                    GridDBHostList hostList = new GridDBHostList(this, contentArea.MarginPosition, new Vector2(220, contentArea.MarginSize.Y), dBClient);
+                    contentArea.AddContent(focusedMenuId, hostList, mainMenuId);
+                    contentArea.ApplyLayout();
+                    selectedItem = hostList;
+                    selectedItem.IsFocused = true;
+                    //hostList.OnClick += RemoteHostListClicked;
+                    hostList.LayoutChanged += () => { contentArea.ApplyLayout(); };
+                    hostList.OnBack += OnBack;
                 }
+                else if (item.Id == "Download")
+                {
+                    //GridInfo.Echo($"DataManager downloading domain {item.Value}...");
+                    // but need to get blocks...
+                    dBClient.RequestDomainBlocks(item.Value);
+                }
+            }
+            void RemoteDomainListReceived(List<DomainInfo> source)
+            {
+                //GridInfo.Echo("DataManager RemoteDomainListReceived: " + source.Count);
+                // remove remote host menu and add domain list menu
+                IInteractable layoutMenu = contentArea[focusedMenuId] as IInteractable;
+                //layoutMenu.OnClick -= RemoteHostListClicked;
+                contentArea.RemoveContent(focusedMenuId);
+                contentArea.RemoveContent(fillerId);
+                focusedMenuId = "RemoteDomainList";
+                RemoteDomainListLayout domainList = new RemoteDomainListLayout(this, contentArea.MarginPosition, new Vector2(contentArea.MarginSize.X - 220, contentArea.MarginSize.Y), source);
+                contentArea.AddContent(focusedMenuId, domainList, mainMenuId);
+                contentArea.ApplyLayout();
+                selectedItem = domainList;
+                selectedItem.IsFocused = true;
+                selectedItem.OnClick += MenuItemClicked;
+                selectedItem.LayoutChanged += () => { contentArea.ApplyLayout(); };
+                selectedItem.OnBack += OnBack;
+            }
+            void DomainBlocksRecieved(DomainInfo domain, List<GridDBAddress> blocks)
+            {
+                GridInfo.Echo("DataManager DomainBlocksRecieved: " + blocks.Count);
+                downloadWindow = new DownloadWindow(this, Size * 0.1f, Size * 0.8f, dBClient, domain);
+                selectedItem.IsFocused = false;
+                selectedItem = downloadWindow;
+                selectedItem.IsFocused = true;
+                downloadWindow.OnBack += CloseWindow;
             }
             void OnBack(IInteractable source)
             {
@@ -170,11 +187,23 @@ namespace IngameScript
                 IInteractable layoutMenu = contentArea[focusedMenuId] as IInteractable;
                 layoutMenu.OnClick -= MenuItemClicked;
                 contentArea.RemoveContent(focusedMenuId);
-                contentArea.AddContent("Filler", filler, "SideMenu");
+                contentArea.AddContent(fillerId, filler, mainMenuId);
                 contentArea.ApplyLayout();
-                selectedItem = contentArea["SideMenu"] as LayoutMenu;
+                selectedItem = contentArea[mainMenuId] as LayoutMenu;
                 selectedItem.IsFocused = true;
                 focusedMenuId = "";
+            }
+            void CloseWindow(IInteractable source)
+            {
+                GridInfo.Echo("DataManager CloseWindow");
+                if (selectedItem == downloadWindow)
+                {
+                    // close download window
+                    downloadWindow.RemoveFromScreen();
+                    selectedItem = contentArea[focusedMenuId] as IInteractable;
+                    selectedItem.IsFocused = true;
+                    downloadWindow = null;
+                }
             }
         }
         //----------------------------------------------------------------------

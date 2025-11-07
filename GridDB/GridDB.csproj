@@ -39,9 +39,12 @@
   <Import Project="MDK/MDK.paths.props" Condition="exists('MDK/MDK.paths.props')" />
   <ItemGroup>
     <Compile Include="App\DataManager\DataManager.cs" />
-    <Compile Include="App\DataManager\DomainListLayout.cs" />
-    <Compile Include="App\DataManager\GridDBDomainItemLayout.cs" />
-    <Compile Include="App\DataManager\GridDBInfo.cs" />
+    <Compile Include="App\DataManager\local\DomainListLayout.cs" />
+    <Compile Include="App\DataManager\local\GridDBDomainItemLayout.cs" />
+    <Compile Include="App\DataManager\Remote\DownloadWindow.cs" />
+    <Compile Include="App\DataManager\Remote\GridDBHostList.cs" />
+    <Compile Include="App\DataManager\local\GridDBInfo.cs" />
+    <Compile Include="App\DataManager\Remote\RemoteDomainListLayout.cs" />
     <Compile Include="App\WebBrowser\WebBrowser.cs" />
     <Compile Include="App\WebBrowser\WebData\WebPage.cs" />
     <Compile Include="App\WebBrowser\WebData\WebPageBlock.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\AppFooter.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\AppHeader.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\AppLayout.cs" />
+    <Compile Include="Common\ScreenApp\LayoutGUI\AppGUI\WindowLayout.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Area\HorizontalLayoutArea.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Area\LayoutArea.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\Area\LayoutBorder.cs" />

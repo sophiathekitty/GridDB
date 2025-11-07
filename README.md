@@ -15,6 +15,12 @@ The GridDB system provides distributed data storage using text panels as the sto
   - Provides statistics and metrics (used/unused blocks, show/game counts)
   - Handles automatic storage allocation and data persistence
 
+- **`GridDBAddress`** - Addressing system for locating specific data
+  - Format: "domain:sub:index" (e.g., "Movies:Main:5")
+  - Enables precise data retrieval across the database
+
+#### Data Classes
+
 - **`GridData`** - Represents a collection of data blocks within a domain
   - Parses and manages header information and data blocks
   - Provides indexed access to data by name or position
@@ -23,10 +29,6 @@ The GridDB system provides distributed data storage using text panels as the sto
 - **`GridDataBlock`** - Individual data unit within a GridData collection
   - Stores name, type, and raw data content
   - Supports various data types and content formats
-
-- **`GridDBAddress`** - Addressing system for locating specific data
-  - Format: "domain:sub:index" (e.g., "Movies:Main:5")
-  - Enables precise data retrieval across the database
 
 #### Remote/Network Components
 

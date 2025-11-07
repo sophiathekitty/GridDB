@@ -49,6 +49,10 @@ namespace IngameScript
                 }
                 base.OnItemClicked(source);
             }
+            protected override string GetItemIdentifyer(string data)
+            {
+                return data;
+            }
             //-------------------------------------------------------
             // LayoutVerticalScrollArea overrides
             //-------------------------------------------------------

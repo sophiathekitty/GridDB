@@ -252,6 +252,12 @@ namespace IngameScript
                 if (Items.Count == 0) return;
                 RemoveItem(Items[Items.Count - 1]);
             }
+            public virtual void RemoveFromScreen()
+            {
+                while (Items.Count > 0) RemoveItem(Items[0]);
+                screen.RemoveSprite(this);
+                if (border != null) screen.RemoveSprite(border);
+            }
             //---------------------------------------------------
         }
         //-----------------------------------------------------------------------

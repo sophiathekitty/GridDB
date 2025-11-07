@@ -28,6 +28,8 @@ namespace IngameScript
         //-----------------------------------------------------------------------
         public class GridDB
         {
+            public static string DB_PREFIX = "DB:";
+            public static string DB_UNUSED = "Unused";
             //-----------------------------------------------------------------------
             // fields
             //-----------------------------------------------------------------------
@@ -133,9 +135,9 @@ namespace IngameScript
             {
                 foreach (IMyTextPanel panel in GridBlocks.textPanels)
                 {
-                    if (panel.CustomName.StartsWith("DB:"))
+                    if (panel.CustomName.StartsWith(DB_PREFIX))
                     {
-                        if (panel.CustomName.Contains("Unused"))
+                        if (panel.CustomName.Contains(DB_UNUSED))
                         {
                             Unused.Add(panel);
                             continue;
@@ -178,6 +180,7 @@ namespace IngameScript
                 {
                     return GetRandom(addr.domain, addr.sub);
                 }
+                //GridInfo.Echo($"Getting GridDB {addr.domain}.{addr.sub}.{addr.index} (CustomData={addr.custom_data})");
                 return Get(addr.domain, addr.sub, addr.index, addr.custom_data);
             }
             static Random random = new Random();
@@ -202,7 +205,6 @@ namespace IngameScript
                     }
                 }
                 return GridDBAddress.GetAddressString(domain, Database[domain].Keys.First(), 0, true);
-
             }
             //-------------------------------------------------------
             // GetDomainAddresses - all addresses for a domain
@@ -238,8 +240,10 @@ namespace IngameScript
             //-----------------------------------------------------------------------
             public static void Set(string domain, string sub, int index, bool custom_data, string data, bool addifnew = false)
             {
+                //GridInfo.Echo($"Setting GridDB {domain}.{sub}.{index} (CustomData={custom_data}) {data.Length}");
                 if (Database.ContainsKey(domain) && Database[domain].ContainsKey(sub) && Database[domain][sub].Count > index)
                 {
+                    //GridInfo.Echo($"Found existing block for {domain}.{sub}.{index}, updating data. {Database[domain][sub][index]}");
                     if (custom_data) Database[domain][sub][index].CustomData = data;
                     else Database[domain][sub][index].WriteText(data);
                 }
@@ -247,7 +251,8 @@ namespace IngameScript
                 {
                     Add(domain, sub, index, data);
                 }
-                else throw new Exception("GridDB.Set: " + domain + "." + sub + "." + index + " not found");
+                else throw new Exception($"GridDB.Set: {domain}.{sub}.{index} not found");
+                //GridInfo.Echo($"Set complete for GridDB {domain}.{sub}.{index}");
             }
             public static void Set(string address, string data, bool addifnew = false)
             {
@@ -263,6 +268,7 @@ namespace IngameScript
             //-----------------------------------------------------------------------
             public static void Add(string domain, string sub, int index, string data)
             {
+                //GridInfo.Echo($"Adding GridDB {domain}.{sub}.{index}");
                 if (!Database.ContainsKey(domain)) Database[domain] = new Dictionary<string, List<IMyTextPanel>>();
                 if (!Database[domain].ContainsKey(sub)) Database[domain][sub] = new List<IMyTextPanel>();
                 IMyTextPanel panel = GetUnused();
@@ -286,7 +292,7 @@ namespace IngameScript
                 {
                     foreach (IMyTextPanel panel in Database[domain][sub])
                     {
-                        panel.CustomName = "DB: Unused";
+                        panel.CustomName = DB_PREFIX+DB_UNUSED;
                         panel.CustomData = "";
                         panel.WriteText("");
                         Unused.Add(panel);

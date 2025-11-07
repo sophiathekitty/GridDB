@@ -32,18 +32,20 @@ namespace IngameScript
             //------------------------------------------------
             public string Name;
             public string Domain;
+            public string MainAddress;
             public int BlockCount;
             public string Icon;
             public List<GridDBAddress> Blocks;
             //------------------------------------------------
             // constructor
             //------------------------------------------------
-            public DomainInfo(string name, string domain, int blockCount, string icon = "")
+            public DomainInfo(string name, string domain, int blockCount, string icon = "", string mainAddress = null)
             {
                 this.Name = name;
                 this.Domain = domain;
                 this.BlockCount = blockCount;
                 this.Icon = icon;
+                MainAddress = mainAddress;
             }
             public DomainInfo(string domain, GridData dd)
             {
@@ -51,6 +53,7 @@ namespace IngameScript
                 if (dd.header.ContainsKey("Domain")) Domain = domain;
                 BlockCount = GridDB.DomainSize(domain);
                 if (dd.header.ContainsKey("Icon")) Icon = dd.header["Icon"];
+                MainAddress = dd.address.ToString();
             }
             public DomainInfo(string data)
             {
@@ -75,6 +78,9 @@ namespace IngameScript
                             break;
                         case "Icon":
                             this.Icon = value;
+                            break;
+                        case "MainAddress":
+                            this.MainAddress = value;
                             break;
                     }
                 }
