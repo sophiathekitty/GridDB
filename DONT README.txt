@@ -9,7 +9,6 @@ A retrofuturist corporate website for the fictional Null Systems megacorp from t
 This is a static website built for GitHub Pages hosting, featuring:
 - **GridDB**: A modular, domain-based storage system for Space Engineers
 - **ScreenApp Framework**: A lightweight UI system (coming soon)
-- **Arcade Paradise Integration**: Gaming solutions for space-based entertainment
 
 ## Technology Stack
 
@@ -170,3 +169,11 @@ This project is for entertainment and educational purposes. Space Engineers asse
 *Not responsible for existential crises, data transcendence, or the sudden urge to reorganize your storage systems.*
 
 **© Null Systems — All Rights Reserved. Some Rights Forgotten.**
+
+
+
+
+
+abcdefghijklmnopqrstuvwxyz'() |
+ABCDEFGHIJKLMNOPQRSTUVWXYZ"[]/\
+0123456789_.,;:-=+*&%#@!^?~{}<>
