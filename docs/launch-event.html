@@ -169,36 +169,111 @@
         <!-- Technical Deep Dive -->
         <section class="technical-section">
             <div class="container">
-                <h2>Part 2: GridDB Script & Database Blueprints</h2>
+                <h2>Part 2: Developer's Technical Deep-Dive</h2>
                 <div class="tech-intro">
-                    <p>Following the opening keynote, our Chief Technical Architect presents the actual GridDB implementation - 
-                    the scripts, blueprints, and classes that make structured emptiness possible in your Space Engineers grids.</p>
+                    <p>"Hello. I'm the developer who had to actually build the thing The Presenter just described. So. Hi. Please send thoughts and prayers. Preferably in JSON format."</p>
+                    <p>Watch our Chief Data Architect (unpaid, unthanked, unconscious for most of development) deliver an unbroken seven-minute technical info dump about how GridDB actually works.</p>
+                </div>
+                
+                <!-- Developer Video -->
+                <div class="video-container dev-video">
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://www.youtube.com/embed/FoV2qaUJwwI" 
+                            title="GridDB v1.0 Technical Deep-Dive - Developer Presentation"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">Part 2: Technical Implementation - "How I Built The Thing"</div>
+                        <div class="video-meta">
+                            <span class="video-duration">7:42</span>
+                            <span class="video-quality">Unbroken Info Dump</span>
+                            <span class="video-views">∞ Prayers Needed</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technical Breakdown -->
+                <div class="tech-breakdown">
+                    <h3>What The Developer Actually Explained</h3>
+                    <div class="tech-timeline">
+                        <div class="tech-item">
+                            <div class="tech-marker">00:00</div>
+                            <div>
+                                <h4>The Origin Story</h4>
+                                <p>"I started experimenting with text panels as data storage... Then I made a slideshow TV script. And that is when everything began spiraling out of control."</p>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-marker">01:04</div>
+                            <div>
+                                <h4>GridDB Address System</h4>
+                                <p>"DB:ShowName.Main.00" - The addressing system that makes structured emptiness possible. Domain, Subdomain, Index.</p>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-marker">02:45</div>
+                            <div>
+                                <h4>Database Capacity</h4>
+                                <p>"About 62,465 characters per panel. The last enemy in my Dragon Warrior remake simply vanished because the text cut off."</p>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-marker">04:57</div>
+                            <div>
+                                <h4>Remote Access & IGC</h4>
+                                <p>"It's basically a remote filesystem browser. Powered by wireless anxiety."</p>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-marker">05:25</div>
+                            <div>
+                                <h4>ScreenApp Framework</h4>
+                                <p>"Text sprites, Texture sprites, Raster sprites. The vertical scroll areas are my personal favorite."</p>
+                            </div>
+                        </div>
+                        <div class="tech-item">
+                            <div class="tech-marker">06:29</div>
+                            <div>
+                                <h4>GridInfo Backbone</h4>
+                                <p>"If GridDB is the filesystem, then GridInfo is the BIOS."</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="tech-grid">
                     <div class="tech-card">
-                        <div class="tech-icon">📜</div>
-                        <h3>GridDB Core Script</h3>
-                        <p>The foundational programmable block script that powers the entire GridDB ecosystem. Handles data persistence, 
-                        grid communication, and existential optimization protocols.</p>
+                        <div class="tech-icon">💾</div>
+                        <h3>Text Panel Storage</h3>
+                        <p>"You build a small grid full of text panels that all start with 'DB.' GridDB loads the Public Text and Custom Data. You serialize. You deserialize. You pray."</p>
                         <a href="packages.html#griddb" class="tech-link">View Implementation →</a>
                     </div>
                     
                     <div class="tech-card">
-                        <div class="tech-icon">🏗️</div>
-                        <h3>Database Blueprints</h3>
-                        <p>Pre-configured grid designs optimized for GridDB deployment. Includes modular data centers, 
-                        void processing units, and consciousness synchronization arrays.</p>
-                        <a href="#" class="tech-link">Download Blueprints →</a>
+                        <div class="tech-icon">📡</div>
+                        <h3>IGC Network Client</h3>
+                        <p>"GridDB Client can request domains from a host. It's basically a remote filesystem browser. If you can't find the server, check your antenna. Or scream at the computer."</p>
+                        <a href="packages.html#griddbclient" class="tech-link">Download Client →</a>
                     </div>
                     
                     <div class="tech-card">
-                        <div class="tech-icon">🧩</div>
-                        <h3>GridInfo Framework</h3>
-                        <p>Extensible class library for integrating GridDB with your own scripts. Provides seamless 
-                        inter-grid communication and distributed consciousness management.</p>
-                        <a href="packages.html#gridinfo" class="tech-link">Explore Classes →</a>
+                        <div class="tech-icon">🖥️</div>
+                        <h3>ScreenApp Framework</h3>
+                        <p>"Input handling. Multiple apps per seat. Focus switching. And a full nested layout engine. Remember that in multiplayer only one seat is processed per tick."</p>
+                        <a href="packages.html#gridinfo" class="tech-link">Explore Framework →</a>
                     </div>
+                </div>
+                
+                <div class="dev-notes">
+                    <h3>Developer's Closing Notes</h3>
+                    <blockquote>
+                        "Thank you for surviving The Presenter. And thank you for surviving me. I'll be doing tutorials tomorrow. 
+                        Bring questions. Bring snacks. Bring moral support."
+                    </blockquote>
                 </div>
             </div>
         </section>
@@ -206,37 +281,60 @@
         <!-- Implementation Guide -->
         <section class="implementation-section">
             <div class="container">
-                <h2>Part 3: Classes & Integration</h2>
+                <h2>Part 3: Actual Implementation Details</h2>
                 <div class="implementation-content">
                     <div class="code-preview">
-                        <h3>Quick Integration Example</h3>
-                        <pre><code class="language-csharp">// Initialize GridDB connection add to Program()
-GridDB.Init();
+                        <h3>GridDB Addressing System</h3>
+                        <pre><code class="language-csharp">// Panel naming convention
+"DB:ShowName.Main.00"
+"DB:GameName.Maps.01"
+"DB:Unused"
 
-// Store data in the void
-GridDB.Set("GameName.PlayerData.0.CustomData", playerData);
+// Address structure
+Domain.Subdomain.Index
+"ShowName.Main.00.CustomData"
 
-// Retrieve from structured emptiness  
-string playerData = GridDB.Get("GameName.PlayerData.0.CustomData");
+// Get specific data
+var data = GridDB.Get("GameName.Maps.01");
 
-// Achieve transcendence
-gridDB.Transcend();</code></pre>
+// Get random from subdomain
+var randomMap = GridDB.Get("GameName.Maps");</code></pre>
                     </div>
                     
                     <div class="integration-benefits">
-                        <h3>Why Developers Choose GridDB</h3>
+                        <h3>Real Technical Specs</h3>
                         <ul>
-                            <li><strong>Zero Configuration:</strong> Works out of the void</li>
-                            <li><strong>Infinite Scalability:</strong> Grows with your existential needs</li>
-                            <li><strong>Quantum Persistence:</strong> Data exists in superposition until observed</li>
-                            <li><strong>Consciousness Integration:</strong> Telepathic API for advanced users</li>
+                            <li><strong>Panel Limit:</strong> ~62,465 characters per text panel</li>
+                            <li><strong>Default Blueprint:</strong> 48 panels total (24 per layer)</li>
+                            <li><strong>Storage Structure:</strong> Dictionary of dictionaries of lists</li>
+                            <li><strong>Network Protocol:</strong> IGC-based remote filesystem</li>
+                            <li><strong>UI Performance:</strong> One seat processed per tick</li>
+                            <li><strong>Data Format:</strong> String serialization with prayer</li>
                         </ul>
                     </div>
                 </div>
                 
+                <div class="implementation-reality">
+                    <h3>What You Actually Get</h3>
+                    <div class="reality-grid">
+                        <div class="reality-item">
+                            <h4>📜 Standalone Script</h4>
+                            <p>Available on Steam Workshop. Includes full data classes, GridDB Client, and Data Manager app with graphical interface.</p>
+                        </div>
+                        <div class="reality-item">
+                            <h4>🔧 Blueprint Version</h4>
+                            <p>"Works like a little storage USB stick for your base. A cursed USB stick. But still a USB stick."</p>
+                        </div>
+                        <div class="reality-item">
+                            <h4>📚 Tutorial Series</h4>
+                            <p>"I'll cover setting up a database, using the client server system, and how to serialize complicated data without emotionally collapsing."</p>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="integration-cta">
-                    <h3>Ready to Implement Structured Emptiness?</h3>
-                    <p>Download the complete GridDB package and start your journey into optimized nothingness.</p>
+                    <h3>Ready for the Reality of GridDB?</h3>
+                    <p>"Bring questions. Bring snacks. Bring moral support."</p>
                     <a href="packages.html" class="btn btn-primary">Download GridDB Package</a>
                 </div>
             </div>
