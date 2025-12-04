@@ -169,7 +169,7 @@ A global state management and inter-script communication system.
 ### Applications
 
 - ✅ **DataManager** - Database browsing and management interface
-- ✅ **WebBrowser** - Basic web-like content viewing system
+- 🚧 **WebBrowser** - Basic web-like content viewing system
 - 🚧 **Advanced UI Components** - Scroll areas, complex layouts (partial)
 
 ### Framework State
