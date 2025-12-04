@@ -16,7 +16,7 @@ The GridDB system provides distributed data storage using text panels as the sto
   - Handles automatic storage allocation and data persistence
 
 - **`GridDBAddress`** - Addressing system for locating specific data
-  - Format: "domain:sub:index" (e.g., "Movies:Main:5")
+  - Format: "domain.sub.index" (e.g., "Movies.Main.5")
   - Enables precise data retrieval across the database
 
 #### Data Classes
