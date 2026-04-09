@@ -384,7 +384,7 @@ public class MyApp : ScreenApp
 ```
 
 The `address` string passed to `GetSeat` is an arbitrary tag (e.g. `"artist_desk"`) shared by:
-- The programmable block's text surface (identified by `desktop:artist_desk`).
+- The block's text surface (identified by `desktop:artist_desk`). This can be a separate text panel block or the main text surface on the control seat block. 
 - The game controller/cockpit seat (e.g. `tv:artist_desk`).
 - Any associated sound blocks (`sfx:artist_desk`).
 
