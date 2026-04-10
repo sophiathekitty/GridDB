@@ -75,6 +75,7 @@
     <Compile Include="Common\ScreenApp\LayoutGUI\LayoutItem.cs" />
     <Compile Include="Common\ScreenApp\LayoutGUI\LayoutStyle.cs" />
     <Compile Include="Common\ScreenApp\ScreenApp.cs" />
+    <Compile Include="Common\ScreenApp\ScreenAppDesktopInfo.cs" />
     <Compile Include="Common\ScreenApp\ScreenAppId.cs" />
     <Compile Include="Common\ScreenApp\ScreenAppSeat.cs" />
     <Compile Include="Common\Screen\Advanced\RasterSprite.cs" />

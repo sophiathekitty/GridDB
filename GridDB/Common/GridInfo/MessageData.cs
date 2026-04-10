@@ -50,7 +50,7 @@ namespace IngameScript
             //------------------------------------------------------
             // fields
             //------------------------------------------------------
-            Dictionary<string, string> data = new Dictionary<string, string>();
+            protected Dictionary<string, string> data = new Dictionary<string, string>();
             public string Client // who is the client (if applicable)
             {
                 get

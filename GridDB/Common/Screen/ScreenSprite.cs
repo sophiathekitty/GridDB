@@ -197,6 +197,7 @@ namespace IngameScript
                     switch (VerticalAlignment)
                     {
                         case VerticalAlignments.Center:
+                            _position.Y += Size.Y / 2;
                             _position.Y -= SizeOnScreen.Y / 2;
                             break;
                         case VerticalAlignments.Bottom:
