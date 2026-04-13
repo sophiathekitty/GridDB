@@ -27,10 +27,10 @@ namespace IngameScript
         //----------------------------------------------------------------------
         public class GridDataBlock
         {
-            public static char HeaderSeparator = '┤'; // separates header from data
-            public static char HeaderKVSeparator = '┼'; // separates header key-value pairs
-            public static char HeaderKVPairSeparator = '─'; // separates header key from value
-            public static char ListSeparator = '┐'; // separates list items
+            public static readonly char HeaderSeparator = '┤'; // separates header from data
+            public static readonly char HeaderKVSeparator = '┼'; // separates header key-value pairs
+            public static readonly char HeaderKVPairSeparator = '─'; // separates header key from value
+            public static readonly char ListSeparator = '┐'; // separates list items
             //------------------------------------------------------
             // fields
             //------------------------------------------------------

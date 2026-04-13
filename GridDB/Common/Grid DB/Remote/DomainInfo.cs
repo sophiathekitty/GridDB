@@ -50,7 +50,7 @@ namespace IngameScript
             public DomainInfo(string domain, GridData dd)
             {
                 if (dd.header.ContainsKey("Name")) Name = dd.header["Name"];
-                if (dd.header.ContainsKey("Domain")) Domain = domain;
+                Domain = domain;
                 BlockCount = GridDB.DomainSize(domain);
                 if (dd.header.ContainsKey("Icon")) Icon = dd.header["Icon"];
                 MainAddress = dd.address.ToString();
@@ -95,6 +95,10 @@ namespace IngameScript
                 sb.Append("Domain").Append(GridDataBlock.HeaderKVPairSeparator).Append(Domain).Append(GridDataBlock.HeaderKVSeparator);
                 sb.Append("BlockCount").Append(GridDataBlock.HeaderKVPairSeparator).Append(BlockCount.ToString()).Append(GridDataBlock.HeaderKVSeparator);
                 sb.Append("Icon").Append(GridDataBlock.HeaderKVPairSeparator).Append(Icon).Append(GridDataBlock.HeaderKVSeparator);
+                if (MainAddress != null)
+                {
+                    sb.Append("MainAddress").Append(GridDataBlock.HeaderKVPairSeparator).Append(MainAddress).Append(GridDataBlock.HeaderKVSeparator);
+                }
                 return sb.ToString();
             }
         }

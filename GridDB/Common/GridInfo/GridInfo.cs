@@ -416,8 +416,14 @@ namespace IngameScript
             {
                 int rnd = Random.Next(min, max) + randomStep;
                 rnd = rnd % (max - min);
-                randomStep = (randomStep + Random.Next(1, 10)) % (max - min); // add random step increment
+                randomStep = (randomStep + Random.Next(1, 10)) % (max - min); // add random step increment to ensure we don't always have the same response
                 return rnd + min;
+            }
+            public static T RandomItem<T>(List<T> list)
+            {
+                if (list.Count == 0) return default(T);
+                int index = RandomInt(0, list.Count);
+                return list[index];
             }
         }
         //---------------------------------------------------------------//

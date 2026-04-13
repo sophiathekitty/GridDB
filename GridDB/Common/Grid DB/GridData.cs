@@ -25,12 +25,12 @@ namespace IngameScript
         //----------------------------------------------------------------------
         // GridData
         //----------------------------------------------------------------------
-        public class GridData
+        public class GridData : IEnumerable<GridDataBlock>
         {
-            public static char BlockSeparator = '║'; // separates blocks
-            public static char HeaderSeparator = '╣'; // separates header from data
-            public static char HeaderKVSeparator = '╬'; // separates header key-value pairs ,
-            public static char HeaderKVPairSeparator = '═'; // separates header key from value =
+            public const char BlockSeparator = '║'; // separates blocks
+            public const char HeaderSeparator = '╣'; // separates header from data
+            public const char HeaderKVSeparator = '╬'; // separates header key-value pairs ,
+            public const char HeaderKVPairSeparator = '═'; // separates header key from value =
             //------------------------------------------------------
             // fields
             //------------------------------------------------------
@@ -41,6 +41,7 @@ namespace IngameScript
             //------------------------------------------------------
             // constructor
             //------------------------------------------------------
+            public GridData() { }
             public GridData(string address, bool headerOnly = false)
             {
                 this.address = new GridDBAddress(address);
@@ -50,6 +51,18 @@ namespace IngameScript
             {
                 this.address = new GridDBAddress(address);
                 ParseData(data);
+            }
+            public void SetAddress(string address)
+            {
+                SetAddress(new GridDBAddress(address));
+            }
+            public void SetAddress(GridDBAddress address)
+            {
+                this.address = address;
+            }
+            public void SetDataString(string data, bool headerOnly = false)
+            {
+                ParseData(data, headerOnly);
             }
             //------------------------------------------------------
             // methods
@@ -87,7 +100,7 @@ namespace IngameScript
                     if (BlocksByName.ContainsKey(b.Name))
                     {
                         //GridInfo.Echo("Warning: Duplicate block name in GridData: " + address.domain + "." + address.sub + "." + address.index + " - " + b.Name);
-                        header["Warning"] = "Duplicate block name: " + b.Name;
+                        //header["Warning"] = "Duplicate block name: " + b.Name;
                         continue;
                     }
                     if (b.Name != "") BlocksByName[b.Name] = b;
@@ -114,6 +127,10 @@ namespace IngameScript
                     if (index >= 0 && index < blocks.Count) return blocks[index];
                     return null;
                 }
+            }
+            public int Count
+            {
+                get { return blocks.Count; }
             }
             //------------------------------------------------------
             // save
@@ -145,6 +162,16 @@ namespace IngameScript
             public void Save(bool addifnew = false)
             {
                 GridDB.Set(address, this.ToString(), addifnew);
+            }
+
+            IEnumerator<GridDataBlock> IEnumerable<GridDataBlock>.GetEnumerator()
+            {
+                return blocks.GetEnumerator();
+            }
+
+            public IEnumerator GetEnumerator()
+            {
+                return blocks.GetEnumerator();
             }
         }
         //----------------------------------------------------------------------

@@ -34,12 +34,19 @@ namespace IngameScript
             //-------------------------------------------------------
             // fields
             //-------------------------------------------------------
-            public string domain;
-            public string sub;
-            public int index = -1;
-            public bool custom_data = false;
+            public string domain { get; private set; }
+            public string sub { get; private set; }
+            public int index { get; private set; } = -1;
+            public bool custom_data { get; private set; } = false;
             //public int length;
-            public long host;
+            public long host { get; private set; } = 0; // optional host ID for remote addresses (0 for local)
+            public bool IsValid
+            {
+                get
+                {
+                    return !string.IsNullOrEmpty(domain) && !string.IsNullOrEmpty(sub) && index <= 99 && index >= -1;
+                }
+            }
             //-------------------------------------------------------
             // constructor
             //-------------------------------------------------------
@@ -96,6 +103,7 @@ namespace IngameScript
             }
             public override bool Equals(object obj)
             {
+                if(obj == null || GetType() != obj.GetType()) return false;
                 return obj.ToString() == ToString();
             }
             public override int GetHashCode()

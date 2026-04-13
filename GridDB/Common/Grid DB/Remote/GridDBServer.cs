@@ -103,11 +103,11 @@ namespace IngameScript
             static void GetData(MyIGCMessage msg) => GetData(MessageData.ParseMessage(msg));
             static void GetData(MessageData msg)
             {
-                if(!msg.HasKey("Address")) return;
+                if(!msg.HasKey(MessageData.ADDRESS)) return;
                 MessageData response = new MessageData();
                 response["Client"] = msg["Client"];
-                response["Address"] = msg["Address"];
-                response["Data"] = GridDB.Get(msg["Address"]);
+                response[MessageData.ADDRESS] = msg[MessageData.ADDRESS];
+                response["Data"] = GridDB.Get(msg[MessageData.ADDRESS]);
                 GridInfo.IGC.SendUnicastMessage(msg.Sender, GridDBClient.GRIDDATA, response.ToString());
             }
         }

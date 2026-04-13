@@ -30,7 +30,7 @@ namespace IngameScript
         {
             public static void Init()
             {
-                //GridInfo.Echo("DataManager init");
+                GridInfo.Echo("DataManager init");
                 // static init
                 RegisterApp();
                 //ScreenAppSeat.GetSeat("Test.Seat", "Data Manager", "Data Manager");

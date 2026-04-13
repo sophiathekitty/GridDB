@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
-using System.Web;
 using VRage;
 using VRage.Collections;
 using VRage.Game;
@@ -28,14 +27,15 @@ namespace IngameScript
         //-----------------------------------------------------------------------
         public class GridDB
         {
-            public static string DB_PREFIX = "DB:";
-            public static string DB_UNUSED = "Unused";
+            public static readonly string DB_PREFIX = "DB:";
+            public static readonly string DB_UNUSED = "Unused";
             //-----------------------------------------------------------------------
             // fields
             //-----------------------------------------------------------------------
             static Dictionary<string, Dictionary<string, List<IMyTextPanel>>> Database = new Dictionary<string, Dictionary<string, List<IMyTextPanel>>>();
             static List<IMyTextPanel> Unused = new List<IMyTextPanel>();
             public static bool hasData { get { return Database.Count > 0; } }
+            /*
             public static bool hasShows
             {
                 get
@@ -58,10 +58,19 @@ namespace IngameScript
                     return false;
                 }
             }
+            */
             public static int UnusedCount { get { return Unused.Count; } }
             public static int UsedCount { get { return TotalBlockCount() - UnusedCount; } }
             public static int TotalCount { get { return TotalBlockCount(); } }
-            public static float UsedPercent { get { return (float)UsedCount / (float)TotalCount * 100f; } }
+            public static float UsedPercent 
+            { 
+                get 
+                {
+                    if (TotalCount == 0) return 0f;
+                    return (float)UsedCount / (float)TotalCount * 100f; 
+                } 
+            }
+            /*
             public static int showsCount
             {
                 get
@@ -101,11 +110,12 @@ namespace IngameScript
                     return count;
                 }
             }
+            */
             public static string Info
             {
                 get
                 {
-                    return "Used: " + UsedCount + "/" + TotalCount + " (" + UsedPercent.ToString("0.0") + "%)\nShows:" + showsCount + "\nGames:" + gamesCount + "\nOther:" + otherCount;
+                    return "Used: " + UsedCount + "/" + TotalCount + " (" + UsedPercent.ToString("0.0") + "%)";//\nShows:" + showsCount + "\nGames:" + gamesCount + "\nOther:" + otherCount;
                 }
             }
             public static int DomainSize(string domain)
@@ -131,9 +141,12 @@ namespace IngameScript
             //-----------------------------------------------------------------------
             // Init
             //-----------------------------------------------------------------------
-            public static void Init()
+            public static void Init(bool sameGrid = true)
             {
-                foreach (IMyTextPanel panel in GridBlocks.textPanels)
+                List<IMyTextPanel> panels = new List<IMyTextPanel>();
+                if(sameGrid) GridInfo.GridTerminalSystem.GetBlocksOfType<IMyTextPanel>(panels, block => block.CubeGrid == GridInfo.Me.CubeGrid);
+                else GridInfo.GridTerminalSystem.GetBlocksOfType<IMyTextPanel>(panels, block => block.IsSameConstructAs(GridInfo.Me));
+                foreach (IMyTextPanel panel in panels)
                 {
                     if (panel.CustomName.StartsWith(DB_PREFIX))
                     {
@@ -186,9 +199,11 @@ namespace IngameScript
             static Random random = new Random();
             public static string GetRandom(string domain, string sub)
             {
-                if (Database.ContainsKey(domain) && Database[domain].ContainsKey(sub) && Database[domain][sub].Count > 0) return random.Next(100) > 50 ? Database[domain][sub][random.Next(Database[domain][sub].Count)].CustomData : Database[domain][sub][random.Next(Database[domain][sub].Count)].GetText();
+                int rndIndex = random.Next(Database[domain][sub].Count);
+                if (Database.ContainsKey(domain) && Database[domain].ContainsKey(sub) && Database[domain][sub].Count > 0) return random.Next(100) > 50 ? Database[domain][sub][rndIndex].CustomData : Database[domain][sub][rndIndex].GetText();
                 return "";
             }
+            // consider moving this to the server class since it needs to be consistent across clients and server, and is more of a server function.
             public static string GetDomainMainDataAddress(string domain)
             {
                 if (!Database.ContainsKey(domain)) return "";
@@ -225,7 +240,9 @@ namespace IngameScript
                 }
                 return addresses;
             }
+            //-------------------------------------------------------
             // return the Database keys so it can be iterated
+            //-------------------------------------------------------
             public static List<string> GetDomains()
             {
                 List<string> domains = new List<string>();
@@ -280,7 +297,8 @@ namespace IngameScript
                 panel.CustomData = data;
                 // DB:ShowName.SceneName.00
                 panel.CustomName = "DB:" + domain + "." + sub + "." + index.ToString("00");
-                Database[domain][sub].Add(panel);
+                if (Database[domain][sub].Count == index) Database[domain][sub].Add(panel);
+                else Update();
             }
             //-----------------------------------------------------------------------
             // Delete

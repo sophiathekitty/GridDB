@@ -27,8 +27,11 @@ namespace IngameScript
         //----------------------------------------------------------------------
         public class MessageData
         {
-            public static char KVPairSeparator = '╪'; // =
-            public static char DataSeparator = '╫'; // ,
+            public const char KVPairSeparator = '╪'; // =
+            public const char DataSeparator = '╫'; // ,
+            public const string SENDER = "Sender";
+            public const string TAG = "Tag";
+            public const string ADDRESS = "Address";
             //------------------------------------------------------
             // static methods
             //------------------------------------------------------
@@ -42,8 +45,8 @@ namespace IngameScript
                 MessageData md = ParseMessage(msg.Data as string);
                 if (md != null)
                 {
-                    md["Sender"] = msg.Source.ToString();
-                    md["Tag"] = msg.Tag;
+                    md[SENDER] = msg.Source.ToString();
+                    md[TAG] = msg.Tag;
                 }
                 return md;
             }
@@ -63,9 +66,9 @@ namespace IngameScript
             {
                 get
                 {
-                    if (this["Sender"] == null) return 0;
+                    if (this[SENDER] == null) return 0;
                     long s;
-                    if (long.TryParse(this["Sender"], out s)) return s;
+                    if (long.TryParse(this[SENDER], out s)) return s;
                     return 0;
                 }
             }
@@ -73,8 +76,8 @@ namespace IngameScript
             {
                 get
                 {
-                    if (this["Tag"] == null) return "";
-                    return this["Tag"];
+                    if (this[TAG] == null) return "";
+                    return this[TAG];
                 }
             }
             public string Data // main data payload
@@ -89,8 +92,8 @@ namespace IngameScript
             {
                 get
                 {
-                    if (this["Address"] == null) return "";
-                    return this["Address"];
+                    if (this[ADDRESS] == null) return "";
+                    return this[ADDRESS];
                 }
             }
             public string this[string key] // indexer to get/set data values
@@ -115,14 +118,14 @@ namespace IngameScript
             public MessageData() { }
             public MessageData(string tag, long sender)
             {
-                this["Tag"] = tag;
-                this["Sender"] = sender.ToString();
+                this[TAG] = tag;
+                this[SENDER] = sender.ToString();
             }
             public MessageData(string tag, long sender, string address, Dictionary<string, string> data)
             {
-                this["Tag"] = tag;
-                this["Sender"] = sender.ToString();
-                this["Address"] = address;
+                this[TAG] = tag;
+                this[SENDER] = sender.ToString();
+                this[ADDRESS] = address;
                 foreach (var kv in data)
                 {
                     this[kv.Key] = kv.Value;
@@ -135,15 +138,15 @@ namespace IngameScript
             {
                 data.Clear();
                 if (string.IsNullOrEmpty(rawData)) return;
-                if (!rawData.Contains("╫") && !rawData.Contains("╪"))
+                if (!rawData.Contains(KVPairSeparator) && !rawData.Contains(KVPairSeparator))
                 {
                     data["Data"] = rawData;
                     return;
                 }
-                string[] parts = rawData.Split(new char[] { '╫' }, StringSplitOptions.RemoveEmptyEntries); // ,
+                string[] parts = rawData.Split(new char[] { DataSeparator }, StringSplitOptions.RemoveEmptyEntries); // ,
                 foreach (string part in parts)
                 {
-                    string[] kv = part.Split(new char[] { '╪' }, StringSplitOptions.RemoveEmptyEntries); // =
+                    string[] kv = part.Split(new char[] { KVPairSeparator }, StringSplitOptions.RemoveEmptyEntries); // =
                     if (kv.Length == 2)
                     {
                         data[kv[0]] = kv[1];
@@ -162,9 +165,9 @@ namespace IngameScript
                 StringBuilder sb = new StringBuilder();
                 foreach (var kv in data)
                 {
-                    if (sb.Length > 0) sb.Append('╫'); // ,
+                    if (sb.Length > 0) sb.Append(DataSeparator); // ,
                     sb.Append(kv.Key);
-                    sb.Append('╪'); // =
+                    sb.Append(KVPairSeparator); // =
                     sb.Append(kv.Value);
                 }
                 return sb.ToString();
@@ -174,10 +177,10 @@ namespace IngameScript
                 StringBuilder sb = new StringBuilder();
                 foreach (var kv in data)
                 {
-                    if (kv.Key == "Tag" || kv.Key == "Sender") continue; // skip these (they are in the message header
-                    if (sb.Length > 0) sb.Append('╫'); // ,
+                    if (kv.Key == TAG || kv.Key == SENDER) continue; // skip these (they are in the message header
+                    if (sb.Length > 0) sb.Append(DataSeparator); // ,
                     sb.Append(kv.Key);
-                    sb.Append('╪'); // =
+                    sb.Append(KVPairSeparator); // =
                     sb.Append(kv.Value);
                 }
                 return new MyIGCMessage(sb.ToString(), Tag, Sender);

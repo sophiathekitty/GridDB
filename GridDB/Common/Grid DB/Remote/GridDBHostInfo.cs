@@ -42,7 +42,7 @@ namespace IngameScript
                         if (!GridInfo.Me.CustomData.Contains("HostName"))
                         {
                             // host info not setup
-                            GridInfo.Me.CustomData = $"HostName={hostName}\n" + GridInfo.Me.CustomData;
+                            GridInfo.Me.CustomData += $"HostName={hostName}\n" + GridInfo.Me.CustomData;
                         }
                         string[] lines = GridInfo.Me.CustomData.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string line in lines)

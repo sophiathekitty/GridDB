@@ -38,10 +38,11 @@ namespace IngameScript
             // screens
             ProgScreen.Init();
             ScreenAppSeat.Init();
-            ScreenAppDesktopInfo.Init(); // so desktop script can find and launch these local apps
             // apps
             DataManager.Init();
             WebBrowser.Init();
+            // Desktop stuff
+            ScreenAppDesktopInfo.Init(); // so desktop script can find and launch these local apps
         }
         //--------------------------
         // save data
