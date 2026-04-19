@@ -125,13 +125,14 @@ namespace IngameScript
             //----------------------------------------------------------------------
             public ScreenApp(ScreenAppSeat seat, string AppName) : base(GridBlocks.GetSurface(seat.Address))
             {
-                GridInfo.Echo($"ScreenApp init {AppName} for {seat.Address}");
+                //GridInfo.Echo($"\nScreenApp---1 init {AppName} for {seat.Address}");
                 AppId = AppName;
                 this.seat = seat;
                 input = seat.input;
                 soundBlocks = seat.soundBlocks;
                 seat[AppId] = this;
                 AppStyle = new LayoutStyle(this);
+                //GridInfo.Echo($"ScreenApp---2 created!!!!!\n");
             }
         }
         //----------------------------------------------------------------------

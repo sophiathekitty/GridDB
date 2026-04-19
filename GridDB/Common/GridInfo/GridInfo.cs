@@ -372,7 +372,8 @@ namespace IngameScript
             }
             public static void AddMessageHandler(string tag, Action<MyIGCMessage> handler)
             {
-                MessageHandlers.Add(tag, handler);
+                if(MessageHandlers.ContainsKey(tag)) MessageHandlers[tag] += handler;
+                else MessageHandlers.Add(tag, handler);
             }
             public static void AddCommandHandler(Action<string> handler)
             {

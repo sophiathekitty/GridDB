@@ -54,8 +54,9 @@ namespace IngameScript
             {
                 if (!SeatsByAddress.ContainsKey(address))
                 {
+                    GridInfo.Echo($"Creating ScreenAppSeat for address: {address} rootApp: {rootApp} currentApp: {currentApp}");
                     SeatsByAddress[address] = new ScreenAppSeat(address, rootApp);
-                }
+                } else GridInfo.Echo($"ScreenAppSeat already exists...........!");
                 return SeatsByAddress[address];
             }
             //------------------------------------------------------
@@ -67,10 +68,8 @@ namespace IngameScript
             {
                 if (msg.Tag == "FocusApp")
                 {
-                    GridInfo.Echo("FocusApp! " + msg.Address + " " + msg["appId"] + " " + msg["rootApp"]);
                     ScreenAppId appId = new ScreenAppId(msg["appId"]);
                     if (!appId.Local) return; // local apps are handled by the seat
-                    GridInfo.Echo("FocusApp Local " + appId.Name);
                     ScreenAppSeat seat = GetSeat(msg["Address"], msg["rootApp"]);
                     seat.CurrentApp = appId.Id;
                 }
@@ -110,6 +109,7 @@ namespace IngameScript
             {
                 get
                 {
+                    //GridInfo.Echo($"----Getting CurrentApp for seat {Address}. AppFocus count: {AppFocus.Count}");
                     if (AppFocus.Count == 0) return RootApp;
                     return AppFocus.Peek();
                 }
@@ -121,7 +121,10 @@ namespace IngameScript
                     {
                         ScreenApp.AvailableApps[appId.Name]?.Invoke(this);
                     }
-                    else AppFocus.Push(appId.Id);
+                    else
+                    {
+                        AppFocus.Push(appId.Id);
+                    }
                 }
             }
             public ScreenAppId CurrentAppId                                                 // the currently focused app (ScreenAppId)
@@ -197,12 +200,14 @@ namespace IngameScript
                 {
                     if (LocalApps.ContainsKey(key))
                     {
+                        //GridInfo.Echo($"ScreenAppSeat getting local app [{key}] with id {LocalApps[key].AppId}");
                         return LocalApps[key];
                     }
                     return null;
                 }
                 set
                 {
+                    //GridInfo.Echo($"ScreenAppSeat setting local app [{key}] to {value?.AppId}");
                     LocalApps[key] = value;
                     CurrentApp = value.AppId;
                 }

@@ -38,10 +38,12 @@ namespace IngameScript
             static void RegisterApp()
             {
                 AvailableApps["Data Manager"] = LaunchApp;
-                ScreenAppDesktopInfo.RegisterLocalApp("Data Manager", "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
+                ScreenAppDesktopInfo.RegisterLocalApp("Data Manager", "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
+                //ScreenAppDesktopInfo.RegisterLocalApp("Web Browser", "\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n");
             }
             static void LaunchApp(ScreenAppSeat seat)
             {
+                GridInfo.Echo("DataManager LaunchApp");
                 new DataManager(seat);
             }
             //----------------------------------------------------------------------
@@ -85,7 +87,7 @@ namespace IngameScript
                 contentArea.AddContent("Filler", filler);
                 contentArea.AddContent("InfoArea", infoArea);
                 contentArea.ApplyLayout();
-                dBClient = new GridDBClient("DatManCli");
+                dBClient = new GridDBClient(seat.Address);
                 dBClient.DomainInfoReceived += RemoteDomainListReceived;
                 dBClient.DomainAddressReceived += DomainBlocksRecieved;
             }
@@ -119,7 +121,9 @@ namespace IngameScript
                 //GridInfo.Echo("DataManager MenuItemClicked: " + item.Id);
                 if (item.Id == "close")
                 {
-                    seat.CurrentAppId = new ScreenAppId("LauncherHub", "GameEditor");
+                    GridInfo.Echo("DataManager closing app");
+                    //seat.CurrentAppId = new ScreenAppId("LauncherHub", "GameEditor");
+                    seat.CloseApp();
                 }
                 else if (item.Id == "local")
                 {
