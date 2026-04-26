@@ -126,7 +126,7 @@ namespace IngameScript
                 }
                 while (IGC.UnicastListener.HasPendingMessage)
                 {
-                    Echo("GridInfo-unicast message");
+                    //Echo("GridInfo-unicast message");
                     messages.Add(IGC.UnicastListener.AcceptMessage());
                 }
                 foreach (IMyBroadcastListener listener in listeners)
