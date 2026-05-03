@@ -49,30 +49,30 @@ namespace IngameScript
             static void ReportDesktopAppsHandler(MyIGCMessage msg) => ReportDesktopAppsHandler(MessageData.ParseMessage(msg));
             static void ReportDesktopAppsHandler(MessageData msg)
             {
-                //GridInfo.Echo($"Received request for desktop apps from {msg.Sender}");
+                GridInfo.Echo($"Received request for desktop apps from {msg.Sender}");
                 //if (msg.Source == GridInfo.Me.EntityId || msg.As<string>() != GridInfo.Me.CubeGrid.ToString()) return; // only respond to requests for our grid that also aren't from ourselves
                 foreach (var app in AvailableApps)
                 {
                     if (app.AppScript != GridInfo.ProgramName) continue; // only report local apps
                     MessageData data = new MessageData(app.ToString());
                     data["Grid"] = GridInfo.Me.CubeGrid.ToString();
-                    //GridInfo.IGC.SendUnicastMessage(msg.Sender, "DesktopAppInfo", app.ToString());
+                    GridInfo.IGC.SendUnicastMessage(msg.Sender, "DesktopAppInfo", app.ToString());
                 }
             }
             static void RecievedAppInfo(MyIGCMessage msg)
             {
-                //GridInfo.Echo($"Received app info?");
+                GridInfo.Echo($"Received app info?");
                 ScreenAppDesktopInfo appInfo = new ScreenAppDesktopInfo(msg.As<string>());
                 //if (appInfo.Grid != GridInfo.Me.CubeGrid.ToString()) return; // only accept apps from our grid
                 if (AvailableApps.Find(a => a.AppName == appInfo.AppName) == null) AvailableApps.Add(appInfo);
-                //GridInfo.Echo($"Available desktop app count: {AvailableApps.Count}");
+                GridInfo.Echo($"Available desktop app count: {AvailableApps.Count}");
             }
             public static void FindAvailableApps()
             {
-                //GridInfo.Echo("Requesting available desktop apps...");
+                GridInfo.Echo("Requesting available desktop apps...");
                 //GridInfo.IGC.SendBroadcastMessage("ReportDesktopApps", GridInfo.Me.CubeGrid.ToString());
                 List<IMyProgrammableBlock> programs = new List<IMyProgrammableBlock>();
-                GridInfo.GridTerminalSystem.GetBlocksOfType<IMyProgrammableBlock>(programs, block => block.IsSameConstructAs(GridInfo.Me));
+                GridInfo.GridTerminalSystem.GetBlocksOfType<IMyProgrammableBlock>(programs);
                 MessageData msg = new MessageData("ReportDesktopApps", GridInfo.IGC.Me);
                 string msg_str = msg.ToString();
                 foreach (var program in programs)
@@ -85,12 +85,12 @@ namespace IngameScript
             }
             public static void FindAvailableApps(long igcAddress)
             {
-                //GridInfo.Echo($"Requesting available desktop apps from {igcAddress}...");
+                GridInfo.Echo($"Requesting available desktop apps from {igcAddress}...");
                 GridInfo.IGC.SendUnicastMessage(igcAddress, "ReportDesktopApps", GridInfo.Me.CubeGrid.ToString());
             }
             public static void RegisterLocalApp(string appName, string appIcon)
             {
-                //GridInfo.Echo($"Registering local desktop app '{appName}' with icon '{appIcon.Substring(0, 5)}'...");
+                GridInfo.Echo($"Registering local desktop app '{appName}' with icon '{appIcon.Substring(0, 5)}'...");
                 AvailableApps.Add(new ScreenAppDesktopInfo(appName, appIcon, GridInfo.ProgramName, GridInfo.Me.CubeGrid.ToString()));
             }
             //-----------------------------------------------------------
@@ -142,8 +142,17 @@ namespace IngameScript
             //-----------------------------------------------------------
             public void Launch(ScreenAppSeat seat)
             {
-                if (ScreenApp.AvailableApps.ContainsKey(AppName)) ScreenApp.AvailableApps[AppName](seat);
-                else seat.CurrentAppId = new ScreenAppId(AppName, AppScript);
+                GridInfo.Echo($"Launching app '{AppName}' with script '{AppScript}'");
+                if (ScreenApp.AvailableApps.ContainsKey(AppName))
+                {
+                    GridInfo.Echo($"App '{AppName}' is a local app, launching directly...");
+                    ScreenApp.AvailableApps[AppName](seat);
+                }
+                else
+                {
+                    GridInfo.Echo($"App '{AppName}' is not a local app, launching via script...");
+                    seat.CurrentAppId = new ScreenAppId(AppName, AppScript);
+                }
             }
             /*
             override public string ToString()
