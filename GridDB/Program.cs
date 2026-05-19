@@ -30,7 +30,7 @@ namespace IngameScript
         {
             // systems
             GridInfo.Init("GridDB",this,UpdateFrequency.Update10);
-            GridBlocks.Init();
+            GridBlocks.Init(); // renames text panels on the same grid as the programmable block to "DB:Unused #" so that they can be easily identified as available for use with ScreenAppSeat and other apps. Also provides helper methods for getting blocks by address for ScreenAppSeat.
             // grid db
             GridDB.Init();
             GridDBServer.Init();

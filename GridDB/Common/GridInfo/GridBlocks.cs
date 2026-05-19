@@ -17,6 +17,7 @@ using VRage.Game.ModAPI.Ingame;
 using VRage.Game.ModAPI.Ingame.Utilities;
 using VRage.Game.ObjectBuilders.Definitions;
 using VRageMath;
+using static IngameScript.Program;
 
 namespace IngameScript
 {
@@ -38,12 +39,30 @@ namespace IngameScript
                 // get all the text panels on the same subgrid as the programmable block
                 GridInfo.GridTerminalSystem.GetBlocksOfType<IMyTextPanel>(textPanels, x => x.CubeGrid == GridInfo.Me.CubeGrid);
                 textPanels.Sort((a, b) => a.CustomName.CompareTo(b.CustomName));
+                RenameTextPanels();
+                GridInfo.AddCommandHandler(Command);
+            }
+            static void Command(string command)
+            {
+                
+                if (command.Contains("Rename"))
+                {
+                    GridInfo.Echo("Should we rename text panels?");
+                    bool dontRename = command.Contains("Dont");
+                    GridInfo.SetVar("DontRenameTextPanels", dontRename.ToString());
+                    RenameTextPanels();
+                }
+            }
+            public static void RenameTextPanels() 
+            {
+                if (GridInfo.GetVarAs<bool>("DontRenameTextPanels", true)) return;
                 int index = 1;
                 foreach (IMyTextPanel panel in textPanels)
                 {
-                    if (panel.CustomName.Contains("DB")) continue;
+                    if (panel.CustomName.Contains("DB") || panel.CustomName.ToLower().Contains("clipboard")) continue;
                     panel.CustomName = "DB:Unused "+ index++;
                 }
+                GridInfo.Echo($"Renamed {index - 1} text panels to DB:Unused #");
             }
             //-----------------------------------------------------------------------
             // static methods to get blocks by address for ScreenAppSeat
